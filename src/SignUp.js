@@ -36,7 +36,7 @@ const SignUp = () => {
             // 여기에서 실제 서버의 HTTPS 엔드포인트를 사용하도록 수정합니다.
             const response = await axios.post('/login/signUp', {
                 id:id,
-                password: password,
+                pw: password,
                 username: username,
                 age:age,
             });

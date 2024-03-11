@@ -1,11 +1,11 @@
 // Login.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 const Login = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
     const handleIdChange = (e) => {
         setId(e.target.value);
     };
@@ -19,14 +19,14 @@ const Login = () => {
         // 로그인 로직 추가
 
         try {
-            const response = await axios.post('/login', {
-                id,
-                password,
+            const response = await axios.post('/login/login', {
+                id:id,
+                pw: password,
             });
 
             console.log('서버 응답:', response.data);
             // 서버로부터의 응답을 처리하는 로직을 추가할 수 있습니다.
-            history.push('/nextPage');
+            navigate('/nextPage', { state: { id: id }});
         } catch (error) {
             console.error('에러 발생:', error);
         }

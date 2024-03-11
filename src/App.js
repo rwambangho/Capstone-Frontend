@@ -3,11 +3,15 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
 import NextPage from './NextPage';
+import MapComponent from "./map";
 
 function App() {
     return (
+
         <Router>
+
             <div className="App">
+
                 <nav>
                     <ul>
                         <li>
@@ -24,6 +28,7 @@ function App() {
                     <Route path="/nextPage" element={<NextPage />} />
                 </Routes>
             </div>
+            <MapComponent/>
         </Router>
     );
 }
