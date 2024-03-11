@@ -32,6 +32,6 @@ function App() {
         </Router>
     );
 }
-//카카오맵 연결
+//카카오맵
 
 export default App;
