@@ -1,0 +1,53 @@
+
+
+.main-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .text-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .text-main {
+    font-size: 24px;
+    margin-top: 50px;
+  }
+  
+  .accordion {
+    border: 1px solid #ccc;
+    position: absolute;
+    margin-top: 250px;
+    left: 0;
+    width: 100%;
+  }
+  
+  .title {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+  }
+  
+  .title.active {
+    background-color: #ddd;
+  }
+  
+  .content {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden; 
+    max-height: 0; 
+    transition: max-height 0.3s ease-out; 
+  }
+  
+  .content.active {
+    max-height: 1000px; 
+    transition: max-height 0.3s ease-in; 
+  }
+  

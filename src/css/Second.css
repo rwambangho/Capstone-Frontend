@@ -1,0 +1,59 @@
+.second-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 세로 중앙 정렬 */
+    background-color: white;
+    padding: 20px;
+}
+
+.text-content {
+    flex: 1;
+    padding-right: 20px; /* 텍스트 컨텐츠와 이미지 간의 간격 추가 */
+    margin-left: 200px;
+    margin-top: 150px;
+}
+
+.cost {
+    color: black;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.cost-image {
+    width: 500px; /* 원하는 크기로 조정 */
+    max-width: 400px; /* 이미지 최대 너비 지정 */
+    margin-top: 80px; /* 이미지와 설명 사이에 간격 조정 */
+
+    
+    
+}
+
+.public {
+    color: black;
+    margin-bottom: 20px;
+    margin-top: 80px; /*위에 글이랑 간격 조정*/
+}
+
+.public-image {
+    width: 500px; /* 원하는 크기로 조정 */
+    max-width: 400px; /* 이미지 최대 너비 지정 */
+    margin-top: 80px; /* 이미지와 설명 사이에 간격 조정 */
+}
+
+.image-content {
+    flex: 1;
+}
+
+/* 미디어 쿼리 추가 */
+@media (max-width: 768px) {
+    .second-section {
+      flex-direction: column; /* 작은 화면에서 세로로 배열 */
+      align-items: stretch; /* 가로로 꽉 채우기 */
+    }
+
+.text-content,
+.image-content {
+    padding: 0; /* 작은 화면에서 간격 제거 */
+    text-align: center; /* 텍스트와 이미지 중앙 정렬 */
+}
+}

@@ -1,0 +1,23 @@
+.main-container {
+    display: flex; /* 컨테이너를 flexbox로 설정 */
+    flex-direction: column; /* 아이템을 세로로 쌓음 */
+    justify-content: flex-start; /* 내용을 위쪽으로 정렬 */
+    align-items: center; /* 가로축에서도 중앙으로 정렬 */
+    height: 100vh; /* 전체 뷰포트 높이 */
+    background-color: #E5F0FF; /* 배경색 설정 */
+}
+
+.text-container {
+    
+    margin-top: 50px;
+}
+
+.text-main {
+    font-size: 1.5rem; /* 주 텍스트 크기 설정 */
+    margin-bottom: 1rem; /* 텍스트 사이 간격 설정 */
+    font-weight: bold; /* 텍스트 굵기 설정 */
+}
+
+.text-sub {
+    font-size: 1rem; /* 보조 텍스트 크기 설정 */
+}

@@ -1,0 +1,40 @@
+.Header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: transparent;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  transition: background-color 0.3s ease;
+}
+
+.ToCar-link {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 부모 요소의 글자색 상속 */
+}
+
+.scrolled {
+  background-color: white; /* 스크롤될 때의 색상 */
+  color: blue; /* 스크롤될 때의 글씨 색상 */
+}
+
+.Header-button {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 8px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin-right: 30px;
+}
+
+.Header-button:hover {
+  background-color: white;
+  color: #333;
+}

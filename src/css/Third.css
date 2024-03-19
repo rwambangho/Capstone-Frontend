@@ -1,0 +1,15 @@
+.container {
+    display: flex; /* Flexbox를 활성화 */
+    justify-content: center; /* 이미지를 중앙 정렬 */
+    align-items: center; /* 이미지를 수직 중앙 정렬 */
+}
+
+.image-container {
+    margin: 0 10px; /* 이미지 주변에 여백을 추가 */
+    margin-top: 100px;
+}
+
+.image-container img {
+    max-width: 100%; /* 이미지가 컨테이너 너비를 초과하지 않게함 */
+    height: auto; /* 이미지의 비율을 유지 */
+}

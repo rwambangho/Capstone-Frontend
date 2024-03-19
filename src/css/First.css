@@ -1,0 +1,20 @@
+.First {
+    padding-top: 60px; /* Header의 높이를 고려 */
+    background-color: #007bff; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /*이미지를 수직 가운데 정렬하기 위해 추가*/
+  }
+  
+  .First-description {
+    margin-top: 20px;
+    background-color: #007bff; 
+    color: white;
+  }
+  
+  .First-image {
+    width: 50%; /* 이미지 너비 조정 */
+    max-width: 400px; /* 이미지 최대 너비 지정 */
+    margin-top: 80px; /* 이미지와 설명 사이에 간격 조정 */
+  }
