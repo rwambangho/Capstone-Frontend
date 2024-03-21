@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../component/Header';
 import First from './First';
 import Second from './Second';
 import Third from './Third';
@@ -9,6 +10,7 @@ import Sixth from './Sixth';
 function AllPages() {
   return (
     <div>
+      <Header />
       <First />
       <Second />
       <Third />

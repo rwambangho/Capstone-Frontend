@@ -1,0 +1,18 @@
+/* RegisterComForm.css */
+
+.content-form-container {
+    flex-grow: 1; /* ContentForm이 남은 공간을 모두 차지하도록 설정 */
+    margin-left: 20px; /* ContentForm을 오른쪽으로 조금 이동 */
+  }
+  
+  @media (max-width: 768px) {
+    .main-content {
+      flex-direction: column; /* 화면이 작아질 때 컨텐츠를 세로로 배치 */
+    }
+  
+    .content-form-container {
+      margin-left: 0; /* 화면이 작아질 때 ContentForm의 margin 제거 */
+      margin-top: 20px; /* 화면이 작아질 때 ContentForm을 위로 이동 */
+    }
+  }
+  
