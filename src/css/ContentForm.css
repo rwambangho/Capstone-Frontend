@@ -130,14 +130,14 @@
   cursor: pointer;
 }
 
-/* 추가적으로, 버튼에 hover 효과를 추가할 수 있습니다. */
+
 .add-photo-btn:hover,
 .register-btn:hover,
 .cancel-btn:hover {
   opacity: 0.9;
 }
 
-/* 반응형 디자인을 위해 미디어 쿼리를 추가할 수 있습니다. */
+
 @media (max-width: 768px) {
   .content-form {
     width: 95%;
@@ -149,7 +149,7 @@
   opacity: 0.9;
 }
 
-/* 반응형 디자인을 위해 미디어 쿼리를 추가할 수 있습니다. */
+
 @media (max-width: 768px) {
   .content-form {
     width: 95%;

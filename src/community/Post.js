@@ -1,12 +1,10 @@
-// Post.js
-
 import React, { useContext } from 'react';
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import { ContentContext } from './ContentContext';
 
 function Post() {
-  const { savedContent } = useContext(ContentContext); // useContext 훅을 사용하여 Context에서 저장된 내용을 가져옴
+  const { savedContent } = useContext(ContentContext);
 
   return (
     <div className="page-container">

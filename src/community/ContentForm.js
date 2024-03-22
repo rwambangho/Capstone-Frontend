@@ -1,9 +1,10 @@
 // ContentForm.js
+
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/ContentForm.css';
 
-function ContentForm({ onSave }) {
+function ContentForm({ onSaveContent }) { // props 이름을 수정
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
@@ -38,7 +39,7 @@ function ContentForm({ onSave }) {
   const handleSubmit = event => {
     event.preventDefault();
     // Save the content
-    onSave({ title, content, selectedImage });
+    onSaveContent({ title, content, selectedImage }); // props 이름을 수정
     navigate('/post');
   };
 
@@ -82,4 +83,4 @@ function ContentForm({ onSave }) {
   );
 }
 
-export default ContentForm;
+export default ContentForm; 

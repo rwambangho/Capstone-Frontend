@@ -8,6 +8,8 @@ import SignUp from './page/SignUp';
 import RegisterComForm from './community/RegisterComForm';
 import Post from './community/Post';
 import { ContentProvider } from './community/ContentContext'; // ContentProvider 임포트
+import Jejudo1 from './main/Jejudo1';
+
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
             <Route path="/registercomform" element={<RegisterComForm />} />
             <Route path="/" element={<AllPagesWithHeader />} />
             <Route path="/post" element={<Post />} />
+            <Route path="/main" element={<Jejudo1 />} /> 
           </Routes>
         </div>
       </ContentProvider>
