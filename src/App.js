@@ -6,8 +6,9 @@ import AllPages from './page/AllPages';
 import Login from './page/Login';
 import SignUp from './page/SignUp';
 import RegisterComForm from './community/RegisterComForm';
-import Post from './community/Post';
+import Post from './community/CommunityMain';
 import Jejudo1 from './main/Jejudo1';
+import CommunityMain from './community/CommunityMain';
 
 
 
@@ -22,7 +23,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/registercomform" element={<RegisterComForm />} />
             <Route path="/" element={<AllPagesWithHeader />} />
-            <Route path="/post" element={<Post />} />
+            <Route path="/communityMain" element={<CommunityMain />} />
             <Route path="/main" element={<Jejudo1 />} /> 
           </Routes>
         </div>
