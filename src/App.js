@@ -7,12 +7,12 @@ import Login from './page/Login';
 import SignUp from './page/SignUp';
 import RegisterComForm from './community/RegisterComForm';
 import Post from './community/Post';
-import { ContentProvider } from './community/ContentContext'; // ContentProvider 임포트
+
 
 function App() {
   return (
     <Router>
-      <ContentProvider> {/* ContentProvider 제공 */}
+
         <div className="App">
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -22,7 +22,7 @@ function App() {
             <Route path="/post" element={<Post />} />
           </Routes>
         </div>
-      </ContentProvider>
+      
     </Router>
   );
 }

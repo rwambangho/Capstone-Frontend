@@ -18,13 +18,19 @@ const Login = () => {
         password: password
       });
       
+      document.cookie='nickName=' + response.data + '; path=/';
       console.log(response.data); // 서버에서 받은 응답 확인
-      // 로그인 성공 시 필요한 작업 수행
+      window.location.href = '/registercomform';
+
+
+    
     } catch (error) {
       console.error('Error logging in:', error); // 로그인 오류 시 오류 메시지 출력
       // 로그인 실패 시 필요한 작업 수행
     }
   };
+
+  
 
   return (
     <div>
@@ -42,7 +48,6 @@ const Login = () => {
           <button type="submit">Log In</button>
           <a href="/forgot">Forgot password?</a>
           <div className="separator">or</div>
-          <button type="button" className="kakao-login">카카오톡</button>
         </form>
         <div className="signup-link">
           Don't have an account? <Link to="/signup">Sign Up</Link>

@@ -1,9 +1,10 @@
 // ContentForm.js
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/ContentForm.css';
 
-function ContentForm({ onSave }) {
+function ContentForm({ onSaveContent }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
@@ -14,7 +15,7 @@ function ContentForm({ onSave }) {
     fileInputRef.current.click();
   };
 
-  const handleImageChange = event => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -35,11 +36,34 @@ function ContentForm({ onSave }) {
     }
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Save the content
-    onSave({ title, content, selectedImage });
-    navigate('/post');
+    
+    try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+      if (selectedImage) {
+        formData.append('image', selectedImage);
+      }
+      
+      const response = await axios.post('/community/save', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('Response from server:', response.data);
+      
+      // 제출 후에 onSaveContent 콜백 호출하여 데이터 전달
+      onSaveContent(response.data);
+
+      // 제출 후에 /post로 이동
+      navigate('/post');
+    } catch (error) {
+      console.error('Error saving content:', error);
+      navigate('/');
+    }
   };
 
   return (
@@ -51,13 +75,15 @@ function ContentForm({ onSave }) {
             id="title"
             type="text"
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="form-group">
           <div className="content-label">
             <label htmlFor="content">Content</label>
-            <button type="button" className="add-photo-btn" onClick={handleAddPhoto}>Add photos</button>
+            <button type="button" className="add-photo-btn" onClick={handleAddPhoto}>
+              Add photos
+            </button>
             <input
               type="file"
               accept="image/*"
@@ -66,16 +92,22 @@ function ContentForm({ onSave }) {
               style={{ display: 'none' }}
             />
           </div>
-          {selectedImage && <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%', marginTop: '10px' }} />}
+          {selectedImage && (
+            <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />
+          )}
           <textarea
             id="content"
             value={content}
-            onChange={e => setContent(e.target.value)}
+            onChange={(e) => setContent(e.target.value)}
           />
         </div>
         <div className="form-actions">
-          <button type="submit" className="register-btn">Register</button>
-          <button type="button" className="cancel-btn">Cancel</button>
+          <button type="submit" className="register-btn">
+            Register
+          </button>
+          <button type="button" className="cancel-btn">
+            Cancel
+          </button>
         </div>
       </form>
     </div>

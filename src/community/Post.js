@@ -1,12 +1,23 @@
-// Post.js
-
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
-import { ContentContext } from './ContentContext';
 
 function Post() {
-  const { savedContent } = useContext(ContentContext); // useContext 훅을 사용하여 Context에서 저장된 내용을 가져옴
+  const [communityData, setCommunityData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/community/data');
+        setCommunityData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="page-container">
@@ -14,16 +25,20 @@ function Post() {
       <div className="main-content">
         <Sidebar />
         <div className="content-form-container">
-          <h2>Post</h2>
-          {savedContent && (
+          {communityData && (
             <div>
-              <h3>Title:</h3>
-              <p>{savedContent.title}</p>
-              <h3>Content:</h3>
-              <p>{savedContent.content}</p>
-              {savedContent.selectedImage && (
-                <img src={savedContent.selectedImage} alt="Selected" />
-              )}
+              {communityData.map(item => (
+                <div key={item.id}>
+                  <h2>Post</h2>
+                  <div>
+                    <h3>Title:</h3>
+                    <p>{item.title}</p>
+                    <h3>Content:</h3>
+                    <p>{item.content}</p>
+                    <img src={item.image} alt="Community Image" />
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
