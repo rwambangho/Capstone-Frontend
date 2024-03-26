@@ -9,6 +9,7 @@ import RegisterComForm from './community/RegisterComForm';
 import Post from './community/Post';
 import { ContentProvider } from './community/ContentContext'; // ContentProvider 임포트
 import Jejudo1 from './main/Jejudo1';
+import Passenger1 from './recruitment/Passenger1';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<AllPagesWithHeader />} />
             <Route path="/post" element={<Post />} />
             <Route path="/main" element={<Jejudo1 />} /> 
+            <Route path="/carpool-recruitment" element={<Passenger1 />} />
           </Routes>
         </div>
       </ContentProvider>
