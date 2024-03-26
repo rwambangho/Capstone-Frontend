@@ -1,7 +1,8 @@
+//Login.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // axios import 추가
-import Header from '../component/Header';
+//import Header from '../component/Header';
 import '../css/Login.css';
 import chairImage from '../../src/image/chair.PNG';
 
@@ -28,7 +29,7 @@ const Login = () => {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
     <div className="login-container">
       <div className="login-form">
         <h2>Log In</h2>
