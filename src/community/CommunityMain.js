@@ -36,4 +36,8 @@ function CommunityMain() {
   );
 }
 
+<<<<<<< HEAD
 export default CommunityMain;
+=======
+export default CommunityMain;
+>>>>>>> 20acf9f1c403b026e548efb4477eabacabf45fb2

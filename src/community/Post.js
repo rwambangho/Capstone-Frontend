@@ -12,4 +12,9 @@ const Post = ({ post }) => {
   );
 };
 
+<<<<<<< HEAD
 export default Post;
+=======
+export default Post;
+
+>>>>>>> 20acf9f1c403b026e548efb4477eabacabf45fb2

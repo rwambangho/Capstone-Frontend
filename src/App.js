@@ -6,28 +6,33 @@ import AllPages from './page/AllPages';
 import Login from './page/Login';
 import SignUp from './page/SignUp';
 import RegisterComForm from './community/RegisterComForm';
-import Post from './community/Post';
-import { ContentProvider } from './community/ContentContext'; // ContentProvider 임포트
+import Post from './community/CommunityMain';
 import Jejudo1 from './main/Jejudo1';
+<<<<<<< HEAD
 import Passenger1 from './recruitment/Passenger1';
+=======
+import CommunityMain from './community/CommunityMain';
+
+
+>>>>>>> 20acf9f1c403b026e548efb4477eabacabf45fb2
 
 
 function App() {
   return (
     <Router>
-      <ContentProvider> {/* ContentProvider 제공 */}
+
         <div className="App">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/registercomform" element={<RegisterComForm />} />
             <Route path="/" element={<AllPagesWithHeader />} />
-            <Route path="/post" element={<Post />} />
+            <Route path="/communityMain" element={<CommunityMain />} />
             <Route path="/main" element={<Jejudo1 />} /> 
             <Route path="/carpool-recruitment" element={<Passenger1 />} />
           </Routes>
         </div>
-      </ContentProvider>
+      
     </Router>
   );
 }
