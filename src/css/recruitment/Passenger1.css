@@ -1,33 +1,30 @@
-
-  
-
 .main-content {
-    display: flex; /*사이드바와 폼을 나란히 배치하기 위해 flex 설정*/
+    display: flex; 
     background-color: #f9f9f9;
 }
 
 .form-title {
-    text-align: left; /* 왼쪽 정렬 */
-    padding-bottom: 10px; /* 제목 아래 여백 */
+    text-align: left; 
+    padding-bottom: 10px; 
   }
 
   .form-title h2 {
-    margin: 0; /* 제목 주변 여백 제거 */
-    padding-bottom: 5px; /* 제목 아래 여백 */
+    margin: 0; 
+    padding-bottom: 5px; 
    
   }
   
   .form-title hr {
     border: none;
     border-top: 1px solid #ccc; /* 얇은 선 추가 */
-    margin-bottom: 30px; /* 선 아래 여백 */
+    margin-bottom: 30px; 
     
   }
   
   .input-group label {
-    display: block; /* 라벨을 블록 요소로 설정 */
-    margin-bottom: 5px; /* 라벨과 입력 필드 사이의 간격 */
-    text-align: left; /* 라벨 왼쪽 정렬 */
+    display: block; 
+    margin-bottom: 5px; 
+    text-align: left; 
   }
 
 .form-container {
@@ -52,50 +49,44 @@
 
   .post-form-header {
     text-align: center;
-    margin-bottom: 20px; /* 제목과 버튼 사이의 여백을 조정 */
+    margin-bottom: 20px; 
   }
 
 .content-container {
-    max-width: 100%; /* 상단바와 동일한 너비 사용 */
-    margin: 0 auto; /* 중앙 정렬 */
+    max-width: 100%;
+    margin: 0 auto; 
   }
   
   .content-container h1 {
     text-align: center; 
-    margin-top: 20px; /* 상단 여백을 추가 */
+    margin-top: 20px; 
   }
   
   .post-buttons {
     display: flex;
-    justify-content: space-between; /* 버튼을 중앙 정렬*/
-    margin-bottom: 50px; /* 버튼 아래 여백 추가 */
+    justify-content: space-between; 
+    margin-bottom: 50px; 
     margin-top: 50px;/*위의 select 어쩌구랑 여백 추가*/
   }
   
   .input-group-text {
-    margin-bottom: 15px; /* 입력 필드 사이의 간격 */
-    border-radius: 10px; /* 사각형의 모서리를 둥글게 */
+    margin-bottom: 15px; 
+    border-radius: 10px; 
   }
 
   .input-group input,
 .input-group textarea {
   background-color: #f0f0f0; /* 입력 필드 배경색을 회색으로 설정 */
-  border-radius: 5px; /* 입력 필드 모서리를 둥글게 설정 */
+  border-radius: 5px; 
   border: 1px solid #ccc; /* 테두리 색상 설정 */
-  padding: 10px; /* 안쪽 여백 */
+  padding: 10px;
   width: 100%; /* 폭을 전체로 설정 */
-}
-
-/* 날짜와 시간 입력 필드 스타일링 */
-.input-group.date-time input[type="date"],
-.input-group.date-time input[type="time"] {
-  /* 필요한 스타일이 없으면 여기에 추가합니다. */
 }
 
 .date-time-container {
     display: flex; /* 날짜와 시간 입력 필드를 가로로 배치 */
     justify-content: space-between; /* 필드 사이에 공간을 분배 */
-    margin-bottom: 20px; /* 다음 입력 필드와의 간격 */
+    margin-bottom: 20px;
   }
   
   .date-input-container,
@@ -104,26 +95,26 @@
     margin-right: 10px; /* 우측 여백 */
   }
   
-  /* 마지막 컨테이너 우측 여백 제거 */
+
   .time-input-container {
     margin-right: 0;
   }
   
   .message-container textarea {
     height: 120px; /* 메시지 입력란의 높이 고정 */
-    resize: none; /* 사용자가 크기를 조절하지 못하게 설정 */
+    resize: none;
   }
 
   .passenger-post-btn,
   .driver-post-btn {
-    margin: 0 5px; /* 버튼 사이의 간격 조정 */
+    margin: 0 5px;
     border: none;
-    background-color: aquamarine; /* 기본 배경색 */
-    border-radius: 20px; /* 사각형의 모서리를 둥글게 */
-    color: #333; /* 글자색 */
-    padding: 10px 20px; /* 패딩 */
-    margin: 0 10px; /* 좌우 여백 */
-    cursor: pointer; /* 마우스 오버시 커서 변경 */
+    background-color: aquamarine;
+    border-radius: 20px; 
+    color: #333;
+    padding: 10px 20px; 
+    margin: 0 10px; 
+    cursor: pointer; 
   }
   
   .passenger-post-btn.active,
@@ -132,17 +123,13 @@
     color: #fff; /* 활성화 상태 글자색 */
   }
 
-
-  
-
 .keywords {
     display: flex;
     flex-wrap: wrap;
     gap: 15px; 
   }
   
-
-  .keyword {
+.keyword {
     background-color:aqua; 
     border-radius: 22px; 
     padding: 0 10px; 
@@ -171,12 +158,12 @@
   }
   
   .popup {
-    background-color: #fff; /* 팝업의 흰색 배경 */
+    background-color: #fff;
     padding: 20px;
-    border-radius: 10px; /* 팝업의 둥근 모서리 */
+    border-radius: 10px; 
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 팝업의 그림자 */
-    width: 80%; /* 팝업의 너비 */
-    max-width: 500px; /* 팝업의 최대 너비 */
+    width: 80%; 
+    max-width: 500px;
   }
   
   .popup-close-btn {
