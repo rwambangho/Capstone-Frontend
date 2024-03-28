@@ -40,15 +40,13 @@
   font-weight: bold;
 }
 
-<<<<<<< HEAD
+
 .nav-item:hover,
 .nav-item.active:hover {
   font-weight: bold;
   text-decoration: none;
   background-color: transparent;
 }
-=======
->>>>>>> 20acf9f1c403b026e548efb4477eabacabf45fb2
 
 .mypage {
   display: flex;

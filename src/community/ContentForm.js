@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> 20acf9f1c403b026e548efb4477eabacabf45fb2
 // ContentForm.js
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -118,8 +115,5 @@ function ContentForm({ onSaveContent }) {
   );
 }
 
-<<<<<<< HEAD
+
 export default ContentForm;
-=======
-export default ContentForm;
->>>>>>> 20acf9f1c403b026e548efb4477eabacabf45fb2

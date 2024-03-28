@@ -8,13 +8,9 @@ import SignUp from './page/SignUp';
 import RegisterComForm from './community/RegisterComForm';
 import Post from './community/CommunityMain';
 import Jejudo1 from './main/Jejudo1';
-<<<<<<< HEAD
 import Passenger1 from './recruitment/Passenger1';
-=======
 import CommunityMain from './community/CommunityMain';
 
-
->>>>>>> 20acf9f1c403b026e548efb4477eabacabf45fb2
 
 
 function App() {
