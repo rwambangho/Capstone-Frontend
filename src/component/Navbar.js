@@ -2,9 +2,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import '../css/Navbar.css';
+import { useNavigate } from 'react-router-dom';
+
 
 function Navbar() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handlePathChange = () => {
@@ -18,6 +21,10 @@ function Navbar() {
     };
   }, []);
 
+  const handleMyPageClick = () => {
+      navigate('/mypage');
+    };
+
   return (
     <nav className="navbar">
       <div className="logo">ToCar</div>
@@ -28,7 +35,7 @@ function Navbar() {
         
       </div>
       <div className="mypage">
-        <button>My Page</button>
+        <button onClick={handleMyPageClick}>My Page</button>
       </div>
     </nav>
   );
