@@ -59,10 +59,10 @@ function ContentForm({ onRegister }) {
       onRegister(response.data);
 
       // 제출 후에 /post로 이동
-      navigate('/CommunityMain');
+      navigate('/community');
     } catch (error) {
       console.error('Error saving content:', error);
-      navigate('/');
+      navigate('/community');
     }
   };
 
@@ -105,7 +105,7 @@ function ContentForm({ onRegister }) {
           <button type="submit" className="register-btn">
             Register
           </button>
-          <button type="button" className="cancel-btn" onClick={() => navigate('/CommunityMain')}>
+          <button type="button" className="cancel-btn" onClick={() => navigate('/community')}>
             Cancel
           </button>
         </div>
