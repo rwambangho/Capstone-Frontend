@@ -9,6 +9,7 @@ import RegisterComForm from './community/RegisterComForm';
 import Post from './community/CommunityMain';
 import Jejudo1 from './main/Jejudo1';
 import Passenger1 from './recruitment/Passenger1';
+import Booking from './booking/Booking';
 import CommunityMain from './community/CommunityMain';
 import MyPageMain from './mypage/MyPageMain';
 import SignupInformation from './mypage/SignupInformation';
@@ -16,6 +17,7 @@ import MyComments from './mypage/MyComments';
 import MyPosts from './mypage/MyPosts';
 import CarpoolRecords from './mypage/CarpoolRecords';
 import ChatList from './mypage/ChatList';
+
 
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
             <Route path="/post" element={<Post />} />
             <Route path="/main" element={<Jejudo1 />} /> 
             <Route path="/carpool-recruitment" element={<Passenger1 />} />
+            <Route path="/carpool-booking" element={<Booking />} />
             <Route path="/mypage" element={<MyPageMain />} />
             <Route path="/mypage/signupInformation" element={<SignupInformation />} />
             <Route path="/mypage/myComments" element={<MyComments />} />
