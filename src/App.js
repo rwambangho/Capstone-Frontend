@@ -17,6 +17,10 @@ import MyPosts from './mypage/MyPosts';
 import CarpoolRecords from './mypage/CarpoolRecords';
 import ChatList from './mypage/ChatList';
 
+import ChatRoom from './chat/chatRoom';
+
+
+
 
 function App() {
   return (
@@ -37,6 +41,9 @@ function App() {
             <Route path="/mypage/myPosts" element={<MyPosts />} />
             <Route path="/mypage/carpoolRecords" element={<CarpoolRecords />} />
             <Route path="/mypage/chatList" element={<ChatList />} />
+
+            <Route path="/chat" element={<ChatRoom/>}/>
+
           </Routes>
         </div>
       
