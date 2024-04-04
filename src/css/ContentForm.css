@@ -1,11 +1,14 @@
 /* ContentForm.css */
 
 .content-form {
+  position: absolute; /* 절대 위치로 설정 */
+  top: 50%; /* 화면 세로 중앙에 위치시키기 위해 top 값을 50%로 설정 */
+  left: 50%; /* 화면 가로 중앙에 위치시키기 위해 left 값을 50%로 설정 */
+  transform: translate(-50%, -50%); /* 수평 및 수직으로 반만큼 이동하여 중앙에 정렬 */
   background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  margin: auto;
   width: 80%; /* 더 작은 크기로 조정 */
   max-width: 800px; /* 최대 너비 설정 */
 }

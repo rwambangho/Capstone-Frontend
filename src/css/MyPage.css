@@ -1,0 +1,19 @@
+.my-page {
+    margin-top: 90px;
+    margin-left: 150px;
+    background-color: #f9f9f9;
+  }
+  
+  .my-page a {
+    color: #B9CDFF;
+    font-family: 'Sansation', sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+    display: inline-block;
+    margin-bottom: 30px;
+    background: -webkit-linear-gradient(45deg, #B9CDFF, #123456); /* 크롬, 사파리 등 대부분의 브라우저용 */
+      background: linear-gradient(45deg, #B9CDFF, #123456); /* 표준 그라데이션 */
+      -webkit-background-clip: text; /* 크롬, 사파리용 */
+      background-clip: text; /* 표준 */
+      color: transparent;
+  }

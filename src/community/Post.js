@@ -1,3 +1,4 @@
+// Post.js
 import React from 'react';
 
 const Post = ({ post }) => {
@@ -7,11 +8,8 @@ const Post = ({ post }) => {
       <p>{post.content}</p>
       {post.image && <img src={post.image} alt="post" />}
       <p>작성자: {post.nickName}</p>
-      
     </div>
   );
 };
-
-
 
 export default Post;

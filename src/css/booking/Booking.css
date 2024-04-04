@@ -1,0 +1,96 @@
+/* Booking.css */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    padding: 20px;
+}
+
+.right-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.post-form-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-buttons {
+    display: flex;
+    margin-top: 20px;
+}
+
+
+
+.search-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+    
+}
+
+
+.search-input {
+    width: calc(100% - 42px);
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-right: -2px; 
+}
+
+
+
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.filter-section {
+    display: flex;
+    flex-direction: column; 
+    margin-top: 10px;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-right: 10px; /* 필터 버튼과 옵션 사이 간격을 추가 */
+}
+
+.filter-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: flex-start; 
+}
+
+.filter-option {
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 5px 0; 
+    margin-right: 10px;
+}
+
+.filter-option:hover {
+    color: #007bff; /* 호버 효과 색상 */
+}

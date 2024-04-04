@@ -1,11 +1,10 @@
-
 // ContentForm.js
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/ContentForm.css';
 
-function ContentForm({ onSaveContent }) {
+function ContentForm({ onRegister }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
@@ -56,8 +55,8 @@ function ContentForm({ onSaveContent }) {
 
       console.log('Response from server:', response.data);
       
-      // 제출 후에 onSaveContent 콜백 호출하여 데이터 전달
-      onSaveContent(response.data);
+      // 등록된 글을 상위 컴포넌트로 전달
+      onRegister(response.data);
 
       // 제출 후에 /post로 이동
       navigate('/CommunityMain');
@@ -106,7 +105,7 @@ function ContentForm({ onSaveContent }) {
           <button type="submit" className="register-btn">
             Register
           </button>
-          <button type="button" className="cancel-btn">
+          <button type="button" className="cancel-btn" onClick={() => navigate('/CommunityMain')}>
             Cancel
           </button>
         </div>
@@ -114,6 +113,5 @@ function ContentForm({ onSaveContent }) {
     </div>
   );
 }
-
 
 export default ContentForm;
