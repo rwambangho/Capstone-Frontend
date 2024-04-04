@@ -19,7 +19,7 @@ const Login = () => {
         password: password
       });
       
-      document.cookie='nickName=' + response.data + '; path=/';
+      document.cookie='id=' + response.data + '; path=/';
       console.log(response.data); // 서버에서 받은 응답 확인
       window.location.href = '/registercomform';
 

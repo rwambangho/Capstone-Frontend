@@ -6,7 +6,7 @@ import '../css/SignUp.css';
 import chairImage from '../../src/image/chair.PNG';
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
@@ -14,8 +14,8 @@ const SignUp = () => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
     
     try {
-      const response = await axios.post('/user/signup', {
-        email: email,
+      const response = await axios.post('/user/signUp', {
+        id: id,
         password: password,
         repeatPassword: repeatPassword
       });
@@ -37,7 +37,7 @@ const SignUp = () => {
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <input type="email" id="email" required placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="email" id="email" required placeholder="Your email" value={id} onChange={(e) => setId(e.target.value)} />
           </div>
           <div className="input-group">
             <input type="password" id="password" required placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
