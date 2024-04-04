@@ -1,3 +1,4 @@
+//Passenger1.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 import Navbar from '../component/Navbar';

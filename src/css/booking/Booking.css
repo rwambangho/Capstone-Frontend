@@ -1,9 +1,4 @@
 /* Booking.css */
-.page-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
 
 .main-content {
     flex-grow: 1;
@@ -21,6 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 30px;
 }
 
 .post-buttons {
@@ -94,3 +90,183 @@
 .filter-option:hover {
     color: #007bff; /* 호버 효과 색상 */
 }
+
+.outer-post-card {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    width: 100%;
+    height: 400px;
+    max-width: 800px; /* 적절한 최대 너비 설정 */
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .post-user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-avatar {
+    /* 아바타 스타일 */
+  }
+  
+  .user-details {
+    margin-left: 10px;
+  }
+  
+  .user-name {
+    font-weight: bold;
+  }
+  
+  .post-date {
+    display: block;
+  }
+  
+  .post-distance {
+    /* 거리 스타일 */
+  }
+  
+  .inner-post-card {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 80px;
+  }
+
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-card {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px; /* Adjust based on your layout */
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.post-title {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.post-info {
+    margin-bottom: 15px;
+}
+
+.post-departure,
+.post-destination,
+.post-date-time {
+    margin-bottom: 10px;
+}
+
+.post-actions {
+    text-align: right;
+}
+
+
+.post-location {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.location-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+
+
+.location-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.location-dot-white {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid blue; /* 흰색 동그라미에 파란색 테두리 */
+    z-index: 2;
+    position: relative; /* 위치를 조정하기 위해 relative로 설정 */
+    margin-bottom: 10px; /* 선과의 간격 */
+    margin-left: 30px;
+}
+
+.location-dot-blue {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: blue;
+    border: 2px solid white; /* 흰색 테두리 추가 */
+    position: absolute; /* 절대 위치 지정 */
+    top: 50%; /* 부모 요소의 상단에서 50% 위치 */
+    left: 0; /* 부모 요소의 왼쪽에 배치 */
+    transform: translate(-50%, -50%); /* 부모 요소의 중앙으로 이동 */
+    z-index: 1; /* 흰색 동그라미 위에 배치 */
+    margin-left: 35px;
+}
+
+.location-point {
+    text-align: center;
+}
+
+.location-title {
+    font-weight: bold;
+    display: block; /* 타이틀을 블록 요소로 만들어 줄 바꿈 */
+}
+
+.location-details {
+    margin-left: 50px; /* 선과의 간격을 만들기 위해 margin-left 적용 */
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px; /* 세부사항이 적을 때도 컨테이너가 줄어들지 않도록 최소 높이 설정 */
+}
+
+.location-line {
+    width: 2px;
+    height: 150%; /* 선의 높이를 조정하여 전체 컨테이너를 커버하도록 함 */
+    background-color: blue;
+    position: absolute;
+    left: 5px; /* 선을 동그라미의 중앙에 위치시킴 */
+    top: 12px; /* 선의 시작 위치를 조정 */
+    margin-left: 30px;
+  }
+  
+  .post-date-time {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .location-point.departure,
+  .location-point.destination {
+    text-align: left;
+    flex-grow: 1;
+  }
+  
+  .location-title,
+  .location-detail {
+    color: #333; /* 텍스트 색깔 */
+    font-size: 0.9em; /* 텍스트 크기 */
+  }
