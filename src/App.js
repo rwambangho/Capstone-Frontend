@@ -6,7 +6,6 @@ import AllPages from './page/AllPages';
 import Login from './page/Login';
 import SignUp from './page/SignUp';
 import RegisterComForm from './community/RegisterComForm';
-import Post from './community/CommunityMain';
 import Jejudo1 from './main/Jejudo1';
 import Passenger1 from './recruitment/Passenger1';
 import Booking from './booking/Booking';
@@ -17,6 +16,10 @@ import MyComments from './mypage/MyComments';
 import MyPosts from './mypage/MyPosts';
 import CarpoolRecords from './mypage/CarpoolRecords';
 import ChatList from './mypage/ChatList';
+
+
+import PostDetail from './community/PostDetail';
+
 import ChatRoom from './chat/chatRoom';
 
 
@@ -31,7 +34,6 @@ function App() {
             <Route path="/registercomform" element={<RegisterComForm />} />
             <Route path="/" element={<AllPagesWithHeader />} />
             <Route path="/community" element={<CommunityMain />} />
-            <Route path="/post" element={<Post />} />
             <Route path="/main" element={<Jejudo1 />} /> 
             <Route path="/carpool-recruitment" element={<Passenger1 />} />
             <Route path="/carpool-booking" element={<Booking />} />
@@ -41,7 +43,10 @@ function App() {
             <Route path="/mypage/myPosts" element={<MyPosts />} />
             <Route path="/mypage/carpoolRecords" element={<CarpoolRecords />} />
             <Route path="/mypage/chatList" element={<ChatList />} />
-            <Route path="/chat" element={<ChatRoom/>}/>;
+
+            <Route path="/post/:id" element={<PostDetail />}  />
+            <Route path="/chat" element={<ChatRoom/>}/>
+
           </Routes>
         </div>
       
