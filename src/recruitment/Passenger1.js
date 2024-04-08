@@ -1,6 +1,10 @@
 //Passenger1.js
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
+=======
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 80e5c59 (.)
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import axios from 'axios';
@@ -8,7 +12,11 @@ import '../css/recruitment/Passenger1.css';
 import Popup from './Popup';
 
 function Passenger1() {
+<<<<<<< HEAD
   const navigate = useNavigate(); // useNavigate 추가
+=======
+  const navigate = useNavigate();
+>>>>>>> 80e5c59 (.)
   const [showPopup, setShowPopup] = useState(false);
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
@@ -17,9 +25,13 @@ function Passenger1() {
   const [keywords, setKeywords] = useState([]);
   const [message, setMessage] = useState('');
 
+<<<<<<< HEAD
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+=======
+  const handleSubmit = async () => {
+>>>>>>> 80e5c59 (.)
     try {
       const response = await axios.post('/recruits', {
         title: 'Passenger Post',
@@ -30,15 +42,24 @@ function Passenger1() {
         departureLatitude: 0,
         departureLongitude: 0,
         isDriverPost: false,
+<<<<<<< HEAD
+=======
+        keywords: keywords,
+>>>>>>> 80e5c59 (.)
       });
 
       console.log('Response from server:', response.data);
 
       // 등록 후 Booking 페이지로 이동
+<<<<<<< HEAD
       navigate('/carpool-booking'); // navigate 함수를 사용하여 Booking 페이지로 이동
 
       // 서버로부터 응답을 받아온 후 필요한 작업 수행
       // 예를 들어, Booking.js 파일에서 데이터를 가져와서 표시할 수 있음
+=======
+      navigate('/carpool-booking');
+
+>>>>>>> 80e5c59 (.)
     } catch (error) {
       console.error('Error saving content:', error);
       // 에러 처리
@@ -77,7 +98,16 @@ function Passenger1() {
             <div className="form-title">
               <h2>Write as a passenger</h2>
               <hr />
+<<<<<<< HEAD
               <form onSubmit={handleSubmit}>
+=======
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault(); // 기본 제출 동작 방지
+                  handleSubmit(); // 커스텀 핸들러 호출
+                }}
+              >
+>>>>>>> 80e5c59 (.)
                 <div className="input-group">
                   <label>Point of Departure</label>
                   <input
