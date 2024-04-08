@@ -10,15 +10,23 @@
 }
 
 .posts-list {
-    list-style: none;
     padding: 0;
+    margin: 0;
     margin-bottom: 2rem; /* 검색창과의 거리를 조정 */
+    display: flex;
+    color: black;
+    flex-direction: column; /* 세로로 요소를 배치하도록 설정 */
 }
 
-.post-item {
-    margin-bottom: 0.5rem;
-    color: #495057; /* 글자 색상 조정 */
-}
+  
+  .post-link {
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: black;
+
+  }
+  
+  
 
 .search-container {
     position: relative; /* 검색 아이콘을 위한 위치 설정 */

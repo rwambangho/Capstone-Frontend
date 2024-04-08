@@ -1,0 +1,121 @@
+
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+}
+
+.content-form-container {
+  text-align: center;
+  flex-direction: column; 
+  display: flex;
+}
+
+.content-form-container > div {
+  max-width: 60%;
+  display: inline-block;
+  text-align: left;
+  padding: 50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-form-container h2 {
+  margin-bottom: 20px;
+}
+
+.content-form-container h3 {
+  margin-bottom: 10px;
+}
+
+.content-form-container p {
+  margin-bottom: 15px;
+}
+
+.content-form-container img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 15px;
+}
+.postbox{
+  padding: 20px;
+  margin:30px;
+}
+
+
+.post-detail {
+  flex-grow: 1; /* ContentForm이 남은 공간을 모두 차지하도록 설정 */
+  display: inline-block;
+  text-align: left;
+  padding: 50x;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-detail h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.post-detail p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-right: 15px;
+}
+
+.post-detail img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.post-detail .author-info {
+  font-style: italic;
+  color: #888;
+  font-size: 10px;
+  
+}
+.post-detail .clickCount{
+  font-size: 10px;
+  color: #007bff;
+}
+.post-detail .likeCount{
+  font-size: 10px;
+}
+
+
+.write-btn{
+  padding: 5px 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: fit-content;
+  margin-left: auto;
+  margin-right:100px;
+  }
+  .post-info {
+    display: flex; 
+ 
+  }
+  .postDetail-info{ 
+    margin-left:450px;
+    display: flex;
+    
+  }
+  .comment{
+    
+    background-color: #D5D5D5;
+    padding: 10px;
+  }
+  .comment-container{
+    margin-top: 100px;
+  }

@@ -1,7 +1,7 @@
 // RegisterComForm.js
 import React from 'react';
 import Navbar from '../component/Navbar';
-import Sidebar from '../component/Sidebar';
+import CommunitySidebar from '../component/CommunitySidebar';
 import ContentForm from './ContentForm';
 import '../css/RegisterComForm.css';
 
@@ -15,9 +15,10 @@ function RegisterComForm() {
   return (
     <div className="page-container">
       <Navbar />
+      <CommunitySidebar />
       <div className="main-content">
-        <Sidebar />
         <div className="content-form-container">
+      
           <ContentForm onSaveContent={handleSaveContent} />
         </div>
       </div>

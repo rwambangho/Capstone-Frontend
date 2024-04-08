@@ -60,7 +60,7 @@ function ContentForm({ onSaveContent }) {
       onSaveContent(response.data);
 
       // 제출 후에 /post로 이동
-      navigate('/CommunityMain');
+      navigate('/community');
     } catch (error) {
       console.error('Error saving content:', error);
       navigate('/');
