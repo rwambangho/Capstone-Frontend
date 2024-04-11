@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom'; 
-
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import axios from 'axios';
@@ -9,10 +7,7 @@ import '../css/recruitment/Passenger1.css';
 import Popup from './Popup';
 
 function Passenger1() {
-
-
   const navigate = useNavigate();
-
   const [showPopup, setShowPopup] = useState(false);
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
@@ -21,12 +16,9 @@ function Passenger1() {
   const [keywords, setKeywords] = useState([]);
   const [message, setMessage] = useState('');
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-
   const handleSubmit = async () => {
-
     try {
       const response = await axios.post('/recruits', {
         title: 'Passenger Post',
@@ -42,10 +34,7 @@ function Passenger1() {
 
       console.log('Response from server:', response.data);
 
-
       navigate('/carpool-booking');
-
-
 
     } catch (error) {
       console.error('Error saving content:', error);
@@ -165,5 +154,5 @@ function Passenger1() {
     </div>
   );
 }
-}
+
 export default Passenger1;
