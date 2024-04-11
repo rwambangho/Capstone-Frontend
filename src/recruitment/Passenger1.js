@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
+
 import { useNavigate } from 'react-router-dom'; 
-=======
-import { useNavigate } from 'react-router-dom';
->>>>>>> 3ceedde (댓글 수 추가)
+
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import axios from 'axios';
@@ -11,11 +9,10 @@ import '../css/recruitment/Passenger1.css';
 import Popup from './Popup';
 
 function Passenger1() {
-<<<<<<< HEAD
-  const navigate = useNavigate(); 
-=======
+
+
   const navigate = useNavigate();
->>>>>>> 3ceedde (댓글 수 추가)
+
   const [showPopup, setShowPopup] = useState(false);
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
@@ -24,12 +21,12 @@ function Passenger1() {
   const [keywords, setKeywords] = useState([]);
   const [message, setMessage] = useState('');
 
-<<<<<<< HEAD
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-=======
+
   const handleSubmit = async () => {
->>>>>>> 3ceedde (댓글 수 추가)
+
     try {
       const response = await axios.post('/recruits', {
         title: 'Passenger Post',
@@ -40,21 +37,16 @@ function Passenger1() {
         departureLatitude: 0,
         departureLongitude: 0,
         isDriverPost: false,
-<<<<<<< HEAD
-=======
         keywords: keywords,
->>>>>>> 3ceedde (댓글 수 추가)
       });
 
       console.log('Response from server:', response.data);
 
-<<<<<<< HEAD
-      navigate('/carpool-booking');
-=======
-      // 등록 후 Booking 페이지로 이동
+
       navigate('/carpool-booking');
 
->>>>>>> 3ceedde (댓글 수 추가)
+
+
     } catch (error) {
       console.error('Error saving content:', error);
     }
@@ -93,16 +85,12 @@ function Passenger1() {
             <div className="form-title">
               <h2>Write as a passenger</h2>
               <hr />
-<<<<<<< HEAD
-              <form onSubmit={handleSubmit}>
-=======
               <form
                 onSubmit={(event) => {
                   event.preventDefault(); // 기본 제출 동작 방지
                   handleSubmit(); // 커스텀 핸들러 호출
                 }}
               >
->>>>>>> 3ceedde (댓글 수 추가)
                 <div className="input-group">
                   <label>Point of Departure</label>
                   <input
@@ -177,5 +165,5 @@ function Passenger1() {
     </div>
   );
 }
-
+}
 export default Passenger1;
