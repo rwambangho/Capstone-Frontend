@@ -11,6 +11,7 @@ const PostDetail = () => {
   const [commentInput, setCommentInput] = useState('');
   const [liked, setLiked] = useState('false'); 
   const userId = getCookieValue('id');
+  const currentTime = new Date();
 
   useEffect(() => {
     // useParams로 가져온 포스트의 ID를 사용하여 서버에서 해당 포스트를 가져옵니다.
@@ -44,7 +45,8 @@ const PostDetail = () => {
     try {
       const response = await axios.post(`/comments/save`, {
         communityId: post.id,
-        comment: commentInput
+        comment: commentInput,
+        time: currentTime.toISOString()
       });
       const updatedPostResponse = await axios.get(`/community/posts/read/${id}`);
       setPost(updatedPostResponse.data);
@@ -80,7 +82,21 @@ const PostDetail = () => {
     }
     return null;
   }
+  function formatDateTime(dateTimeStr) {
+    const date = new Date(dateTimeStr);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
 
+    const ampm = hour >= 12 ? '오후' : '오전';
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+
+    const formattedDateTime = `${year}년 ${month}월 ${day}일 ${ampm} ${formattedHour}시 ${minute}분 ${second}초`;
+    return formattedDateTime;
+}
 
   return (
     <div className="page-container">
@@ -93,14 +109,19 @@ const PostDetail = () => {
       <div className='postDetail-info'>
       <p className='author-info'> By {post.nickName}</p>
       <p className='clickCount'> 조회 수:{post.clickCount}</p>
+      <p className='likeCount'>좋아요 수:{post.likeCount}</p>
+      <p className='writeTime'>작성시간:{formatDateTime(post.time)}</p>
       </div>
-      {post.image && <img src={post.image} alt="post" />}
+     
+      {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" />}
+
       <p>{post.content}</p>
       <div className='comment-container'>
       {post.commentsDto && post.commentsDto.map(comment => (
     <div className='comment' key={comment.id}>
       <p>{comment.nickName}</p>
       <p>{comment.comment}</p>
+      <p>{formatDateTime(comment.time)}</p>
       </div>
     ))}
     </div>

@@ -89,7 +89,9 @@
 .post-detail .likeCount{
   font-size: 10px;
 }
-
+.post-detail .writeTime {
+  font-size: 10px;
+}
 
 .write-btn{
   padding: 5px 40px;
@@ -107,7 +109,7 @@
  
   }
   .postDetail-info{ 
-    margin-left:450px;
+    margin-left:350px;
     display: flex;
     
   }
