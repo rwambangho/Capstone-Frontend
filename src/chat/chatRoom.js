@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import '../css/chatRoom.css';
@@ -8,7 +8,6 @@ import Navbar from '../component/Navbar';
 
 function ChatRoom() {
   const location = useLocation();
-  const navigate = useNavigate();
   const [userId1, setUserId1] = useState('');
   const [userId2, setUserId2] = useState('');
   const [message, setMessage] = useState('');
@@ -16,79 +15,88 @@ function ChatRoom() {
   const [chatRoomNumber, setChatRoomNumber] = useState('');
   const [messages, setMessages] = useState([]);
 
+  const connectWebSocket = (chatRoomNumber) => {
+    const socket = new SockJS("/ws", null, { debug: true });
+    const stompClient = Stomp.over(socket);
+    setStompClient(stompClient);
+  
+    stompClient.connect({}, function (frame) {
+      console.log("웹소켓이 연결됐습니다.");
+  
+      stompClient.subscribe('/topic/chat/' + chatRoomNumber, function (message) {
+        const receivedMessage = JSON.parse(message.body);
+        setMessages(prevMessages => [...prevMessages, receivedMessage]);
+        console.log(receivedMessage);
+        localStorage.setItem(`timestamp_${chatRoomNumber}`, receivedMessage.timestamp);
+      });
+  
+     
+    });
+  };
+  
+  const sendMessage = () => {
+    const send = (stompClient, chatRoomNumber) => {
+      if (stompClient && stompClient.connected) {
+        const timestamp = new Date().toISOString();
+        const messageToSend = {
+          message,
+          sender: userId1,
+          timestamp
+        };
+        stompClient.send(`/app/chat/${chatRoomNumber}`, {}, JSON.stringify(messageToSend));
+        setMessage('');
+      }
+    };
+  
+    send(stompClient, chatRoomNumber);
+  };
+  
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const userId1Param = searchParams.get('userId1');
     const userId2Param = searchParams.get('userId2');
 
+
+  
     if (userId1Param && userId2Param) {
       setUserId1(userId1Param);
       setUserId2(userId2Param);
-
+  
       axios.post('/Chat', {
         userId1: userId1Param,
         userId2: userId2Param
       })
-      .then(function (response) {
-        const chatRoomNumber = response.data;
-        setChatRoomNumber(chatRoomNumber);
-
-        const socket = new SockJS("/ws");
-        const stompClient = Stomp.over(socket);
-        setStompClient(stompClient);
-
-        stompClient.connect({}, function(frame) {
-          console.log('Connected: ' + frame);
-
-          stompClient.subscribe('/topic/chat/' + chatRoomNumber, function(message) {
-            console.log('Message: ' + message.body);
-            const receivedMessage = JSON.parse(message.body);
-            setMessages(prevMessages => [...prevMessages, receivedMessage]);
-            localStorage.setItem(`timestamp_${chatRoomNumber}`, receivedMessage.timestamp);
-          });
-        });
-
-        axios.get(`/chat/history/${chatRoomNumber}`)
-        .then(response => {
-          const previousMessages = response.data.map(item => {
-            const { message, userDto: { id }, timestamp } = item;
-            return { message, sender: id, timestamp };
-          });
-          setMessages(previousMessages);
-        })
-        .catch(error => {
+        .then(function (response) {
+          const chatRoomNumber = response.data;
+          setChatRoomNumber(chatRoomNumber);
+          axios.get(`/chat/history/${chatRoomNumber}`)
+          .then(response => {
+            const previousMessages = response.data.map(item => {
+              const { message, userDto: { id }, timestamp } = item;
+              return { message, sender: id, timestamp };
+            });
+            setMessages(previousMessages);
+          })
+          .catch(error => {
             console.error('Error fetching chat history:', error);
+          });
+      
+           
+            console.log(stompClient);
+           
+        
+            connectWebSocket(chatRoomNumber);
+            console.log("웹소켓 연결시도");
+          
+    
+  
+        })
+        .catch(function (error) {
+          console.error('Error fetching chat room number:', error);
         });
-      })
-      .catch(function (error) {
-        console.error('Error fetching chat room number:', error);
-      });
     }
-  }, [location.search]);
-
-  useEffect(() => {
-    const storedTimestamp = localStorage.getItem(`timestamp_${chatRoomNumber}`);
-    if (storedTimestamp) {
-      const updatedMessages = [...messages];
-      updatedMessages.forEach(msg => {
-        msg.timestamp = storedTimestamp;
-      });
-      setMessages(updatedMessages);
-    }
-  }, [chatRoomNumber]);
-
-  const sendMessage = () => {
-    if (stompClient && stompClient.connected) {
-      const timestamp = new Date().toISOString();
-      const messageToSend = {
-        message,
-        sender: userId1,
-        timestamp
-      };
-      stompClient.send(`/app/chat/${chatRoomNumber}`, {}, JSON.stringify(messageToSend));
-      setMessage('');
-    }
-  };
+  }, []);
+  
 
   function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -112,8 +120,8 @@ function ChatRoom() {
             {messages.map((msg, index) => (
               <div key={index} className={`message ${msg.sender === userId1 ? 'receiver' : 'sender'}`}>
                 <div className="message-sender">{msg.sender === userId1 ? 'Me' : msg.sender}</div>
-                    <div className="message-text">{msg.message}</div>
-                    <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
+                <div className="message-text">{msg.message}</div>
+                <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
               </div>
             ))}
           </div>
@@ -130,6 +138,6 @@ function ChatRoom() {
         </div>
       </div>
     );
-  }
+}
 
 export default ChatRoom;

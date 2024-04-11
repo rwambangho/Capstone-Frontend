@@ -18,7 +18,7 @@ function Passenger1() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  const handleSubmit = async () => {
+
     try {
       const response = await axios.post('/recruits', {
         title: 'Passenger Post',
@@ -54,8 +54,7 @@ function Passenger1() {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
-  }
-  
+  };
 
   return (
     <div className="page-container">
@@ -77,7 +76,7 @@ function Passenger1() {
               <form
                 onSubmit={(event) => {
                   event.preventDefault(); // 기본 제출 동작 방지
-                  handleSubmit(); // 커스텀 핸들러 호출
+                  handleSubmit(event); // 커스텀 핸들러 호출
                 }}
               >
                 <div className="input-group">
