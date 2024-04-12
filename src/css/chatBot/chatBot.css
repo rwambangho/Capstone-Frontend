@@ -1,0 +1,22 @@
+.chat-button {
+    border: none;
+    background: black; /* 배경 투명하게 설정 */
+    cursor: pointer;
+    border-radius: 50%; 
+    width: 40px; /* 버튼의 가로 길이 설정 */
+    height: 40px; /* 버튼의 세로 길이 설정 */
+    display: flex; /* 내부 아이콘을 가운데 정렬하기 위해 사용 */
+    justify-content: center; /* 내부 아이콘을 가운데 정렬하기 위해 사용 */
+    align-items: center; 
+  }
+  
+  .chat-button svg {
+    width: 32px; /* 아이콘 크기 조정 */
+    height: 32px; /* 아이콘 크기 조정 */
+  }
+  
+  /* 버튼에 호버 효과 추가 */
+  .chat-button:hover {
+    opacity: 0.6;
+  }
+  

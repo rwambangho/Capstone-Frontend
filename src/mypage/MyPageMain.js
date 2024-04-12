@@ -12,7 +12,7 @@ function MyPageMain() {
         <Link to="/mypage/carpoolRecords">Recent carpooling records</Link><br  />
         <Link to="/mypage/myPosts">My Post list</Link><br  />
         <Link to="/mypage/myComments">My Comment list</Link><br  />
-        <Link to="/mypage/chatList">Chatting list</Link>
+        <Link to="/chatRoomList">Chatting list</Link>
       </div>
     </div>
   );

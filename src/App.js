@@ -22,6 +22,7 @@ import PostDetail from './community/PostDetail';
 
 import ChatRoom from './chat/chatRoom';
 import ChatRoomList from './chat/chatRoomList';
+import ChatBot from './chat/ChatBot';
 
 
 function App() {
@@ -48,7 +49,8 @@ function App() {
             <Route path="/post/:id" element={<PostDetail />}  />
             <Route path="/chat" element={<ChatRoom/>}/>
             <Route path="/chatRoomList" element={<ChatRoomList/>}/>
-
+            <Route path="/chatBot" element={<ChatBot/>}/>
+            
           </Routes>
         </div>
       

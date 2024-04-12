@@ -6,6 +6,7 @@ import CommunitySidebar from '../component/CommunitySidebar';
 import Post from './Post'; // Post 컴포넌트 임포트
 
 import '../css/community/Community.css'
+import ChatBot from '../chat/ChatBot';
 
 function CommunityMain() {
   const [posts, setPosts] = useState([]);
@@ -43,6 +44,7 @@ function CommunityMain() {
             
         
         </div>
+        <ChatBot></ChatBot>
       </div>
     </div>
   );
