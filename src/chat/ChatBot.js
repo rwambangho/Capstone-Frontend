@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/chatRoom.css';
-import '../css/chatBot/chatBot.css';
+import '../css/chatBot/chatBot.css';
 
 function ChatBot() {
   const [input, setInput] = useState('');
