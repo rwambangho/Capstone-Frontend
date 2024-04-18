@@ -1,5 +1,5 @@
 //Passenger1.js
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
@@ -16,7 +16,16 @@ function Passenger1() {
   const [time, setTime] = useState('');
   const [keywords, setKeywords] = useState([]);
   const [message, setMessage] = useState('');
-  const [star, setStar] = useState('');
+  // const [star, setStar] = useState('');
+  const [username, setUsername] = useState(getCookieValue('id') || 'User'); // User는 기본값
+
+  useEffect(() => {
+    // 쿠키에서 사용자 이름을 가져와 setUsername을 호출합니다.
+    const usernameFromCookie = getCookieValue('id');
+    if (usernameFromCookie) {
+      setUsername(usernameFromCookie);
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,7 +33,7 @@ function Passenger1() {
       const response = await axios.post('/recruits', {
         title: 'Passenger Post',
         contents: `${departure} to ${destination} at ${date} ${time}`,
-        username: 'User',
+        username: username,
         departure : departure,
         destination: destination,
         departureDate: date,
@@ -44,6 +53,17 @@ function Passenger1() {
             // 에러 처리
         }
     };
+
+    function getCookieValue(cookieName) {
+      const cookies = document.cookie.split('; ');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].split('=');
+        if (cookie[0] === cookieName) {
+          return cookie[1];
+        }
+      }
+      return null;
+    }
 
     const handleKeywordChange = (event) => {
         if (event.key === 'Enter' && event.target.value.trim() !== '') {
