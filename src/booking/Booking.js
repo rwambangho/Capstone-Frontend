@@ -69,41 +69,57 @@ function Booking() {
               const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
 
               return (
-                <div key={index} className="outer-post-card">
-                  <div className="post-header">
-                    <div className="post-user-info">
-                      <span className="user-name">{post.username}</span>
-                      <span className="post-date">{displayDate}</span>
-                    </div>
-                    <div className="post-distance">{post.distance}</div>
+              <div key={index} className="outer-post-card">
+                <div className="post-header">
+                  <div className="post-user-info">
+                    <span className="user-name">{post.username}</span>
+                    {/* <span className="driver-tag">{post.driver}</span> */}
+                    {/* <span className="user-rating">{post.star} </span> */}
+                    <span className="post-date">{displayDate}</span>
+                    {/* <span className="post-date">{post.departureDate}</span> */}
                   </div>
-                  <div className="inner-post-card">
-                    <div className="location-container">
-                      <div className="location-marker departure-marker">
-                        <div className="location-dot-white"></div>
-                        <div className="location-line"></div>
-                      </div>
-                      <div className="location-details">
-                        <div className="location-point departure">
-                          <span className="location-title">{post.departure}</span>
-                          <span className="location-detail">{post.departureDetail}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="location-container"> 
-                      <div className="location-marker destination-marker">
-                        <div className="location-dot-blue"></div>
-                      </div>
-                      <div className="location-details">
-                        <div className="location-point destination">
-                          <span className="location-title">{post.destination}</span>
-                          <span className="location-detail">{post.destinationDetail}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="post-actions"></div>
+                  <div className="post-distance">{post.distance}</div>
                 </div>
+                <div className="inner-post-card">
+                  <div className="location-container">
+                    <div className="location-marker departure-marker">
+                      <div className="location-dot-white"></div>
+                      <div className="location-line"></div>
+                    </div>
+                    <div className="location-details">
+                      <div className="location-point departure">
+                        <span className="location-title">{post.departure}</span>
+                        <span className="location-detail">{post.departureDetail}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="location-container">
+                    <div className="location-marker destination-marker">
+                      <div className="location-dot-blue"></div>
+                    </div>
+                    <div className="location-details">
+                      <div className="location-point destination">
+                        <span className="location-title">{post.destination}</span>
+                        <span className="location-detail">{post.destinationDetail}</span>
+                      </div>
+                    </div>
+                  </div>
+            
+                  
+                  
+                </div>
+                <div className='post-form-bottom'>
+                  <div className="post-keywords">
+                    {post.keywords && post.keywords.map((keyword, kIndex) => (
+                    <span key={kIndex} className="post-keyword">{keyword}</span>
+                    ))}
+                  </div>
+                  <div className="post-created-at">
+                    {new Date(post.createdAt).toLocaleString()}
+                  </div>
+                </div>
+                <div className="post-actions"></div>
+              </div>
               );
             })}
           </div>
