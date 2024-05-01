@@ -1,123 +1,241 @@
+/*.main-content {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: flex-start;*/
+/*}*/
+
+/*.content-form-container {*/
+/*  background-color: #ffffff;*/
+/*  text-align: center;*/
+/*  flex-direction: column;*/
+/*  display: flex;*/
+/*  margin-top: 25px;*/
+/*  align-items: center; !* 수직 방향 가운데 정렬 *!*/
+/*  justify-content: center; !* 수평 방향 가운데 정렬 *!*/
+
+/*}*/
+
+/*.content-form-container > div {*/
+/*  max-width: 60%;*/
+/*  display: inline-block;*/
+/*  text-align: left;*/
+/*  padding: 50px;*/
+/*  border: 1px solid #ccc;*/
+/*  border-radius: 5px;*/
+/*  background-color: #f9f9f9;*/
+/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.write-btn {*/
+/*  padding: 5px 40px;*/
+/*  background-color: #007bff;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  border-radius: 5px;*/
+/*  cursor: pointer;*/
+/*  width: fit-content;*/
+/*  white-space: nowrap;*/
+/*  margin-left: auto;*/
+/*  !* write a post 버튼을 우측으로 이동 *!*/
+/*  margin-top: 10px;*/
+/*  !* 챗봇 버튼과의 간격을 조정 *!*/
+/*  align-self: flex-end; !* 추가 *!*/
+/*}*/
+
+/*.buttons-container {*/
+/*  justify-content: flex-end;*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  !* 요소를 세로로 배치 *!*/
+/*  align-items: flex-end;*/
+/*  !* 요소를 우측 정렬 *!*/
+/*  margin-right: 20px;*/
+/*  margin-top: 5px;*/
+/*}*/
+
+/*.post-detail {*/
+/*  width: 100%;*/
+/*  !* 컨테이너에 맞춰서 가로 폭을 설정 *!*/
+/*}*/
+
+/*!* 상단 그룹 *!*/
+/*.post-top-info {*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*.writeTime {*/
+/*  font-size: 1.2rem;*/
+/*  !* 변경: 굵은 글씨체 및 크기 증가 *!*/
+/*  color: #666;*/
+/*  margin-bottom: 5px;*/
+/*}*/
+
+/*.post-detail h2 {*/
+/*  font-size: 1.6rem;*/
+/*  margin-bottom: 10px;*/
+/*}*/
+
+/*.post-middle-info {*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  align-items: center;*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*.postDetail-info span {*/
+/*  font-size: 0.9rem;*/
+/*  color: #1c5cff;*/
+/*  !* 변경: 조회수, 좋아요수, 댓글수 색상 *!*/
+/*  margin-right: 15px;*/
+/*}*/
+
+/*.author-info {*/
+/*  font-size: 0.9rem;*/
+/*  color: #333;*/
+/*}*/
+
+/*!* 중간 그룹 *!*/
+/*.post-detail img {*/
+/*  max-width: 100%;*/
+/*  height: auto;*/
+/*  border-radius: 5px;*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*.post-detail p {*/
+/*  font-size: 1rem;*/
+/*  line-height: 1.6;*/
+/*  color: #333;*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*!* 하단 그룹 *!*/
+/*.post-bottom-info {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  gap: 10px;*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*.LikeButton,*/
+/*.CommentButton {*/
+/*  padding: 8px 20px;*/
+/*  font-size: 0.9rem;*/
+/*  cursor: pointer;*/
+/*  border: none;*/
+/*  border-radius: 5px;*/
+/*  color: white;*/
+/*}*/
+
+/*.LikeButton {*/
+/*  background-color: #007bff;*/
+/*}*/
+
+/*.LikeButton.liked {*/
+/*  background-color: #004085;*/
+/*}*/
+
+/*.CommentButton {*/
+/*  background-color: #28a745;*/
+/*}*/
+
+/*!* 댓글 섹션 *!*/
+/*.comment-section {*/
+/*  border-top: 1px solid #ccc;*/
+/*  padding-top: 10px;*/
+/*}*/
+
+/*.comment-container {*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*.comment {*/
+/*  background-color: #e9ecef;*/
+/*  padding: 10px;*/
+/*  border-radius: 5px;*/
+/*  margin-bottom: 10px;*/
+/*}*/
+
+/*.comment p {*/
+/*  margin: 0;*/
+/*  padding: 5px;*/
+/*  font-size: 0.9rem;*/
+/*}*/
+
+/*.comment-form {*/
+/*  display: flex;*/
+/*  gap: 10px;*/
+/*  align-items: center; !* 이 부분이 중요합니다 *!*/
+/*}*/
+
+/*.comment-form input[type='text'] {*/
+/*  padding: 10px; !* 'button'과 동일하게 조정 *!*/
+/*  font-size: 0.9rem; !* 글꼴 크기를 'button'과 동일하게 *!*/
+/*  border: 2px solid #ccc; !* 경계선을 'button'과 동일하게 *!*/
+/*  border-radius: 5px;*/
+/*  margin: 0; !* 마진이 없도록 설정 *!*/
+/*  height: auto; !* 높이를 자동으로 설정하여 내용에 맞춤 *!*/
+/*}*/
+
+/*.comment-form button {*/
+/*  padding: 10px 20px; !* 'input'과 동일하게 조정 *!*/
+/*  font-size: 0.9rem; !* 글꼴 크기를 'input'과 동일하게 *!*/
+/*  border: 1px solid #007bff; !* 'input'과 동일하게 *!*/
+/*  border-radius: 5px;*/
+/*  margin: 0; !* 마진이 없도록 설정 *!*/
+/*  height: auto; !* 높이를 자동으로 설정하여 내용에 맞춤 *!*/
+/*  background-color: #007bff;*/
+/*  color: white;*/
+/*  cursor: pointer;*/
+/*  box-sizing: border-box; !* border와 padding을 포함한 높이를 계산 *!*/
+/*}*/
+/*!* 반응형 디자인 조정 *!*/
+/*@media (max-width: 768px) {*/
+/*  .post-middle-info,*/
+/*  .post-bottom-info {*/
+/*    flex-direction: column;*/
+/*    align-items: flex-start;*/
+/*  }*/
+
+/*  .LikeButton,*/
+/*  .CommentButton,*/
+/*  .comment-form button {*/
+/*    width: 100%;*/
+/*  }*/
+/*}*/
+
+/*!* 페이지네이션 스타일 *!*/
+/*.pagination {*/
+/*  text-align: center; !* 페이지네이션을 중앙에 위치 *!*/
+/*  padding: 20px 0; !* 게시물과의 상하 간격 *!*/
+/*}*/
 
 
-.main-content {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; 
-}
+/*.pagination ul {*/
+/*  padding: 0; !* 기본 padding 제거 *!*/
+/*  margin: 0; !* 기본 margin 제거 *!*/
+/*  display: flex; !* flexbox를 이용한 수평 정렬 *!*/
+/*  justify-content: center; !* 가운데 정렬 *!*/
+/*  list-style: none; !* 기본 리스트 스타일 제거 *!*/
+/*}*/
 
-.content-form-container {
-  text-align: center;
-  flex-direction: column; 
-  display: flex;
-}
+/*.pagination li {*/
+/*  margin: 0 10px; !* 페이지 번호 사이의 간격 *!*/
+/*}*/
 
-.content-form-container > div {
-  max-width: 60%;
-  display: inline-block;
-  text-align: left;
-  padding: 50px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+/*.pagination button {*/
+/*  background: none;*/
+/*  border: none;*/
+/*  color: #000000; !* 선택되지 않은 페이지의 색상을 검정으로 설정 *!*/
+/*  padding: 5px 10px;*/
+/*  cursor: pointer;*/
+/*  font-size: 1rem;*/
+/*}*/
 
-.content-form-container h2 {
-  margin-bottom: 20px;
-}
-
-.content-form-container h3 {
-  margin-bottom: 10px;
-}
-
-.content-form-container p {
-  margin-bottom: 15px;
-}
-
-.content-form-container img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 15px;
-}
-.postbox{
-  padding: 20px;
-  margin:30px;
-}
+/*.pagination button:hover,*/
+/*.pagination li.active button {*/
+/*  text-decoration: underline; !* 마우스 오버 또는 활성화된 페이지에 밑줄 *!*/
+/*  color: blue; !* 마우스 오버 또는 활성화된 페이지의 색상을 파란색으로 설정 *!*/
+/*}*/
 
 
-.post-detail {
-  flex-grow: 1; /* ContentForm이 남은 공간을 모두 차지하도록 설정 */
-  display: inline-block;
-  text-align: left;
-  padding: 50x;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.post-detail h2 {
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.post-detail p {
-  font-size: 16px;
-  margin-bottom: 10px;
-  margin-right: 15px;
-}
-
-.post-detail img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 10px;
-  border-radius: 8px;
-}
-
-.post-detail .author-info {
-  font-style: italic;
-  color: #888;
-  font-size: 10px;
-  
-}
-.post-detail .clickCount{
-  font-size: 10px;
-  color: #007bff;
-}
-.post-detail .likeCount{
-  font-size: 10px;
-}
-.post-detail .writeTime {
-  font-size: 10px;
-}
-
-.write-btn{
-  padding: 5px 40px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: fit-content;
-  margin-left: auto;
-  margin-right:100px;
-  }
-  .post-info {
-    display: flex; 
- 
-  }
-  .postDetail-info{ 
-    margin-left:350px;
-    display: flex;
-    
-  }
-  .comment{
-    
-    background-color: #D5D5D5;
-    padding: 10px;
-  }
-  .comment-container{
-    margin-top: 100px;
-  }
