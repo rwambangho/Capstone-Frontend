@@ -278,6 +278,16 @@ const PostDetail = () => {
     }
   };
 
+  const deletePost= async()=>{
+    try{
+      await axios.delete(`/community/${post.id}`)
+     }
+     catch(error){
+      console.error("삭제 실패");
+     }
+
+  };
+
   function getCookieValue(cookieName) {
     const cookies = document.cookie.split('; ');
     for (let i = 0; i < cookies.length; i++) {
@@ -313,6 +323,7 @@ const PostDetail = () => {
               <div className="post-detail-header">
                 <p>{formatDateTime(post.time)}</p>
                 <h2>{post.title}</h2>
+                <button onClick={deletePost}>삭제</button>
                 <div className="info-container">
                   <div className="stats">
                     <span>hits {post.clickCount}</span>
@@ -322,7 +333,7 @@ const PostDetail = () => {
                   <p className='author-info'> By {post.nickName}</p>
                 </div>
               </div>
-              {post.image && <img src={post.image} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
+              {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
               <p className="post-content">{post.content}</p>
               <div className="button-container">
                 <button className={`like-button ${liked ? 'liked' : ''}`} onClick={toggleLike}>
@@ -384,6 +395,7 @@ const PostDetail = () => {
           </SidebarContainer>
         </div>
       </PageContainer>
+
   );
 }
 

@@ -26,7 +26,7 @@ function ChatRoomList() {
 
     getAllChatRoomNumbers();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+ 
   }, []);
 
 

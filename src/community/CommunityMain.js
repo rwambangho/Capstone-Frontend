@@ -83,6 +83,7 @@ function CommunityMain() {
 
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
+
     return (
         <Container>
             <Navbar/>
@@ -113,6 +114,7 @@ function CommunityMain() {
             </ContentContainer>
         </Container>
     );
+
 }
 
 export default CommunityMain;

@@ -1,9 +1,7 @@
-//Navbar.js
 import React from 'react';
 import { useState, useEffect } from 'react';
 import '../css/Navbar.css';
 import { useNavigate } from 'react-router-dom';
-
 
 function Navbar() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -22,12 +20,16 @@ function Navbar() {
   }, []);
 
   const handleMyPageClick = () => {
-      navigate('/mypage');
-    };
+    navigate('/mypage');
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
 
   return (
     <nav className="navbar">
-      <div className="logo">ToCar</div>
+      <div className="logo" onClick={handleLogoClick}>ToCar</div>
       <div className="nav-links">
         <a href="/carpool-booking" className={`nav-item ${currentPath === '/carpool-booking' ? 'active' : ''}`}>Carpool Booking</a>
         <a href="/carpool-recruitment" className={`nav-item ${currentPath === '/carpool-recruitment' ? 'active' : ''}`}>Carpool Recruitment</a>
@@ -42,4 +44,3 @@ function Navbar() {
 }
 
 export default Navbar;
-        
