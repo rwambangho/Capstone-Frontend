@@ -110,6 +110,7 @@ const Post = ({ post }) => {
                 <PostDateTime>{formatDateTime(post.time)}</PostDateTime>
                 <PostTitle onClick={navigateToPostDetail}>{post.title}</PostTitle>
                 <PostText>{post.content}</PostText>
+                <button onClick={sendNicknameToServer}>채팅</button>
                 <PostMeta>
                     <MetaItem color="#1c5cff" fontWeight="600">
                         <span style={{ marginRight: '10px' }}>hits {post.clickCount}</span>

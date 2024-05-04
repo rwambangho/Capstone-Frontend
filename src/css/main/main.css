@@ -150,8 +150,14 @@
     margin: 0; /* 마진 없음 */
   }
   
- 
-
+  .Header-userId{
+    color: #fff;
+    margin-right:10px ;
+    font-size: 15px;
+  }
+  .Header-button{
+    border-radius: 8px;
+  }
   
   
   

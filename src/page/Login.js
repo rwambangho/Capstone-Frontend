@@ -19,9 +19,11 @@ const Login = () => {
         password: password
       });
       
-      document.cookie='id=' + response.data + '; path=/';
+      document.cookie='id=' + response.data.id + '; path=/';
+      document.cookie = `nickname=${response.data.nickname}; path=/`;
+    
       console.log(response.data); // 서버에서 받은 응답 확인
-      window.location.href = '/registercomform';
+      window.location.href = '/';
 
 
     
@@ -48,15 +50,11 @@ const Login = () => {
           </div>
           <button type="submit">Log In</button>
           <a href="/forgot">Forgot password?</a>
-          <div className="separator">or</div>
+          
         </form>
-        <div className="signup-link">
-          Don't have an account? <Link to="/signup">Sign Up</Link>
-        </div>
+       
       </div>
-      <div className="login-image">
-        <img src={chairImage} alt="chair" className="chair-image" />
-      </div>
+
     </div>
     </div>
   );

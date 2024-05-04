@@ -207,7 +207,7 @@ const PostDetail = () => {
   const { id } = useParams();
   const [commentInput, setCommentInput] = useState('');
   const [liked, setLiked] = useState(false);
-  const userId = getCookieValue('id');
+  const userId = getCookieValue('nickname');
   const currentTime = new Date();
   const [showComments, setShowComments] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

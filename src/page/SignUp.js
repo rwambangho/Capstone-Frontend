@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import '../css/SignUp.css';
-import chairImage from '../../src/image/chair.PNG';
+
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -85,9 +85,7 @@ const SignUp = () => {
 
   return (
     <div className="signup-container">
-      <div className="signup-image">
-        <img src={chairImage} alt="chair" className="chair-image" />
-      </div>
+      
       <div className="signup-form">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
@@ -127,12 +125,9 @@ const SignUp = () => {
             <button type="button" onClick={verifyCode}>Verify Code</button>
           </div>
           <button type="submit">Sign Up</button>
-          <div className="separator">or</div>
-          <button type="button" className="kakao-login">카카오톡</button>
+         
         </form>
-        <div className="signup-link">
-          Already have an account? <Link to="/login">Log In</Link>
-        </div>
+        
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-.Header {
+header {
   position: fixed;
   top: 0;
   left: 0;
@@ -8,14 +8,15 @@
   color: white;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* 자식 요소를 좌우로 분산 배치 */
   padding: 0 20px;
   transition: background-color 0.3s ease;
 }
 
 .ToCar-link {
   text-decoration: none; /* 밑줄 제거 */
-  color: inherit; /* 부모 요소의 글자색 상속 */
+  color: white; /* 부모 요소의 글자색 상속 */
+  display: inline-block;
 }
 
 .scrolled {
@@ -31,10 +32,15 @@
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 
 .Header-button:hover {
   background-color: white;
   color: #333;
+}
+
+.Header-userInfo {
+  display: inline-block; /* 요소를 인라인 블록으로 표시하여 좌우로 배치 */
+  margin-right:20px;
 }
