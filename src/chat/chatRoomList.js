@@ -7,9 +7,9 @@ function ChatRoomList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    
+
     async function getAllChatRoomNumbers() {
-      const userId = getCookieValue('id');
+      const userId = getCookieValue('nickname');
       console.log(userId);
       try {
         const response = await axios.get('/getAllChatRoomNumber', {
@@ -26,7 +26,7 @@ function ChatRoomList() {
 
     getAllChatRoomNumbers();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
 
@@ -48,28 +48,28 @@ function ChatRoomList() {
       userId1: userId,
       userId2: roomNumber
     })
-    .then(response => {
-      navigate(`/chat?userId1=${userId}&userId2=${roomNumber}`); // navigate 함수를 사용하여 페이지를 이동합니다.
-      console.log('Nickname sent to server:', response.data);
-    })
-    .catch(error => {
-      console.error('Error sending nickname to server:', error);
-    });
+        .then(response => {
+          navigate(`/chat?userId1=${userId}&userId2=${roomNumber}`); // navigate 함수를 사용하여 페이지를 이동합니다.
+          console.log('Nickname sent to server:', response.data);
+        })
+        .catch(error => {
+          console.error('Error sending nickname to server:', error);
+        });
   };
 
   return (
-    <div>
-      {/* chatRoomNumbers 배열을 사용하여 채팅방 목록을 표시하는 코드 작성 */}
-      <ul>
-        {users.map((roomNumber, index) => (
-          <li key={index}>
-            <button onClick={() => sendNicknameToServer(roomNumber)}>
-               {roomNumber}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <div>
+        {/* chatRoomNumbers 배열을 사용하여 채팅방 목록을 표시하는 코드 작성 */}
+        <ul>
+          {users.map((roomNumber, index) => (
+              <li key={index}>
+                <button onClick={() => sendNicknameToServer(roomNumber)}>
+                  {roomNumber}
+                </button>
+              </li>
+          ))}
+        </ul>
+      </div>
   );
 }
 

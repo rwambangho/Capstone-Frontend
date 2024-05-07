@@ -1,47 +1,81 @@
 // Post.js
 import React from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // useNavigate를 import 합니다.
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
+const PostContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border: none;
+    padding: 20px;
+    background-color: #ffffff;
+`;
 
+const PostContent = styled.div`
+    flex: 1;
+    margin-right: 50px;
+`;
+
+const PostDateTime = styled.p`
+    color: #1c5cff;
+    font-size: 14px;
+`;
+
+const PostTitle = styled.h2`
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    font-size: 24px;
+`;
+
+const PostText = styled.p`
+    color: #7d7d7d;
+    font-size: 16px;
+    margin-bottom: 30px;
+`;
+
+const PostMeta = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+`;
+
+const MetaItem = styled.div`
+    color: ${({ color }) => color};
+    font-weight: ${({ fontWeight }) => fontWeight};
+`;
 
 const Post = ({ post }) => {
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옵니다.
-  
+  const navigate = useNavigate();
+
   const sendNicknameToServer = () => {
     const userId = getCookieValue('id');
-    
-
     axios.post('/Chat', {
       userId1: userId,
       userId2: post.nickName
     })
-    .then(response => {
-      navigate(`/chat?userId1=${userId}&userId2=${post.nickName}`); // navigate 함수를 사용하여 페이지를 이동합니다.
-      console.log('Nickname sent to server:', response.data);
-    })
-    .catch(error => {
-      console.error('Error sending nickname to server:', error);
-    });
+        .then(response => {
+          navigate(`/chat?userId1=${userId}&userId2=${post.nickName}`);
+          console.log('Nickname sent to server:', response.data);
+        })
+        .catch(error => {
+          console.error('Error sending nickname to server:', error);
+        });
   };
 
   const navigateToPostDetail = () => {
-    
-    
     axios.put('/community/addClickCount', {
       id: post.id
     })
-    .then(response => {
-      console.log('PUT request successful:', response.data);
-      navigate(`/post/${post.id}`);
-    })
-    .catch(error => {
-      console.error('Error sending PUT request:', error);
-    });
-
-   
-
-
+        .then(response => {
+          console.log('PUT request successful:', response.data);
+          navigate(`/post/${post.id}`);
+        })
+        .catch(error => {
+          console.error('Error sending PUT request:', error);
+        });
   };
 
   function formatDateTime(dateTimeStr) {
@@ -53,41 +87,43 @@ const Post = ({ post }) => {
     const minute = date.getMinutes();
     const second = date.getSeconds();
 
-    const ampm = hour >= 12 ? '오후' : '오전';
+    const ampm = hour >= 12 ? 'PM' : 'AM';
     const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
 
-    const formattedDateTime = `${year}년 ${month}월 ${day}일 ${ampm} ${formattedHour}시 ${minute}분 ${second}초`;
-    return formattedDateTime;
-}
-
+    return `${year}. ${month}. ${day}. ${ampm} ${formattedHour}: ${minute}: ${second}`;
+  }
 
   function getCookieValue(cookieName) {
     const cookies = document.cookie.split('; ');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].split('=');
-      if (cookie[0] === cookieName) {
-        return cookie[1];
+    for (let cookie of cookies) {
+      const [key, value] = cookie.split('=');
+      if (key === cookieName) {
+        return value;
       }
     }
     return null;
   }
 
   return (
-    <div className="post-detail">
-      <h2 onClick={navigateToPostDetail}>{post.title}</h2>
-      <p>{post.content}</p>
-      {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" />}
-      <div className='post-info'>
-      <p className='author-info'> By {post.nickName}</p>
-      <p className='clickCount'>조회 수:{post.clickCount}</p>
-      <p className='likeCount'>좋아요 수:{post.likeCount}</p>
-      <p className='commentCont'>댓글 수:{post.commentSum}</p>
-      <p className='writeTime'> 작성 시간:{formatDateTime(post.time)}</p>
-      
-      </div>
-      <button onClick={sendNicknameToServer}>채팅하기</button>
-     
-    </div>
+      <PostContainer>
+        <PostContent>
+          <PostDateTime>{formatDateTime(post.time)}</PostDateTime>
+          <PostTitle onClick={navigateToPostDetail}>{post.title}</PostTitle>
+          <PostText>{post.content}</PostText>
+          <button onClick={sendNicknameToServer}>채팅</button>
+          <PostMeta>
+            <MetaItem color="#1c5cff" fontWeight="600">
+              <span style={{ marginRight: '10px' }}>hits {post.clickCount}</span>
+              <span style={{ marginRight: '10px' }}>likes {post.likeCount}</span>
+              <span>comments {post.commentSum}</span>
+            </MetaItem>
+            <MetaItem color="#797979" style={{ fontWeight: 'normal' }}>By {post.nickName}</MetaItem>
+          </PostMeta>
+        </PostContent>
+        <div style={{ width: '30%', display: 'flex', alignItems: 'center' }}>
+          {post.image && <img src={post.image} alt="Post" style={{ width: '100%', height: 'auto', borderRadius: '5px' }} />}
+        </div>
+      </PostContainer>
   );
 };
 

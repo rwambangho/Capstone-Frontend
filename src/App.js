@@ -23,6 +23,7 @@ import PostDetail from './community/PostDetail';
 import ChatRoom from './chat/chatRoom';
 import ChatRoomList from './chat/chatRoomList';
 import ChatBot from './chat/ChatBot';
+import BookingDetail from "./booking/BookingDetail";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
             <Route path="/mypage/chatList" element={<ChatList />} />
 
             <Route path="/post/:id" element={<PostDetail />}  />
+            <Route path="/booking/:postId" element={<BookingDetail />} />
             <Route path="/chat" element={<ChatRoom/>}/>
             <Route path="/chatRoomList" element={<ChatRoomList/>}/>
             <Route path="/chatBot" element={<ChatBot/>}/>
