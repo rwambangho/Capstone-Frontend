@@ -72,8 +72,8 @@ function ChatRoom() {
           axios.get(`/chat/history/${chatRoomNumber}`)
           .then(response => {
             const previousMessages = response.data.map(item => {
-              const { message, userDto: { id }, timestamp } = item;
-              return { message, sender: id, timestamp };
+              const { message, userDto: { nickname }, timestamp } = item;
+              return { message, sender: nickname, timestamp };
             });
             setMessages(previousMessages);
           })

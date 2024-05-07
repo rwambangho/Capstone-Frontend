@@ -9,7 +9,7 @@ function ChatRoomList() {
   useEffect(() => {
     
     async function getAllChatRoomNumbers() {
-      const userId = getCookieValue('nickname');
+      const userId = getCookieValue('id');
       console.log(userId);
       try {
         const response = await axios.get('/getAllChatRoomNumber', {
@@ -42,7 +42,7 @@ function ChatRoomList() {
   }
 
   const sendNicknameToServer = (roomNumber) => {
-    const userId = getCookieValue('id');
+    const userId = getCookieValue('nickname');
 
     axios.post('/Chat', {
       userId1: userId,

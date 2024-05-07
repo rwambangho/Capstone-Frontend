@@ -51,7 +51,8 @@ const Post = ({ post }) => {
     const navigate = useNavigate();
 
     const sendNicknameToServer = () => {
-        const userId = getCookieValue('id');
+        const userId = getCookieValue('nickname');
+        const userNickName = getCookieValue('id');
         axios.post('/Chat', {
             userId1: userId,
             userId2: post.nickName
