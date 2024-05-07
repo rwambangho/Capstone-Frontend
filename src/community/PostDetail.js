@@ -1,40 +1,241 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom'; // useParams import 추가
+import { useParams } from 'react-router-dom';
 import Navbar from '../component/Navbar';
 import CommunitySidebar from '../component/CommunitySidebar';
-import '../css/community/Community.css';
+import styled from 'styled-components';
+import ChatBot from '../chat/ChatBot';
+import { useNavigate } from 'react-router-dom';
+
+// Styled components 정의
+const PageContainer = styled.div`
+  .post-detail {
+    margin-bottom: 20px;
+  }
+
+  .post-detail-header {
+    margin-bottom: 20px;
+  }
+
+  .post-detail-header p {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #1c5cff;
+  }
+
+  .post-detail-header h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+
+  .post-detail-header .info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .stats span {
+    margin-right: 20px;
+    font-weight: bold;
+  }
+  
+  .info-container .stats {
+    font-size: 0.9rem;
+    color: #1c5cff;
+    margin-right: 15px;
+  }
+
+  .post-detail-header .author-info {
+    margin-bottom: 40px;
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  .author-info {
+    font-weight: 500;
+  }
+
+  .post-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .button-container button {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+  }
+
+  .like-button {
+    background-color: #007bff;
+  }
+
+  .comment-button {
+    background-color: #28a745;
+  }
+
+  .comment-section {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .comment-container {
+    margin-bottom: 20px;
+  }
+
+  .comment {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .comment p {
+    margin-left: 10px;
+    font-weight: 600; /* 모두 굵게 */
+    color: #000000; /* 댓글 작성자의 이름과 댓글 내용의 색상 */
+    font-size: 0.9rem; /* 기본 폰트 크기 */
+  }
+
+  .comment p:nth-child(3) {
+    color: #797979; /* 작성날짜의 색상 */
+  }
+
+  .comment-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .comment-form input[type='text'] {
+    padding: 10px;
+    font-size: 0.9rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    height: auto;
+    flex-grow: 1;
+  }
+
+  .comment-form button[type='submit'] {
+    padding: 10px 10px;
+    font-size: 0.9rem;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    height: auto;
+    background-color: #007bff;
+    cursor: pointer;
+    width: auto;
+  }
+
+  .sidebar-container {
+    flex: 0 0 17%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 20px;
+  }
+  
+  
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .page-number {
+    cursor: pointer;
+    margin: 0 8px;
+    color: ${props => props.active ? '#1c5cff' : '#000'};
+    text-decoration: ${props => props.active ? 'underline' : 'none'};
+  }
+`;
+
+const SidebarContainer = styled.div`
+  flex: 0 0 17%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 20px;
+
+  /* 버튼과 ChatBot 사이의 간격을 조절하는 스타일 */
+  & > *:not(:last-child) {
+    margin-bottom: 10px;
+  }
+`;
+
+// 버튼 스타일드 컴포넌트 정의
+const WritePostButton = styled.button`
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto;
+`;
+
+const PageNumber = styled.span`
+  cursor: pointer;
+  margin: 0 8px;
+  color: ${props => props.active ? '#1c5cff' : '#000'};
+  text-decoration: ${props => props.active ? 'underline' : 'none'};
+`;
+
+
+
+
+
 
 const PostDetail = () => {
   const [post, setPost] = useState(null);
-  const { id } = useParams(); // useParams 훅 사용하여 포스트 ID 가져오기
+  const { id } = useParams();
   const [commentInput, setCommentInput] = useState('');
-  const [liked, setLiked] = useState('false'); 
-  const userId = getCookieValue('id');
+  const [liked, setLiked] = useState(false);
+  const userId = getCookieValue('nickname');
   const currentTime = new Date();
+  const [showComments, setShowComments] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [commentsPerPage] = useState(5);
+  const [showPagination, setShowPagination] = useState(false); // 페이지네이션 표시 여부 상태 추가
+  const navigate = useNavigate(); // useNavigate 추가
 
   useEffect(() => {
-    // useParams로 가져온 포스트의 ID를 사용하여 서버에서 해당 포스트를 가져옵니다.
-   
     axios.get(`/community/posts/read/${id}`)
-      .then(response => {
-        
-        console.log(response.data.likesDto);
-        const likedByUser = response.data.likesDto.find(like => like.userId === userId);
-        setLiked(likedByUser ? likedByUser.liked : false);
-
-        
-        setPost(response.data);
-        
-      })
-      .catch(error => {
-        console.error('Error fetching post:', error);
-      });
-  }, [id]); // id가 변경될 때마다 useEffect가 실행되도록 설정
+        .then(response => {
+          const likedByUser = response.data.likesDto.find(like => like.userId === userId);
+          setLiked(likedByUser ? likedByUser.liked : false);
+          setPost(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching post:', error);
+        });
+  }, [id]);
 
   if (!post) {
     return <div>Loading...</div>;
   }
+
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = post.commentsDto.slice(indexOfFirstComment, indexOfLastComment);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const handleInputChange = (e) => {
     setCommentInput(e.target.value);
@@ -50,26 +251,41 @@ const PostDetail = () => {
       });
       const updatedPostResponse = await axios.get(`/community/posts/read/${id}`);
       setPost(updatedPostResponse.data);
-      setCommentInput(''); // 댓글 입력창 비우
+      setCommentInput('');
     } catch (error) {
       console.error('Error posting comment:', error);
     }
   };
 
-
   const toggleLike = async () => {
     try {
       if (liked) {
-        // 좋아요 취소 로직
         await axios.put(`/community/subLike/${id}`);
+        setPost(prevPost => ({
+          ...prevPost,
+          likeCount: prevPost.likeCount - 1
+        }));
       } else {
-        // 좋아요 로직
         await axios.put(`/community/addLike/${id}`);
+        setPost(prevPost => ({
+          ...prevPost,
+          likeCount: prevPost.likeCount + 1
+        }));
       }
-      setLiked(!liked); // 좋아요 상태 토글
+      setLiked(!liked);
     } catch (error) {
       console.error('Error toggling like:', error);
     }
+  };
+
+  const deletePost= async()=>{
+    try{
+      await axios.delete(`/community/${post.id}`)
+     }
+     catch(error){
+      console.error("삭제 실패");
+     }
+
   };
 
   function getCookieValue(cookieName) {
@@ -82,6 +298,7 @@ const PostDetail = () => {
     }
     return null;
   }
+
   function formatDateTime(dateTimeStr) {
     const date = new Date(dateTimeStr);
     const year = date.getFullYear();
@@ -90,60 +307,96 @@ const PostDetail = () => {
     const hour = date.getHours();
     const minute = date.getMinutes();
     const second = date.getSeconds();
-
-    const ampm = hour >= 12 ? '오후' : '오전';
+    const ampm = hour >= 12 ? 'PM' : 'AM';
     const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-
-    const formattedDateTime = `${year}년 ${month}월 ${day}일 ${ampm} ${formattedHour}시 ${minute}분 ${second}초`;
+    const formattedDateTime = `${year}. ${month}. ${day}. ${ampm} ${formattedHour}: ${minute}: ${second}`;
     return formattedDateTime;
-}
+  }
 
   return (
-    <div className="page-container">
-      <Navbar />
-      <div className="main-content">
-      <CommunitySidebar />
-    <div className="content-form-container">
-    <div className="post-detail">
-      <h2>{post.title}</h2>
-      <div className='postDetail-info'>
-      <p className='author-info'> By {post.nickName}</p>
-      <p className='clickCount'> 조회 수:{post.clickCount}</p>
-      <p className='likeCount'>좋아요 수:{post.likeCount}</p>
-      <p className='writeTime'>작성시간:{formatDateTime(post.time)}</p>
-      </div>
-     
-      {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" />}
+      <PageContainer>
+        <Navbar />
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
+          <CommunitySidebar />
+          <div style={{ flex: '1', backgroundColor: '#ffffff', padding: '60px' }}>
+            <div className="post-detail">
+              <div className="post-detail-header">
+                <p>{formatDateTime(post.time)}</p>
+                <h2>{post.title}</h2>
+                <button onClick={deletePost}>삭제</button>
+                <div className="info-container">
+                  <div className="stats">
+                    <span>hits {post.clickCount}</span>
+                    <span>likes {post.likeCount}</span>
+                    <span>comments {post.commentsDto.length}</span>
+                  </div>
+                  <p className='author-info'> By {post.nickName}</p>
+                </div>
+              </div>
+              {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
+              <p className="post-content">{post.content}</p>
+              <div className="button-container">
+                <button className={`like-button ${liked ? 'liked' : ''}`} onClick={toggleLike}>
+                  {liked ? 'Likes ♥' : 'Likes ♡'}
+                </button>
+                <button className='comment-button' onClick={() => {
+                  setShowComments(!showComments);
+                  setShowPagination(!showComments); // 댓글 보기 버튼을 누를 때 페이지네이션 상태를 댓글 보기 상태의 반대로 설정
+                }}>
+                  {showComments ? 'Comments ▼' : 'Comments ▲'}
+                </button>
+              </div>
+              {showComments && (
+                  <div className='comment-section'>
+                    <div className='comment-container'>
+                      {currentComments.length > 0 ? (
+                          currentComments.map((comment, index) => (
+                              <div className='comment' key={index}>
+                                <p>{comment.nickName}</p>
+                                <p>{comment.comment}</p>
+                                <p>{formatDateTime(comment.time)}</p>
+                              </div>
+                          ))
+                      ) : (
+                          <p>댓글이 없습니다.</p>
+                      )}
+                    </div>
+                    <form onSubmit={handleSubmit} className='comment-form'>
+                      <input
+                          type="text"
+                          placeholder="Enter your comment"
+                          value={commentInput}
+                          onChange={handleInputChange}
+                      />
+                      <button type="submit">register</button>
+                    </form>
+                  </div>
+              )}
+              {showPagination && (
+                  <div className='pagination-container'>
+                    {[...Array(Math.ceil(post.commentsDto.length / commentsPerPage)).keys()].map(number => (
+                        <PageNumber
+                            key={number}
+                            active={currentPage === number + 1}
+                            onClick={() => paginate(number + 1)}
+                        >
+                          {number + 1}
+                        </PageNumber>
+                    ))}
+                  </div>
+              )}
+            </div>
+          </div>
+          <SidebarContainer>
+            <WritePostButton onClick={() => navigate('/registercomform')}>
+              Write a Post
+            </WritePostButton>
+            <ChatBot />
+          </SidebarContainer>
+        </div>
+      </PageContainer>
 
-      <p>{post.content}</p>
-      <div className='comment-container'>
-      {post.commentsDto && post.commentsDto.map(comment => (
-    <div className='comment' key={comment.id}>
-      <p>{comment.nickName}</p>
-      <p>{comment.comment}</p>
-      <p>{formatDateTime(comment.time)}</p>
-      </div>
-    ))}
-    </div>
-
-       <button className='LikeButton' onClick={toggleLike}>
-                {liked ? '좋아요 취소' : '좋아요'}
-              </button>
-
-    <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="댓글을 입력하세요"
-          value={commentInput}
-          onChange={handleInputChange}
-        />
-        <button type="submit">댓글 작성</button>
-      </form>
-    </div>
-    </div>
-    </div>
-    </div>
   );
-};
+}
 
 export default PostDetail;

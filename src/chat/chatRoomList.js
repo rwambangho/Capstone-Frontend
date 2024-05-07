@@ -26,6 +26,7 @@ function ChatRoomList() {
 
     getAllChatRoomNumbers();
 
+ 
 
   }, []);
 
@@ -42,7 +43,7 @@ function ChatRoomList() {
   }
 
   const sendNicknameToServer = (roomNumber) => {
-    const userId = getCookieValue('id');
+    const userId = getCookieValue('nickname');
 
     axios.post('/Chat', {
       userId1: userId,

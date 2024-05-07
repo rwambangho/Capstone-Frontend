@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import '../css/SignUp.css';
-import chairImage from '../../src/image/chair.PNG';
+
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -25,6 +25,7 @@ const SignUp = () => {
     setFormData({
       ...formData,
       [name]: value
+      
     });
   };
 
@@ -37,7 +38,7 @@ const SignUp = () => {
 
    const sendVerificationCode = async () => {
      try {
-       const response = await axios.post('/user/sendSMS', { phoneNumber: formData.phoneNumber });
+       await axios.post('/user/sendSMS', { phoneNumber: formData.phoneNumber });
        alert('검증 코드가 발송되었습니다!');
      } catch (error) {
        console.error('검증 코드 발송 오류:', error);
@@ -51,7 +52,9 @@ const SignUp = () => {
          verificationCode: formData.verificationCode,
        });
        if (response.data) {
-         
+        setFormData({
+          ...formData,
+          isVerified: true});
          alert('전화번호가 검증되었습니다!');
        } else {
          alert('검증 실패. 코드를 확인하고 다시 시도해주세요.');
@@ -65,6 +68,10 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
 
+    if (!formData.isVerified) {
+      alert('전화번호를 먼저 검증해주세요!');
+      return;
+    }
     try {
       const response = await axios.post('/user/signUp', formData);
 
@@ -78,9 +85,7 @@ const SignUp = () => {
 
   return (
     <div className="signup-container">
-      <div className="signup-image">
-        <img src={chairImage} alt="chair" className="chair-image" />
-      </div>
+      
       <div className="signup-form">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
@@ -120,12 +125,9 @@ const SignUp = () => {
             <button type="button" onClick={verifyCode}>Verify Code</button>
           </div>
           <button type="submit">Sign Up</button>
-          <div className="separator">or</div>
-          <button type="button" className="kakao-login">카카오톡</button>
+         
         </form>
-        <div className="signup-link">
-          Already have an account? <Link to="/login">Log In</Link>
-        </div>
+        
       </div>
     </div>
   );

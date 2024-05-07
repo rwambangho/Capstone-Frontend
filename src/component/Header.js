@@ -1,46 +1,75 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom'; 
+// Header.js
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import LoginModal from '../main/loginModal';
 import '../css/Header.css';
 
-class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      scrolled: false // 스크롤 여부를 나타내는 상태
-    };
+const Header = () => {
+  const [userId, setUserId] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userIdFromCookie = getCookieValue("nickname");
+    if (userIdFromCookie) {
+      setUserId(userIdFromCookie);
+    }
+  }, []); // 빈 배열을 두 번째 인자로 전달하여 컴포넌트가 마운트될 때 한 번만 실행되도록 함
+
+  function getCookieValue(cookieName) {
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].split('=');
+      if (cookie[0] === cookieName) {
+        return cookie[1];
+      }
+    }
+    return null;
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll = () => {
-    const scrollTop = window.scrollY;
-    const isScrolled = scrollTop > 0;
-    this.setState({ scrolled: isScrolled });
+  const handleLogout = () => {
+    fetch('/user/logout', {
+      method: 'GET',
+      credentials: 'same-origin',
+    })
+      .then(response => {
+        if (response.ok) {
+          document.cookie = "nickname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          setUserId(null);
+          navigate('/');
+        } else {
+          throw new Error('로그아웃에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('로그아웃 오류:', error);
+      });
   };
 
-  //ToCar 제목 클릭 시 홈으로 이동하는 함수
-  handleToCarClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // 페이지 맨 위로 스크롤
+  const openModal = () => {
+    setModalIsOpen(true);
   };
 
-  render() {
-    const { scrolled } = this.state;
-    return (
-      <header className={`Header ${scrolled ? 'scrolled' : ''}`}>
-        {/* Link 컴포넌트를 사용하여 홈으로 이동 */}
-        <Link to="/" className="ToCar-link" onClick={this.handleToCarClick}>
-          <h1>ToCar</h1>
-        </Link>
-        <Link to="/login" className="Header-button" style={{ textDecoration: 'none' }}>LOGIN / JOIN</Link>
-      </header>
-    );
-  }
-}
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  return (
+    <header>
+      <Link to="/" className="ToCar-link">
+        <h1>ToCar</h1>
+      </Link>
+      {userId ? (
+        <div className="Header-userInfo">
+          <span className="Header-userId">{userId}</span>
+          <button onClick={handleLogout} className="Header-button">로그아웃</button>
+        </div>
+      ) : (
+        <button onClick={openModal} className="Header-button">로그인 / 회원가입</button> 
+      )}
+      <LoginModal isOpen={modalIsOpen} closeModal={closeModal} />
+    </header>
+  );
+};
 
 export default Header;
