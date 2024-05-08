@@ -13,9 +13,9 @@
   .chat-button svg {
     width: 32px; /* 아이콘 크기 조정 */
     height: 32px; /* 아이콘 크기 조정 */
-  }
+  } 
   
-  /* 버튼에 호버 효과 추가 */
+  /* 버튼에 호버n 효과 추가 */
   .chat-button:hover {
     opacity: 0.6;
   }

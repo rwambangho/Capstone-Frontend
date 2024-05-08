@@ -32,7 +32,7 @@ function Navbar() {
       <div className="logo" onClick={handleLogoClick}>ToCar</div>
       <div className="nav-links">
         <a href="/carpool-booking" className={`nav-item ${currentPath === '/carpool-booking' ? 'active' : ''}`}>Carpool Booking</a>
-        <a href="/carpool-recruitment" className={`nav-item ${currentPath === '/carpool-recruitment' ? 'active' : ''}`}>Carpool Recruitment</a>
+        <a href="/carpool-recruitment-passenger" className={`nav-item ${currentPath === '/carpool-recruitment' ? 'active' : ''}`}>Carpool Recruitment</a>
         <a href="/community" className={`nav-item ${currentPath === '/community' ? 'active' : ''}`}>Community</a>
         
       </div>

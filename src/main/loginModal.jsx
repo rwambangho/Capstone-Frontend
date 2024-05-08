@@ -30,6 +30,7 @@ const LoginModal = ({ isOpen, closeModal }) => {
     }
   };
 
+  
   // SignUp 모달로 전환하는 함수
   const switchToSignUp = () => {
     closeModal(); // Login 모달 닫기

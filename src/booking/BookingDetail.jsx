@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
@@ -7,6 +8,38 @@ import { useParams } from 'react-router-dom';
 function BookingDetail() {
     const [post, setPost] = useState(null);
     const { postId } = useParams();
+    const [nickname]=useState(getCookieValue('nickname'));
+    const navigate=useNavigate();
+
+   
+    
+    const sendNicknameToServer = () => {
+        axios.post('/Chat', {
+            userId1: nickname,
+            userId2: post.nickname
+        })
+            .then(response => {
+                navigate(`/chat?userId1=${nickname}&userId2=${post.nickname}`);
+                console.log('Nickname sent to server:', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending nickname to server:', error);
+            });
+    };
+
+
+    function getCookieValue(cookieName) {
+        const cookies = document.cookie.split('; ');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].split('=');
+          if (cookie[0] === cookieName) {
+            return cookie[1];
+          }
+        }
+        return null;
+      }
+
+  
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -21,6 +54,55 @@ function BookingDetail() {
 
         fetchPost();
     }, [postId]);
+
+
+    const handleBooking = async () => {
+        try {
+            
+            const response = await axios.post('/recruits/booking', null, {
+                params: {
+                    idxNum: postId,
+                    nickname: nickname
+                }
+            });
+            if(response.data){
+           alert("success booking");
+           window.location.reload();
+            }
+            else
+            {
+                alert("이미 예약했습니다");
+            }
+            // 여기에 예약이 성공했을 때 실행할 작업을 추가할 수 있습니다.
+        } catch (error) {
+            console.log(nickname);
+            console.error('Error booking:', error);
+        }
+    };
+    const handleAddBooking = async (user) => {
+        const confirmBooking = window.confirm("정말 예약을 완료하시겠습니까?");
+        if (confirmBooking) {
+            try {
+                const response = await axios.post('/recruits/addBooking', null, {
+                    params: {
+                        idxNum: postId,
+                        nickname: user
+                    }
+                });
+                if(response.data){
+                    alert("예약이 확정되었습니다.");
+                }
+                else{
+                    alert("이미 예약이 가득찼습니다,");
+                }
+                console.log(response.data);
+                window.location.reload()
+                // 여기에 예약이 성공했을 때 실행할 작업을 추가할 수 있습니다.
+            } catch (error) {
+                console.error('Error booking:', error);
+            }
+        }
+    };
 
     if (!post) {
         return <div>Loading...</div>;
@@ -39,15 +121,17 @@ function BookingDetail() {
         <div className="page-container">
             <Navbar />
             <div className="main-content">
-                <Sidebar />
+        
+                <Sidebar/>
+               
                 <div className="right-content">
                     <div className="outer-post-card">
                         <div className="post-header">
                             <div className="post-user-info">
-                                <span className="user-name">{post.username}</span>
+                                <span className="user-name">{post.nickname}</span>
                                 <span className="post-date">{displayDate}</span>
                             </div>
-                            <div className="post-distance">{post.distance}</div>
+                            <div className="post-distance">{post.distance}km</div>
                         </div>
                         <div className="inner-post-card">
                             <div className="location-container">
@@ -84,12 +168,38 @@ function BookingDetail() {
                                 {new Date(post.createdAt).toLocaleString()}
                             </div>
                             <div className="comment-section">
-                                <div className="comment-header">{post.username}'s Comment</div>
+                                <div className="comment-header">{post.nickname}'s Comment</div>
                                 <div className="comment-body">{post.message}</div>
                             </div>
+                            {post.driverPost && (
+    <div>
+          현재 인원:{post.participant}/{post.maxParticipant}
+    </div>
+)}
+                            <div className="user-list">
+                              현재 예약 인원:
+                            {post.nickname === nickname && post.users && post.users.map((user, index) => (
+                            <button key={index} className="user-button" type="button" onClick={() => handleAddBooking(user)}>{user}</button>
+                        ))}
+                        </div>
+                                <div>
+                                {post.nickname === nickname && post.users && post.bookingUsers.map((user, index) => (
+                                        <span key={index} className="user-text">{user}, </span>
+                                     
+                        ))}
+                    
+                                </div>
+                                
+
+                            
+
+
                                 <div className="comment-actions">
-                                    <button className="btn-comment-cancel">Booking</button>
-                                    <button className="btn-comment-confirm">Chatting</button>
+                                {post.driverPost && (
+                        <button className="btn-comment-cancel" type="button" onClick={handleBooking}>Booking</button>
+                        )}
+                                    <button className="btn-comment-confirm" onClick={sendNicknameToServer}>Chatting</button>
+
                                 </div>
 
 
@@ -101,29 +211,34 @@ function BookingDetail() {
 
     <style>
         {`                  
-                  .main-content {
-                  flex-grow: 1;
-                  display: flex;
-                  padding: 20px;
-                  }
-
-                  .right-content {
-                    flex-grow: 1;
-                    padding: 20px;
-                    background-color: #f5f5f5;
-                  }
-                  
-                  .outer-post-card {
-                    background-color: #fff;
-                    border-radius: 8px;
-                    width: 100%;
-                    height: 700px;
-                    max-width: 800px; /* 적절한 최대 너비 설정 */
-                    margin-top:50px;
-                    margin-bottom: 20px;
-                    margin-left: 300px;
-                    padding: 20px;
-                  }
+             /* Adjustments to the Outer Post Card */
+             .outer-post-card {
+                 background-color: #fff;
+                 border-radius: 8px;
+                 width: 100%;
+                 max-width: 800px;
+                 margin-top: 50px;
+                 margin-bottom: 20px;
+                 padding: 20px;
+                 margin-left: auto; /* Center the card horizontally */
+                 margin-right: auto; /* Center the card horizontally */
+             }
+             
+             /* Adjustments to the Main Content */
+             .main-content {
+                 display: flex;
+                 justify-content: center; /* Center the content horizontally */
+                 padding: 20px;
+             }
+             
+             /* Adjustments to the Right Content */
+             .right-content {
+                 flex-grow: 1;
+                 padding: 20px;
+                 background-color: #f5f5f5;
+                 max-width: 800px; /* Limit the width of the right content */
+             }
+             
 
                   .post-header {
                     display: flex;
@@ -356,7 +471,7 @@ function BookingDetail() {
                     .btn-comment-confirm {
                       background-color: blue; /* 확인 버튼 색상 */
                     }
-                  
+                    
                   
                 `}
             </style>

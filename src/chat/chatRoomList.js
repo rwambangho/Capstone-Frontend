@@ -9,7 +9,7 @@ function ChatRoomList() {
   useEffect(() => {
 
     async function getAllChatRoomNumbers() {
-      const userId = getCookieValue('nickname');
+      const userId = getCookieValue('id');
       console.log(userId);
       try {
         const response = await axios.get('/getAllChatRoomNumber', {

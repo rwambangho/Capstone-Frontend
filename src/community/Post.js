@@ -1,4 +1,3 @@
-// Post.js
 import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -48,11 +47,36 @@ const MetaItem = styled.div`
 `;
 
 const Post = ({ post }) => {
-
   const navigate = useNavigate();
 
+  function formatDateTime(dateTimeStr) {
+    const date = new Date(dateTimeStr);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+
+    return `${year}. ${month}. ${day}. ${ampm} ${formattedHour}: ${minute}: ${second}`;
+  }
+
+  function getCookieValue(cookieName) {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+      const [key, value] = cookie.split('=');
+      if (key === cookieName) {
+        return value;
+      }
+    }
+    return null;
+  }
+
   const sendNicknameToServer = () => {
-    const userId = getCookieValue('id');
+    const userId = getCookieValue('nickname');
     axios.post('/Chat', {
       userId1: userId,
       userId2: post.nickName
@@ -79,77 +103,6 @@ const Post = ({ post }) => {
         });
   };
 
-  function formatDateTime(dateTimeStr) {
-    const date = new Date(dateTimeStr);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
-
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-
-    return `${year}. ${month}. ${day}. ${ampm} ${formattedHour}: ${minute}: ${second}`;
-  }
-
-  function getCookieValue(cookieName) {
-    const cookies = document.cookie.split('; ');
-    for (let cookie of cookies) {
-      const [key, value] = cookie.split('=');
-      if (key === cookieName) {
-        return value;
-      }
-
-    const navigate = useNavigate();
-
-    const sendNicknameToServer = () => {
-        const userId = getCookieValue('nickname');
-        const userNickName = getCookieValue('id');
-        axios.post('/Chat', {
-            userId1: userId,
-            userId2: post.nickName
-        })
-            .then(response => {
-                navigate(`/chat?userId1=${userId}&userId2=${post.nickName}`);
-                console.log('Nickname sent to server:', response.data);
-            })
-            .catch(error => {
-                console.error('Error sending nickname to server:', error);
-            });
-    };
-
-    const navigateToPostDetail = () => {
-        axios.put('/community/addClickCount', {
-            id: post.id
-        })
-            .then(response => {
-                console.log('PUT request successful:', response.data);
-                navigate(`/post/${post.id}`);
-            })
-            .catch(error => {
-                console.error('Error sending PUT request:', error);
-            });
-    };
-
-    function formatDateTime(dateTimeStr) {
-        const date = new Date(dateTimeStr);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const hour = date.getHours();
-        const minute = date.getMinutes();
-        const second = date.getSeconds();
-
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-
-        return `${year}. ${month}. ${day}. ${ampm} ${formattedHour}: ${minute}: ${second}`;
-
-    }
-
-
   return (
       <PostContainer>
         <PostContent>
@@ -171,20 +124,6 @@ const Post = ({ post }) => {
         </div>
       </PostContainer>
   );
-
-    function getCookieValue(cookieName) {
-        const cookies = document.cookie.split('; ');
-        for (let cookie of cookies) {
-            const [key, value] = cookie.split('=');
-            if (key === cookieName) {
-                return value;
-            }
-        }
-        return null;
-    }
-
-
-
-}
+};
 
 export default Post;

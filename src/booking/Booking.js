@@ -9,18 +9,34 @@ function Booking() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get('/recruits');
-        setPosts(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
+    
 
-    fetchPosts();
+    fetchDriverPosts();
   }, []);
+
+
+  const fetchDriverPosts = async () => {
+    try {
+      const response = await axios.get('/recruits/driver');
+      setPosts(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
+  const fetchPessengerPosts = async () => {
+    try {
+      const response = await axios.get('/recruits/passenger');
+      setPosts(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
+  
+
 
   // 포스트 클릭 시 상세 페이지로 이동
   const navigateToBookingDetail = (postId) => {
@@ -36,8 +52,8 @@ function Booking() {
             <div className="post-form-header">
               <h1>Choose the right post for you!</h1>
               <div className="post-buttons">
-                <button className="passenger-post-btn">Passenger's post</button>
-                <button className="driver-post-btn">Driver's post</button>
+                <button className="passenger-post-btn" onClick={fetchPessengerPosts}>Passenger's post</button>
+                <button className="driver-post-btn" onClick={fetchDriverPosts}>Driver's post</button>
               </div>
               <div className="search-section">
                 <input type="text" className="search-input" placeholder="Search for regions and keywords..." />
@@ -66,7 +82,7 @@ function Booking() {
                     <div key={index} className="outer-post-card" onClick={() => navigateToBookingDetail(post.idxNum)}>
                       <div className="post-header">
                         <div className="post-user-info">
-                          <span className="user-name">{post.username}</span>
+                          <span className="user-name">{post.nickname}</span>
                           <span className="post-date">{displayDate}</span>
                         </div>
                         <div className="post-distance">{post.distance}</div>
@@ -107,6 +123,11 @@ function Booking() {
                         </div>
                       </div>
                       <div className="post-actions"></div>
+                      {post.driverPost && (
+    <div>
+        {post.participant}/{post.maxParticipant}
+    </div>
+)}
                     </div>
                 );
               })}
