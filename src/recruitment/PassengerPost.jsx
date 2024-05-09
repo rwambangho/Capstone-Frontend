@@ -15,17 +15,33 @@ function PassengerPost() {
   const [time, setTime] = useState('');
   const [keywords, setKeywords] = useState([]);
   const [message, setMessage] = useState('');
-  const [nickname, setNickname] = useState(getCookieValue('nickname'));
-  const [driverPost]=useState(false);
+  const [nickname, setnickname] = useState(getCookieValue('id') || 'User');
+  const [isDriverPost]=useState(false);
   const [departurePlaces, setDeparturePlaces] = useState([]);
   const [arrivalPlaces, setArrivalPlaces] = useState([]);
   const [selectedDeparturePlace, setSelectedDeparturePlace] = useState({ name: "", address: "", x: "", y: "" });
   const [selectedArrivalPlace, setSelectedArrivalPlace] = useState({ name: "", address: "", x: "", y: "" });
+  const [avgStar, setAvgStar] = useState(0);
 
     const ps = new kakao.maps.services.Places();
 
 
-
+    useEffect(() => {
+      const fetchUserRating = async () => {
+        const userId = getCookieValue('id');
+        if (userId) {
+          try {
+            const response = await axios.get(`/user/getUser/${userId}`);
+            setnickname(response.data.nickname);
+            setAvgStar(response.data.avgStar);
+          } catch (error) {
+            console.error('Failed to fetch user rating:', error);
+          }
+        }
+      };
+  
+      fetchUserRating();
+    }, []);
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,9 +53,10 @@ function PassengerPost() {
         departure: departure,
         destination: destination,
         departureDate: date,
+        isDriverPost: false,
         keywords: keywords,
         message : message,
-        driverPost:driverPost,
+        avgStar : avgStar,
         departureX: selectedDeparturePlace.x,
         departureY: selectedDeparturePlace.y,
         arrivalX: selectedArrivalPlace.x,
