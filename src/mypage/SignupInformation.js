@@ -8,6 +8,8 @@ function SignupInformation() {
     id: '',
     phoneNumber: '',
     nickname: '',
+    birthdate: '',
+    avgStar: 0.0,
     profileImage: null // 프로필 이미지 추가
   });
 
@@ -120,8 +122,16 @@ function SignupInformation() {
               <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
             </div>
             <div className="form-group">
+                <label>Bithdate</label>
+                <input type="text" name="birthdate" value={user.birthdate} onChange={handleChange} />
+            </div>
+            <div className="form-group">
               <label>Nickname</label>
               <input type="text" name="nickname" value={user.nickname} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+                <label>Star Rating</label>
+                <input type="text" name="avgStar" value={user.avgStar} readOnly />
             </div>
             <div className="form-actions">
               <button type="submit">Save</button>
@@ -129,9 +139,10 @@ function SignupInformation() {
             </div>
           </form>
         </div>
-      </div>
     </div>
-  );
+
+</div>
+);
 }
 
 export default SignupInformation;

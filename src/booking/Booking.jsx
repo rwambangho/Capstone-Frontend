@@ -4,26 +4,49 @@ import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import { useNavigate } from 'react-router-dom';
 
+const StarRating = ({ rating }) => {
+  const totalStars = 5;
+  let stars = [];
+  for (let i = 1; i <= totalStars; i++) {
+      stars.push(
+          <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
+      );
+  }
+  return <div>{stars}</div>;
+};
 function Booking() {
   const [posts, setPosts] = useState([]);
   const [showRegions, setShowRegions] = useState(false);  // 드롭다운 리스트 표시 상태
   const navigate = useNavigate();
   const dropdownRef = useRef(null); // useRef로 참조 생성
-
+  
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get('/recruits');
-        setPosts(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
-
-    fetchPosts();
+    
+    fetchPassengerPosts();
+    fetchDriverPosts();
   }, []);
 
+
+  const fetchDriverPosts = async () => {
+    try {
+      const response = await axios.get('/recruits/driver');
+      setPosts(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
+  const fetchPassengerPosts = async () => {
+    try {
+      const response = await axios.get('/recruits/passenger');
+      setPosts(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+  
   useEffect(() => {
     // 외부 클릭 감지를 위한 함수
     const handleClickOutside = (event) => {
@@ -38,11 +61,11 @@ function Booking() {
     };
   }, [dropdownRef]);
 
+
   // 포스트 클릭 시 상세 페이지로 이동
   const navigateToBookingDetail = (postId) => {
     navigate(`/booking/${postId}`); // 해당 포스트의 ID를 파라미터로 전달하여 상세 페이지로 이동
   };
-
   // 'entire' 버튼을 클릭할 때 실행될 함수
   const toggleRegionDropdown = () => {
     setShowRegions(!showRegions);  // 상태 토글
@@ -57,14 +80,14 @@ function Booking() {
             <div className="post-form-header">
               <h1>Choose the right post for you!</h1>
               <div className="post-buttons">
-                <button className="passenger-post-btn">Passenger's post</button>
-                <button className="driver-post-btn">Driver's post</button>
+                <button className="passenger-post-btn" onClick={fetchPassengerPosts}>Passenger's post</button>
+                <button className="driver-post-btn" onClick={fetchDriverPosts}>Driver's post</button>
               </div>
               <div className="search-section">
                 <input type="text" className="search-input" placeholder="Search for regions and keywords..." />
               </div>
               <div className="filter-section">
-                <button className="filter-btn active" onClick={toggleRegionDropdown}>entire</button>
+              <button className="filter-btn active" onClick={toggleRegionDropdown}>entire</button>
                 {showRegions && (
                     <div className="region-dropdown" ref={dropdownRef}>
                       <div className="region-item">Seoul</div>
@@ -97,9 +120,11 @@ function Booking() {
                     <div key={index} className="outer-post-card" onClick={() => navigateToBookingDetail(post.idxNum)}>
                       <div className="post-header">
                         <div className="post-user-info">
-                          <span className="user-name">{post.username}</span>
+                          <span className="nick-name">{post.nickname}</span>
+                          <StarRating rating={post.avgStar} />
                           <span className="post-date">{displayDate}</span>
                         </div>
+                        
                         <div className="post-distance">{post.distance}</div>
                       </div>
                       <div className="inner-post-card">
@@ -138,6 +163,11 @@ function Booking() {
                         </div>
                       </div>
                       <div className="post-actions"></div>
+                      {post.driverPost && (
+    <div>
+        {post.participant}/{post.maxParticipant}
+    </div>
+)}
                     </div>
                 );
               })}
@@ -190,7 +220,8 @@ function Booking() {
             border-radius: 10px;
             margin-right: -2px; 
           }
-          
+
+           
           .region-dropdown {
           background-color: white;
           border: 1px solid #ccc;
@@ -214,8 +245,6 @@ function Booking() {
       background-color: #f0f0f0;
     }
 
-          
-          
 
           .filter-buttons {
             display: flex;
