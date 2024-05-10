@@ -190,7 +190,9 @@ function BookingDetail() {
                                     <button className="btn-comment-cancel" type="button"
                                             onClick={handleBooking}>Booking</button>
                                 )}
-                                <button className="btn-comment-confirm" onClick={sendNicknameToServer}>Chatting</button>
+                                 {post.nickname !== nickname && (
+                                    <button className="btn-comment-confirm" onClick={sendNicknameToServer}>Chatting</button>
+                                )}
                             </div>
                         </div>
                     </div>

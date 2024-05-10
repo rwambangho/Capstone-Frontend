@@ -39,7 +39,7 @@ function MyPageMain() {
                     <StyledLink to="/mypage/carpoolRecords">Recent carpooling records</StyledLink><br />
                     {/*<StyledLink to="/mypage/myPosts">My Post list</StyledLink><br />*/}
                     {/*<StyledLink to="/mypage/myComments">My Comment list</StyledLink><br />*/}
-                    <StyledLink to="/chatRoomList">Chatting list</StyledLink>
+                    <StyledLink to="/chatPage">Chatting list</StyledLink>
                 </StyledLinkWrapper>
             </div>
             <EllipseIcon src={EllipseSVG} alt="Ellipse Icon" />

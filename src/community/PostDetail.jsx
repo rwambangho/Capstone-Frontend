@@ -359,7 +359,7 @@ const PostDetail = () => {
               <div className="post-detail-header">
                 <p>{formatDateTime(post.time)}</p>
                 <h2>{post.title}</h2>
-                <button onClick={deletePost}>삭제</button>
+                {post.nickName === userId && <button onClick={deletePost}>삭제</button>}
                 <div className="info-container">
                   <div className="stats">
                     <span>hits {post.clickCount}</span>
