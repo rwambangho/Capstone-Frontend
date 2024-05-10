@@ -1,5 +1,4 @@
-//BookingDetail.jsx
-
+//BookingDetail
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,10 +9,8 @@ import { useParams } from 'react-router-dom';
 function BookingDetail() {
     const [post, setPost] = useState(null);
     const { postId } = useParams();
-    const [nickname]=useState(getCookieValue('nickname'));
-    const navigate=useNavigate();
-
-
+    const [nickname] = useState(getCookieValue('nickname'));
+    const navigate = useNavigate();
 
     const sendNicknameToServer = () => {
         axios.post('/Chat', {
@@ -29,7 +26,6 @@ function BookingDetail() {
             });
     };
 
-
     function getCookieValue(cookieName) {
         const cookies = document.cookie.split('; ');
         for (let i = 0; i < cookies.length; i++) {
@@ -40,8 +36,6 @@ function BookingDetail() {
         }
         return null;
     }
-
-
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -67,15 +61,13 @@ function BookingDetail() {
                     nickname: nickname
                 }
             });
-            if(response.data){
+            if (response.data) {
                 alert("success booking");
                 window.location.reload();
             }
-            else
-            {
+            else {
                 alert("이미 예약했습니다");
             }
-            // 여기에 예약이 성공했을 때 실행할 작업을 추가할 수 있습니다.
         } catch (error) {
             console.log(nickname);
             console.error('Error booking:', error);
@@ -91,15 +83,14 @@ function BookingDetail() {
                         nickname: user
                     }
                 });
-                if(response.data){
+                if (response.data) {
                     alert("예약이 확정되었습니다.");
                 }
-                else{
+                else {
                     alert("이미 예약이 가득찼습니다,");
                 }
                 console.log(response.data);
                 window.location.reload()
-                // 여기에 예약이 성공했을 때 실행할 작업을 추가할 수 있습니다.
             } catch (error) {
                 console.error('Error booking:', error);
             }
@@ -119,23 +110,27 @@ function BookingDetail() {
     const dayOfWeek = departureDate.toLocaleDateString('en-US', { weekday: 'short' });
     const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
 
+    // driver's post 여부를 확인하여 상태를 설정합니다.
+    const isDriverPost = post.driverPost;
+
     return (
         <div className="page-container">
             <Navbar />
             <div className="main-content">
-
-
-
                 <div className="right-content">
+
                     <div className="outer-post-card">
+                        <div className="waiting-for-text">{isDriverPost ? "Waiting for Passenger" : "Waiting for Driver"}</div>
                         <div className="post-header">
                             <div className="post-user-info">
                                 <span className="user-name">{post.nickname}</span>
                                 <span className="post-date">{displayDate}</span>
+                                <span className="post-role">{isDriverPost ? "Driver" : "Passenger"}</span>
                             </div>
                             <div className="post-distance">{post.distance}km</div>
                         </div>
                         <div className="inner-post-card">
+
                             <div className="location-container">
                                 <div className="location-marker departure-marker">
                                     <div className="location-dot-white"></div>
@@ -181,36 +176,26 @@ function BookingDetail() {
                             <div className="user-list">
                                 현재 예약 인원:
                                 {post.nickname === nickname && post.users && post.users.map((user, index) => (
-                                    <button key={index} className="user-button" type="button" onClick={() => handleAddBooking(user)}>{user}</button>
+                                    <button key={index} className="user-button" type="button"
+                                            onClick={() => handleAddBooking(user)}>{user}</button>
                                 ))}
                             </div>
                             <div>
                                 {post.nickname === nickname && post.users && post.bookingUsers.map((user, index) => (
                                     <span key={index} className="user-text">{user}, </span>
-
                                 ))}
-
                             </div>
-
-
-
-
-
                             <div className="comment-actions">
                                 {post.driverPost && (
-                                    <button className="btn-comment-cancel" type="button" onClick={handleBooking}>Booking</button>
+                                    <button className="btn-comment-cancel" type="button"
+                                            onClick={handleBooking}>Booking</button>
                                 )}
                                 <button className="btn-comment-confirm" onClick={sendNicknameToServer}>Chatting</button>
-
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
             </div>
-
             <style>
                 {`                  
            
@@ -234,7 +219,7 @@ function BookingDetail() {
                  margin-right: 600px;
              }
              
-             /* Adjustments to the Right Content */
+         
              .right-content {
                  flex-grow: 1;
                  padding: 20px;
@@ -249,6 +234,7 @@ function BookingDetail() {
                     justify-content: space-between;
                     align-items: center;
                     margin-bottom: 20px;
+                    flex-wrap: wrap;
                   }
         
                   .post-user-info {
@@ -257,16 +243,31 @@ function BookingDetail() {
                     flex-direction: column; /*수직으로 배치*/
                   }
         
-                  .user-avatar {
-                    /* 아바타 스타일 */
-                  }
+                  .waiting-for-text {
+                    font-weight: bold;
+                    color: blue;
+                    margin-left: auto; /* 우측으로 정렬 */
+                    margin-left: 700px;
+                }
         
                   .user-details {
                     margin-left: 10px;
                   }
         
-                  .user-name {
-                    font-weight: bold;
+                  .user-name{
+                   font-weight: bold;
+                  }
+                  
+                  .post-role {
+                    display: inline-block;
+                    background-color: rgba(28, 92, 255, 0.6); /* 배경색 */
+                    color: white; /* 텍스트 색상 */
+                    font-size: 0.8em; /* 글꼴 크기 */
+                    font-weight: normal; /* 일반체로 설정 */
+                    border-radius: 20px; /* 원형 모양 */
+                    padding: 3px 8px; /* 내부 여백 */
+                    margin-right: -110px; /* 사용자 이름과의 간격 */
+                    margin-top: -72px;
                   }
         
                   .post-date {
@@ -286,11 +287,7 @@ function BookingDetail() {
                     margin-top: 50px;
                   }
         
-                  .posts-container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                  }
+                 
         
                   .post-card {
                     background-color: white;
@@ -489,6 +486,7 @@ function BookingDetail() {
                     
                     .btn-comment-cancel {
                       background-color: blue; /* 취소 버튼 색상 */
+                      color: white;
                     }
                     
                     .btn-comment-confirm {

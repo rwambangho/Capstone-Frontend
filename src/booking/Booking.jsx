@@ -1,4 +1,4 @@
-//Booking.js
+// Booking.js
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
@@ -29,7 +29,7 @@ function Booking() {
         }
     };
 
-    const fetchPessengerPosts = async () => {
+    const fetchPassengerPosts = async () => {
         try {
             const response = await axios.get('/recruits/passenger');
             setPosts(response.data);
@@ -77,7 +77,7 @@ function Booking() {
                         <div className="post-buttons">
                             <button
                                 className={`passenger-post-btn ${activeButton === 'passenger' ? 'active' : ''}`}
-                                onClick={fetchPessengerPosts}
+                                onClick={fetchPassengerPosts}
                             >
                                 Passenger's post
                             </button>
@@ -122,7 +122,14 @@ function Booking() {
                             const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
 
                             return (
-                                <div key={index} className="outer-post-card" onClick={() => navigateToBookingDetail(post.idxNum)}>
+                                <div key={index} className="outer-post-card"
+                                     onClick={() => navigateToBookingDetail(post.idxNum)}>
+                                    {activeButton === 'passenger' && ( /* Passenger's post인 경우에만 텍스트를 표시 */
+                                        <div className="waiting-for-text">Waiting for Driver</div>
+                                    )}
+                                    {activeButton === 'driver' && (
+                                        <div className="waiting-for-text">Waiting for Passenger</div>
+                                    )}
                                     <div className="post-header">
                                         <div className="post-user-info">
                                             <span className="user-name">{post.nickname}</span>
@@ -175,15 +182,16 @@ function Booking() {
                             );
                         })}
                         <div className="pagination-container">
-                            <span className="page-number" onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
+                            <span className="page-number"
+                                  onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
                             {[...Array(Math.ceil(posts.length / postsPerPage)).keys()].map(number => (
                                 <span
                                     key={number}
                                     className={`page-number ${currentPage === number + 1 ? 'active' : ''}`}
                                     onClick={() => paginate(number + 1)}
                                 >
-                  {number + 1}
-                </span>
+                                    {number + 1}
+                                </span>
                             ))}
                             <span className="page-number" onClick={() => paginate(currentPage + 1)}>Next &raquo;</span>
                         </div>
@@ -374,7 +382,7 @@ function Booking() {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             border-radius: 8px;
             width: 100%;
-            height: 400px;
+            height: 500px;
             max-width: 800px; /* 적절한 최대 너비 설정 */
             margin-bottom: 20px;
             padding: 20px;
@@ -385,6 +393,7 @@ function Booking() {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
           }
 
           .post-user-info {
@@ -392,10 +401,30 @@ function Booking() {
             align-items: center;
             flex-direction: column; /*수직으로 배치*/
           }
+          
+          .user-name::after {
+            content: '${activeButton === 'driver' ? 'driver' : 'passenger'}';
+            display: inline-block;
+            background-color: rgba(28, 92, 255, 0.6); /* 배경색 */
+            color: white; /* 텍스트 색상 */
+            font-size: 0.8em; /* 글꼴 크기 */
+            font-weight: normal; /* 일반체로 설정 */
+            border-radius: 20px; /* 원형 모양 */
+            padding: 3px 8px; /* 내부 여백 */
+            margin-left: 15px; /* 사용자 이름과의 간격 */
+            margin-top: -5px;
+        }
+        
+        .waiting-for-text {
+            
+            font-weight: bold;
+            color: blue;
+            margin-left: auto; /* 우측으로 정렬 */
+            margin-left: 700px;
+        }
 
-          .user-avatar {
-            /* 아바타 스타일 */
-          }
+
+        
 
           .user-details {
             margin-left: 10px;
