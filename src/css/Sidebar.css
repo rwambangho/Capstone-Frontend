@@ -5,8 +5,9 @@
 }
 
 .sidebar-header {
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 1rem;
+    color: black;
 }
 
 .posts-list {
@@ -18,23 +19,38 @@
     flex-direction: column; /* 세로로 요소를 배치하도록 설정 */
 }
 
-  
+
   .post-link {
     margin-bottom: 5px;
     text-decoration: none;
     color: black;
 
   }
-  
-  
+
+
 
 .search-container {
-    position: relative; /* 검색 아이콘을 위한 위치 설정 */
+    position: relative;
+    margin-bottom: 1rem; /* 필요에 따라 여백 조정 */
+    margin-left: -5px;
 }
 
 .search-input {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.5rem 2rem 0.5rem 3rem; /* 오른쪽 패딩에 아이콘 너비 만큼의 여유를 줌 */
     border: 1px solid #ced4da; /* 테두리 색상 조정 */
-    border-radius: 0.25rem; /* 둥근 테두리 적용 */
+    border-radius: 1rem; /* 둥근 테두리 적용 */
+    box-sizing: border-box; /* 패딩을 요소의 크기에 포함시킴 */
+    background-image: url('../icons/search.svg'); /* 배경 이미지로 아이콘 설정 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 설정 */
+    background-position: 1rem center; /* 아이콘 위치 설정 */
+    background-size: 1.2rem; /* 아이콘 크기 설정 */
+}
+
+.search-input::placeholder {
+    color: #6c757d; /* 입력 필드의 placeholder 색상 설정 */
+}
+.search-results {
+    margin-top: 1rem; /* 검색 결과와 입력 필드 사이 여백 조정 */
+    margin-left: 5px;
 }

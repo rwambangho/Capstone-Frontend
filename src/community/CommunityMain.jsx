@@ -27,8 +27,9 @@ const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
-    padding: 60px;
+    padding: 55px;
     margin-left: 30px;
+    border-radius: 10px;
 `;
 
 const PaginationContainer = styled.nav`

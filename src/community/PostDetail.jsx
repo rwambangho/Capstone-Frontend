@@ -15,6 +15,9 @@ import heartIcon from '../icons/heart.svg';
 // Styled components 정의
 
 const PageContainer = styled.div`
+  border-top: 1px solid #ccc !important; // CSS 우선순위 강제 적용
+  display: block; // 요소가 확실히 블록 레벨로 렌더링되도록 함
+  min-height: 1px;
   .post-detail {
     margin-bottom: 20px;
   }
@@ -224,6 +227,12 @@ const CommentButton = styled.button`
     cursor: pointer;
     width: auto;
 `;
+const NicknameWrapper = styled.div`
+  border-radius: 20px; /* 타원 모양의 테두리 반경 설정 */
+  border: 1px solid #969696; /* 테두리 색상 및 두께 설정 */
+  padding: 5px 20px; /* 내부 패딩 설정 */
+  display: inline-block; /* 요소를 인라인 블록으로 표시하여 너비와 높이를 컨텐츠 크기에 맞게 조절 */
+`;
 
 
 
@@ -345,7 +354,7 @@ const PostDetail = () => {
         <Navbar />
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
           <CommunitySidebar />
-          <div style={{ flex: '1', backgroundColor: '#ffffff',  padding: '60px', marginLeft: '30px' }}>
+          <div style={{ flex: '1', backgroundColor: '#ffffff',  padding: '60px', marginLeft: '30px', borderRadius: '10px' }}>
             <div className="post-detail">
               <div className="post-detail-header">
                 <p>{formatDateTime(post.time)}</p>
@@ -357,7 +366,10 @@ const PostDetail = () => {
                     <span>likes {post.likeCount}</span>
                     <span>comments {post.commentsDto.length}</span>
                   </div>
-                  <p className='author-info'> By {post.nickName}</p>
+                  {/*<p className='author-info'> By {post.nickName}</p>*/}
+                  <NicknameWrapper className="NicknameWrapper">
+                    <p style={{ margin: '0', color: "grey", fontSize: "12px" }}> By {post.nickName}</p>
+                  </NicknameWrapper>
                 </div>
               </div>
               {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
