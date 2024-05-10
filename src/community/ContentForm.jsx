@@ -1,4 +1,4 @@
-// ContentForm.js
+// ContentForm.jsx
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -38,7 +38,7 @@ function ContentForm({ onRegister }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
       const formData = new FormData();
       formData.append('title', title);
@@ -46,7 +46,7 @@ function ContentForm({ onRegister }) {
       if (selectedImage) {
         formData.append('image', selectedImage);
       }
-      
+
       const response = await axios.post('/community/save', formData, {
         headers: {
           'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ function ContentForm({ onRegister }) {
       });
 
       console.log('Response from server:', response.data);
-      
+
       // 등록된 글을 상위 컴포넌트로 전달
       onRegister(response.data);
 
@@ -67,50 +67,50 @@ function ContentForm({ onRegister }) {
   };
 
   return (
-    <div className="content-form">
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <div className="content-label">
-            <label htmlFor="content">Content</label>
-            <button type="button" className="add-photo-btn" onClick={handleAddPhoto}>
-              Add photos
-            </button>
+      <div className="content-form">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
             <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              ref={fileInputRef}
-              style={{ display: 'none' }}
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          {selectedImage && (
-            <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />
-          )}
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
-        <div className="form-actions">
-          <button type="submit" className="register-btn">
-            Register
-          </button>
-          <button type="button" className="cancel-btn" onClick={() => navigate('/community')}>
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="form-group">
+            <div className="content-label">
+              <label htmlFor="content">Content</label>
+              <button type="button" className="add-photo-btn" onClick={handleAddPhoto}>
+                Add photos
+              </button>
+              <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+              />
+            </div>
+            {selectedImage && (
+                <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />
+            )}
+            <textarea
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
+          <div className="form-actions">
+            <button type="submit" className="register-btn">
+              Register
+            </button>
+            <button type="button" className="cancel-btn" onClick={() => navigate('/community')}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
   );
 }
 

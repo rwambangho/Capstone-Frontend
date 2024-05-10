@@ -6,6 +6,7 @@ import Navbar from '../component/Navbar';
 import CommunitySidebar from '../component/CommunitySidebar';
 import Post from './Post';
 import ChatBot from '../chat/ChatBot';
+import EditIcon from '../icons/edit.svg';
 
 const Container = styled.div`
     display: flex;
@@ -27,6 +28,7 @@ const ContentWrapper = styled.div`
     flex-direction: column;
     background-color: #ffffff;
     padding: 60px;
+    margin-left: 30px;
 `;
 
 const PaginationContainer = styled.nav`
@@ -52,15 +54,22 @@ const SideBarContainer = styled.div`
 `;
 
 const WritePostButton = styled.button`
-    padding: 10px 20px;
-    background-color: #007bff;
+    display: flex;        // Use flexbox to align children
+    align-items: center;  // Align children vertically in the center
+    justify-content: center;  // Align children horizontally in the center
+    padding: 8px 20px;
+    background-color: #1C5CFF;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     width: auto;
 `;
-
+const Icon = styled.img`
+    width: 20px; /* 아이콘 크기 조정 */
+    height: 20px; /* 아이콘 크기 조정 */
+    margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 조정 */
+`;
 function CommunityMain() {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -107,7 +116,7 @@ function CommunityMain() {
                 </ContentWrapper>
                 <SideBarContainer>
                     <WritePostButton onClick={() => navigate('/registercomform')}>
-                        Write a Post
+                        <Icon src={EditIcon} alt="Edit Icon" /> Write a Post
                     </WritePostButton>
                     <ChatBot/>
                 </SideBarContainer>
