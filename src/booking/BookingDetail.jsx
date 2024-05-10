@@ -1,3 +1,5 @@
+//BookingDetail.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -11,8 +13,8 @@ function BookingDetail() {
     const [nickname]=useState(getCookieValue('nickname'));
     const navigate=useNavigate();
 
-   
-    
+
+
     const sendNicknameToServer = () => {
         axios.post('/Chat', {
             userId1: nickname,
@@ -31,15 +33,15 @@ function BookingDetail() {
     function getCookieValue(cookieName) {
         const cookies = document.cookie.split('; ');
         for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split('=');
-          if (cookie[0] === cookieName) {
-            return cookie[1];
-          }
+            const cookie = cookies[i].split('=');
+            if (cookie[0] === cookieName) {
+                return cookie[1];
+            }
         }
         return null;
-      }
+    }
 
-  
+
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -58,7 +60,7 @@ function BookingDetail() {
 
     const handleBooking = async () => {
         try {
-            
+
             const response = await axios.post('/recruits/booking', null, {
                 params: {
                     idxNum: postId,
@@ -66,8 +68,8 @@ function BookingDetail() {
                 }
             });
             if(response.data){
-           alert("success booking");
-           window.location.reload();
+                alert("success booking");
+                window.location.reload();
             }
             else
             {
@@ -121,9 +123,9 @@ function BookingDetail() {
         <div className="page-container">
             <Navbar />
             <div className="main-content">
-        
-                <Sidebar/>
-               
+
+
+
                 <div className="right-content">
                     <div className="outer-post-card">
                         <div className="post-header">
@@ -141,7 +143,7 @@ function BookingDetail() {
                                 </div>
                                 <div className="location-details">
                                     <div className="location-point departure">
-                                        <span className="location-title">{post.departure}</span>
+                                        <span className="location-title1">{post.departure}</span>
                                         <span className="location-detail">{post.departureDetail}</span>
                                     </div>
                                 </div>
@@ -152,7 +154,7 @@ function BookingDetail() {
                                 </div>
                                 <div className="location-details">
                                     <div className="location-point destination">
-                                        <span className="location-title">{post.destination}</span>
+                                        <span className="location-title2">{post.destination}</span>
                                         <span className="location-detail">{post.destinationDetail}</span>
                                     </div>
                                 </div>
@@ -172,46 +174,46 @@ function BookingDetail() {
                                 <div className="comment-body">{post.message}</div>
                             </div>
                             {post.driverPost && (
-    <div>
-          현재 인원:{post.participant}/{post.maxParticipant}
-    </div>
-)}
-                            <div className="user-list">
-                              현재 예약 인원:
-                            {post.nickname === nickname && post.users && post.users.map((user, index) => (
-                            <button key={index} className="user-button" type="button" onClick={() => handleAddBooking(user)}>{user}</button>
-                        ))}
-                        </div>
                                 <div>
+                                    현재 인원:{post.participant}/{post.maxParticipant}
+                                </div>
+                            )}
+                            <div className="user-list">
+                                현재 예약 인원:
+                                {post.nickname === nickname && post.users && post.users.map((user, index) => (
+                                    <button key={index} className="user-button" type="button" onClick={() => handleAddBooking(user)}>{user}</button>
+                                ))}
+                            </div>
+                            <div>
                                 {post.nickname === nickname && post.users && post.bookingUsers.map((user, index) => (
-                                        <span key={index} className="user-text">{user}, </span>
-                                     
-                        ))}
-                    
-                                </div>
-                                
+                                    <span key={index} className="user-text">{user}, </span>
 
-                            
+                                ))}
+
+                            </div>
 
 
-                                <div className="comment-actions">
+
+
+
+                            <div className="comment-actions">
                                 {post.driverPost && (
-                        <button className="btn-comment-cancel" type="button" onClick={handleBooking}>Booking</button>
-                        )}
-                                    <button className="btn-comment-confirm" onClick={sendNicknameToServer}>Chatting</button>
+                                    <button className="btn-comment-cancel" type="button" onClick={handleBooking}>Booking</button>
+                                )}
+                                <button className="btn-comment-confirm" onClick={sendNicknameToServer}>Chatting</button>
 
-                                </div>
+                            </div>
 
 
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    <style>
-        {`                  
-             /* Adjustments to the Outer Post Card */
+            <style>
+                {`                  
+           
              .outer-post-card {
                  background-color: #fff;
                  border-radius: 8px;
@@ -224,11 +226,12 @@ function BookingDetail() {
                  margin-right: auto; /* Center the card horizontally */
              }
              
-             /* Adjustments to the Main Content */
+             
              .main-content {
                  display: flex;
                  justify-content: center; /* Center the content horizontally */
                  padding: 20px;
+                 margin-right: 600px;
              }
              
              /* Adjustments to the Right Content */
@@ -237,6 +240,7 @@ function BookingDetail() {
                  padding: 20px;
                  background-color: #f5f5f5;
                  max-width: 800px; /* Limit the width of the right content */
+                 margin-left: 600px;
              }
              
 
@@ -332,16 +336,23 @@ function BookingDetail() {
                     position: relative;
                   }
         
-                  .post-keyword {
-                    background-color: green;
-                    color: white;
-                    padding: 10px 20px;
-                    border-radius: 15px;
-                    margin-right: 20px;
-                    
-                    
+                  .post-keywords {
+                    display: flex;
+                    flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
+                    gap: 10px; /* 키워드 사이의 간격 */
+                    margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
                   }
         
+                  .post-keyword {
+                    background-color: #50c878; /* 밝은 녹색 배경 */
+                    color: white; /* 흰색 텍스트 */
+                    padding: 8px 16px; /* 상하 8px, 좌우 16px의 패딩 */
+                    border-radius: 20px; /* 둥근 모서리 */
+                    font-size: 0.9em; /* 적절한 텍스트 크기 */
+                    white-space: nowrap; /* 키워드를 한 줄로 표시 */
+                  }
+                  
+                    
                   .post-created-at {
                     font-size: 1rem;
                     color: #666;
@@ -390,7 +401,14 @@ function BookingDetail() {
                     
                   }
         
-                  .location-title {
+                  .location-title1 {
+                    font-weight: bold;
+                    display: block; /* 타이틀을 블록 요소로 만들어 줄 바꿈 */
+                    margin-top: 8px;
+                    margin-left: -45px;
+                  }
+        
+                  .location-title2 {
                     font-weight: bold;
                     display: block; /* 타이틀을 블록 요소로 만들어 줄 바꿈 */
                     margin-top: 35px;
@@ -455,6 +473,11 @@ function BookingDetail() {
                         font-weight: bolder;
                     }
                     
+                    .user-list {
+                        margin-top: 25px;
+                    }
+                    
+                    
                     .btn-comment-cancel, .btn-comment-confirm {
                       flex-grow: 1; /* 버튼들이 동일한 크기를 가지도록 함 */
                       margin: 0 50px; /* 좌우 마진을 추가하여 버튼 사이 간격 조정 */
@@ -470,6 +493,7 @@ function BookingDetail() {
                     
                     .btn-comment-confirm {
                       background-color: blue; /* 확인 버튼 색상 */
+                      color: white;
                     }
                     
                   
