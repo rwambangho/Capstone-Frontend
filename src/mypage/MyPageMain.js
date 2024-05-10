@@ -25,7 +25,7 @@ const StyledLink = styled(Link)`
 
 const EllipseIcon = styled.img`
   position: fixed;
-  bottom: -50px;
+  bottom: -120px;
   right: -70px;
 `;
 

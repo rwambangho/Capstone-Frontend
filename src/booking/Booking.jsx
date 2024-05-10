@@ -88,9 +88,7 @@ function Booking() {
                                 Driver's post
                             </button>
                         </div>
-                        <div className="search-section">
-                            <input type="text" className="search-input" placeholder="Search for regions and keywords..." />
-                        </div>
+
                         <div className="filter-section">
                             <button className="filter-btn active" onClick={toggleRegionDropdown}>entire</button>
                             {showRegions && (
@@ -209,7 +207,7 @@ function Booking() {
           .right-content {
             flex-grow: 1;
             padding: 20px;
-            background-color: #f5f5f5;
+            margin-left: 130px;
           }
 
           .post-form-header {
@@ -223,8 +221,9 @@ function Booking() {
          .post-buttons {
           display: flex;
           justify-content: space-between; /* 버튼을 양쪽으로 정렬 */
-          width: 55%; /* 버튼 바 전체 너비 */
+          width: 75%; /* 버튼 바 전체 너비 */
           margin-top: 20px; /* 버튼 바 상단 여백 */
+          margin-bottom: 30px;
           gap: 400px;
          }
 
@@ -239,11 +238,12 @@ function Booking() {
             font-size: 15px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+            width: 350px;
+            height: 50px;
         }
         
         .driver-post-btn {
             flex-grow: 1; /* 버튼이 동등한 너비 차지 */
-            
             color: white; /* 텍스트 색상 */
             padding: 10px 0px; /* 버튼 내부 여백 */
             border: none; /* 테두리 없음 */
@@ -251,6 +251,8 @@ function Booking() {
             font-size: 15px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+            width: 250px;
+            height: 50px;
         }
         
         .passenger-post-btn:hover, .driver-post-btn:hover {
@@ -282,19 +284,6 @@ function Booking() {
           background-color: #ffffff;
           color: grey;
         }
-
-
-   
-            
-         
-
-          .search-section {
-            display: flex;
-            justify-content: center;
-            padding: 15px 20px;
-            margin-top: 20px;
-            width: 60%;
-          }
 
           .search-input {
             width: calc(100% - 42px);
