@@ -1,3 +1,4 @@
+/*SignupInformation.css*/
 .profile-container {
     width: 50%;
     max-width: 600px;
@@ -55,8 +56,39 @@
     position: relative;
     display: inline-block;
   }
-  
-  .upload-icon {
+
+.profile-image-upload-label {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-upload-placeholder {
+  width: 80px;
+  height: 80px;
+  background-color: lightgray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -100px;
+  margin-left: 20px;
+}
+
+.profile-upload-placeholder::before {
+  content: "+";
+  font-size: 35px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.profile-image-label {
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+
+.upload-icon {
     position: absolute;
     bottom: 0;
     right: 0;

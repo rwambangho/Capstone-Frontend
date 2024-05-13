@@ -1,3 +1,4 @@
+//SignupInformation.js
 import React, { useState, useEffect } from 'react';
 import '../css/mypage/SignupInformation.css';
 import Navbar from '../component/Navbar';
@@ -93,6 +94,14 @@ function SignupInformation() {
               {/* Form fields */}
               <div className="form-group">
                 <label htmlFor="profile-image-upload" className="profile-image-upload-label">
+                  <p className="profile-image-label">Profile Image</p>
+                  <div className="profile-upload-placeholder">
+
+                    {user.profileImage ? (
+                        <img src={user.profileImage} alt="Profile"
+                             style={{width: '100%', height: '100%', borderRadius: '50%'}}/>
+                    ) : null}
+                  </div>
                   <input
                       id="profile-image-upload"
                       type="file"
@@ -111,10 +120,10 @@ function SignupInformation() {
               </div>
               <div className="form-group">
                 <label4>Name</label4>
-                <input type="text" name="name" value={user.name} onChange={handleChange} />
+                <input type="text" name="name" value={user.name} onChange={handleChange}/>
               </div>
               <div className="form-group">
-                <label3>ID</label3>
+              <label3>ID</label3>
                 <input3 type="text" name="id" value={user.id} onChange={handleChange} />
               </div>
               <div className="form-group">
