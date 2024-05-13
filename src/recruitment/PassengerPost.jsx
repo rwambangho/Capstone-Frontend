@@ -1,3 +1,4 @@
+//PassengerPost.jsx(토글까지 완료)
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../component/Navbar';
@@ -8,179 +9,198 @@ const { kakao } = window;
 
 
 function PassengerPost() {
-  const navigate = useNavigate();
-  const [departure, setDeparture] = useState('');
-  const [destination, setDestination] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [keywords, setKeywords] = useState([]);
-  const [message, setMessage] = useState('');
-  const [nickname, setnickname] = useState(getCookieValue('id') || 'User');
-  const [isDriverPost]=useState(false);
-  const [departurePlaces, setDeparturePlaces] = useState([]);
-  const [arrivalPlaces, setArrivalPlaces] = useState([]);
-  const [selectedDeparturePlace, setSelectedDeparturePlace] = useState({ name: "", address: "", x: "", y: "" });
-  const [selectedArrivalPlace, setSelectedArrivalPlace] = useState({ name: "", address: "", x: "", y: "" });
-  const [avgStar, setAvgStar] = useState(0);
-
+    const navigate = useNavigate();
+    const [departure, setDeparture] = useState('');
+    const [destination, setDestination] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const [selectedKeywords, setSelectedKeywords] = useState([]);
+    const [message, setMessage] = useState('');
+    const [nickname, setNickname] = useState(getCookieValue('id') || 'User');
+    const [isDriverPost] = useState(false);
+    const [departurePlaces, setDeparturePlaces] = useState([]);
+    const [arrivalPlaces, setArrivalPlaces] = useState([]);
+    const [selectedDeparturePlace, setSelectedDeparturePlace] = useState({ name: "", address: "", x: "", y: "" });
+    const [selectedArrivalPlace, setSelectedArrivalPlace] = useState({ name: "", address: "", x: "", y: "" });
+    const [avgStar, setAvgStar] = useState(0);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태를 관리
     const ps = new kakao.maps.services.Places();
 
 
     useEffect(() => {
-      const fetchUserRating = async () => {
-        const userId = getCookieValue('id');
-        if (userId) {
-          try {
-            const response = await axios.get(`/user/getUser/${userId}`);
-            setnickname(response.data.nickname);
-            setAvgStar(response.data.avgStar);
-          } catch (error) {
-            console.error('Failed to fetch user rating:', error);
-          }
-        }
-      };
-  
-      fetchUserRating();
+        const fetchUserRating = async () => {
+            const userId = getCookieValue('id');
+            if (userId) {
+                try {
+                    const response = await axios.get(`/user/getUser/${userId}`);
+                    setNickname(response.data.nickname);
+                    setAvgStar(response.data.avgStar);
+                } catch (error) {
+                    console.error('Failed to fetch user rating:', error);
+                }
+            }
+        };
+
+        fetchUserRating();
     }, []);
-  
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post('/recruits', {
-        title: 'Passenger Post',
-        contents: `${departure} to ${destination} at ${date} ${time}`,
-        nickname: nickname,
-        departure: departure,
-        destination: destination,
-        departureDate: date,
-        isDriverPost: false,
-        keywords: keywords,
-        message : message,
-        avgStar : avgStar,
-        departureX: selectedDeparturePlace.x,
-        departureY: selectedDeparturePlace.y,
-        arrivalX: selectedArrivalPlace.x,
-        arrivalY: selectedArrivalPlace.y
-      });
 
-      console.log('Response from server:', response.data);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post('/recruits', {
+                title: 'Passenger Post',
+                contents: `${departure} to ${destination} at ${date} ${time}`,
+                nickname: nickname,
+                departure: departure,
+                destination: destination,
+                departureDate: date,
+                isDriverPost: false,
+                keywords: selectedKeywords,
+                message: message,
+                avgStar: avgStar,
+                departureX: selectedDeparturePlace.x,
+                departureY: selectedDeparturePlace.y,
+                arrivalX: selectedArrivalPlace.x,
+                arrivalY: selectedArrivalPlace.y
+            });
 
-      navigate('/carpool-booking');
-    } catch (error) {
-      console.error('Error saving content:', error);
-    }
-  };
+            console.log('Response from server:', response.data);
 
-  function getCookieValue(cookieName) {
-    const cookies = document.cookie.split('; ');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].split('=');
-      if (cookie[0] === cookieName) {
-        return cookie[1];
-      }
-    }
-    return null;
-  }
+            navigate('/carpool-booking');
+        } catch (error) {
+            console.error('Error saving content:', error);
+        }
+    };
 
-  const handleKeywordChange = (event) => {
-    if (event.key === 'Enter' && event.target.value.trim() !== '') {
-      setKeywords([...keywords, event.target.value]);
-      event.target.value = '';
-    }
-  };
-
-  const removeKeyword = (index) => {
-    setKeywords(keywords.filter((_, idx) => idx !== index));
-  };
-  const searchDeparturePlaces = (keyword) => {
-    if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        return false;
+    function getCookieValue(cookieName) {
+        const cookies = document.cookie.split('; ');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].split('=');
+            if (cookie[0] === cookieName) {
+                return cookie[1];
+            }
+        }
+        return null;
     }
 
-    ps.keywordSearch(keyword, departurePlacesSearchCB);
-};
+    const handleKeywordClick = (keyword) => {
+        if (selectedKeywords.includes(keyword)) {
+            setSelectedKeywords(selectedKeywords.filter((kw) => kw !== keyword));
+        } else {
+            if (selectedKeywords.length < 3) {
+                setSelectedKeywords([...selectedKeywords, keyword]);
+            } else {
+                alert("You can select up to 3 keywords.");
+            }
+        }
+    };
 
-const departurePlacesSearchCB = (data, status) => {
-    if (status === kakao.maps.services.Status.OK) {
-        const mappedPlaces = data.map(place => ({
-            name: place.place_name,
-            address: place.address_name,
-            x: place.x,
-            y: place.y
-        }));
-        setDeparturePlaces(mappedPlaces);
-    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        alert('검색 결과가 존재하지 않습니다.');
-        return;
-    } else if (status === kakao.maps.services.Status.ERROR) {
-        alert('검색 결과 중 오류가 발생했습니다.');
-        return;
-    }
-};
+    const handleRemoveKeyword = (removedKeyword) => {
+        setSelectedKeywords(selectedKeywords.filter((keyword) => keyword !== removedKeyword));
+    };
 
-const searchArrivalPlaces = (keyword) => {
-    if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        return false;
-    }
+    const handleKeywordChange = (event) => {
+        const selectedOption = event.target.value;
+        if (selectedKeywords.length < 3) {
+            setSelectedKeywords([...selectedKeywords, selectedOption]); // 최대 3개까지만 추가합니다.
+        } else {
+            alert("You can select up to 3 keywords.");
+        }
+    };
 
-    ps.keywordSearch(keyword, arrivalPlacesSearchCB);
-};
+    const searchDeparturePlaces = (keyword) => {
+        if (!keyword.replace(/^\s+|\s+$/g, '')) {
+            return false;
+        }
 
-const arrivalPlacesSearchCB = (data, status) => {
-    if (status === kakao.maps.services.Status.OK) {
-        const mappedPlaces = data.map(place => ({
-            name: place.place_name,
-            address: place.address_name,
-            x: place.x,
-            y: place.y
-        }));
-        setArrivalPlaces(mappedPlaces);
-    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        alert('검색 결과가 존재하지 않습니다.');
-        return;
-    } else if (status === kakao.maps.services.Status.ERROR) {
-        alert('검색 결과 중 오류가 발생했습니다.');
-        return;
-    }
-};
+        ps.keywordSearch(keyword, departurePlacesSearchCB);
+    };
 
-const handleDeparturePlaceClick = (place) => {
-    setSelectedDeparturePlace(place);
+    const departurePlacesSearchCB = (data, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+            const mappedPlaces = data.map(place => ({
+                name: place.place_name,
+                address: place.address_name,
+                x: place.x,
+                y: place.y
+            }));
+            setDeparturePlaces(mappedPlaces);
+        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            alert('검색 결과가 존재하지 않습니다.');
+            return;
+        } else if (status === kakao.maps.services.Status.ERROR) {
+            alert('검색 결과 중 오류가 발생했습니다.');
+            return;
+        }
+    };
 
-    console.log(departurePlaces);
-    document.getElementById('departure').value=`${place.name}`;
-   
-  
-  };
+    const searchArrivalPlaces = (keyword) => {
+        if (!keyword.replace(/^\s+|\s+$/g, '')) {
+            return false;
+        }
 
-const handleArrivalPlaceClick = (place) => {
-    setSelectedArrivalPlace(place);
-    document.getElementById('arrival').value=`${place.name}`;
-    
-  };
+        ps.keywordSearch(keyword, arrivalPlacesSearchCB);
+    };
 
-const handleDepartureSubmit = (event) => {
-    selectedDeparturePlace.name="";
-    event.preventDefault();
-    const keyword = document.getElementById('departure').value;
-    searchDeparturePlaces(keyword);
-    
-    
-};
+    const arrivalPlacesSearchCB = (data, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+            const mappedPlaces = data.map(place => ({
+                name: place.place_name,
+                address: place.address_name,
+                x: place.x,
+                y: place.y
+            }));
+            setArrivalPlaces(mappedPlaces);
+        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            alert('검색 결과가 존재하지 않습니다.');
+            return;
+        } else if (status === kakao.maps.services.Status.ERROR) {
+            alert('검색 결과 중 오류가 발생했습니다.');
+            return;
+        }
+    };
 
-const handleArrivalSubmit = (event) => {
-    selectedArrivalPlace.name="";
-    event.preventDefault();
-    const keyword = document.getElementById('arrival').value;
-    searchArrivalPlaces(keyword);
-};
+    const handleDeparturePlaceClick = (place) => {
+        setSelectedDeparturePlace(place);
+
+        console.log(departurePlaces);
+        document.getElementById('departure').value=`${place.name}`;
 
 
+    };
 
-  return (
-      <div className="page-container">
-        <style>
-          {`
+    const handleArrivalPlaceClick = (place) => {
+        setSelectedArrivalPlace(place);
+        document.getElementById('arrival').value=`${place.name}`;
+
+    };
+
+    const handleDepartureSubmit = (event) => {
+        selectedDeparturePlace.name="";
+        event.preventDefault();
+        const keyword = document.getElementById('departure').value;
+        searchDeparturePlaces(keyword);
+
+
+    };
+
+    const handleArrivalSubmit = (event) => {
+        selectedArrivalPlace.name="";
+        event.preventDefault();
+        const keyword = document.getElementById('arrival').value;
+        searchArrivalPlaces(keyword);
+    };
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen); // 드롭다운의 열림/닫힘 상태를 토글합니다.
+    };
+
+
+
+    return (
+        <div className="page-container">
+            <style>
+                {`
           .main-content {
             display: flex;
             background-color: #f9f9f9;
@@ -202,11 +222,7 @@ const handleArrivalSubmit = (event) => {
             margin-bottom: 30px;
         }
         
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            text-align: left;
-        }
+        
         
         .form-container {
             background-color: #ffffff;
@@ -257,13 +273,23 @@ const handleArrivalSubmit = (event) => {
             background-color: #31b0d5;
         }
         
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            margin-right: 10px;
+        }
+        
         .input-group input,
         .input-group textarea {
+            display: flex;
+            align-items: center;
             background-color: #f0f0f0;
             border-radius: 5px;
             border: 1px solid #ccc;
             padding: 10px;
             width: 100%;
+          
         }
         
         .input-group button {
@@ -383,132 +409,139 @@ const handleArrivalSubmit = (event) => {
         background-color: #ccc;
         cursor: not-allowed;
     }
-    
-      
-
         `}
-        </style>
-        <Navbar />
-        <div className="main-content" style={{ display: 'flex' }}>
-          <Sidebar />
-          <div className="right-content">
-            <div className="post-form-header">
-              <h1>Select the right post for you!</h1>
-              <div className="post-buttons">
-              <button onClick={() => navigate('/carpool-recruitment-passenger')} className="passenger-post-btn">Passenger's post</button>
-                <button onClick={() => navigate('/carpool-recruitment-driver')} className="driver-post-btn">Driver's post</button>
-              </div>
+            </style>
+            <Navbar />
+            <div className="main-content" style={{ display: 'flex' }}>
+                <Sidebar />
+                <div className="right-content">
+                    <div className="post-form-header">
+                        <h1>Select the right post for you!</h1>
+                        <div className="post-buttons">
+                            <button onClick={() => navigate('/carpool-recruitment-passenger')} className="passenger-post-btn">Passenger's post</button>
+                            <button onClick={() => navigate('/carpool-recruitment-driver')} className="driver-post-btn">Driver's post</button>
+                        </div>
+                    </div>
+                    <div className="form-container">
+                        <div className="form-title">
+                            <h2>Write as a Passenger</h2>
+                            <hr/>
+                            <form onSubmit={handleSubmit}>
+                                <div className="input-group">
+                                    <label>Point of Departure</label>
+
+                                    <input
+                                        type="text"
+                                        id="departure"
+                                        onChange={(e) => setDeparture(e.target.value)}
+                                        placeholder="fill in your point of departure"
+                                        required
+                                    />
+                                    <button onClick={handleDepartureSubmit}>Search</button>
+                                </div>
+                                <div>
+                                    {departurePlaces.length > 0 && selectedDeparturePlace.name === "" && (
+                                        <ul className="search-results">
+                                            {departurePlaces.map((place, index) => (
+                                                <li key={index} onClick={() => handleDeparturePlaceClick(place)}>
+                                                    <strong>{place.name}</strong>: <span>{place.address}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                                <div className="input-group">
+                                    <label>Destination</label>
+
+                                    <input
+                                        type="text"
+                                        id="arrival"
+                                        onChange={(e) => setDestination(e.target.value)}
+                                        placeholder="fill in your Destination"
+                                        required
+                                    />
+                                    <button onClick={handleArrivalSubmit}>Search</button>
+                                </div>
+                                <div>
+                                    {arrivalPlaces.length > 0 && selectedArrivalPlace.name === "" && (
+                                        <ul className="search-results">
+                                            {arrivalPlaces.map((place, index) => (
+                                                <li key={index} onClick={() => handleArrivalPlaceClick(place)}>
+                                                    <strong>{place.name}</strong>: <span>{place.address}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                                <div className="input-group date-time">
+                                    <div className="date-input-container">
+                                        <label>Date and time of departure</label>
+                                        <input
+                                            type="date"
+                                            value={date}
+                                            onChange={(e) => setDate(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="time-input-container">
+                                        <input
+                                            type="time"
+                                            value={time}
+                                            onChange={(e) => setTime(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="input-group keywords">
+                                    <label>Keywords</label>
+                                    <select
+                                        value=""
+                                        onChange={handleKeywordChange}
+                                        onFocus={toggleDropdown} // 입력 칸이 클릭되면 드롭다운을 엽니다.
+                                    >
+                                        <option value="" disabled hidden>Choose keywords</option>
+                                        <option value="뒷자리희망">뒷자리희망</option>
+                                        <option value="펫동반">펫동반</option>
+                                        <option value="소량짐">소량짐</option>
+                                        <option value="음주탑승">음주탑승</option>
+                                        <option value="동승가능">동승가능</option>
+                                        <option value="시간협의">시간협의</option>
+                                    </select>
+                                    <div className="selected-keywords">
+                                        {selectedKeywords.map((keyword, index) => (
+                                            <div key={index} className="keyword">
+                                                <span>{keyword}</span>
+                                                <button onClick={() => handleRemoveKeyword(keyword)}>x</button>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                </div>
+                                <div className="input-group message-container">
+                                    <label>What you want to tell</label>
+                                    <textarea
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        placeholder="Enter your message here."
+                                        required
+                                    />
+                                </div>
+                                <div className="max-participants-input">
+                                    {/* Your max participants input field */}
+                                </div>
+                                <button type="submit" className="register-button">
+                                    Register
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="form-container">
-              <div className="form-title">
-                <h2>Write as a Passenger</h2>
-                <hr />
-
-                <form onSubmit={handleSubmit}>
-               <div className="input-group">
-  <label>Point of Departure</label>
-  <input 
-    type="text" 
-    id="departure"
-    onChange={(e) => setDeparture(e.target.value)}
-    placeholder="fill in your point of departure"
-    required
-  />
-  <button onClick={handleDepartureSubmit}>검색하기</button>
-</div>
-<div>
-  {departurePlaces.length > 0 && selectedDeparturePlace.name === "" &&(
-    <ul className="search-results">
-      {departurePlaces.map((place, index) => (
-        <li key={index} onClick={() => handleDeparturePlaceClick(place)}>
-          <strong>{place.name}</strong>: <span>{place.address}</span>
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
-
-<div className="input-group">
-  <label>Destination</label>
-  <input 
-    type="text"
-    id="arrival" 
-    onChange={(e) => setDestination(e.target.value)}
-    placeholder="fill in your Destination"
-    required 
-  />
-  <button onClick={handleArrivalSubmit}>검색하기</button>
-</div>
-<div>
-  {arrivalPlaces.length > 0 && selectedArrivalPlace.name===""&&(
-    <ul className="search-results">
-      {arrivalPlaces.map((place, index) => (
-        <li key={index} onClick={() => handleArrivalPlaceClick(place)}>
-          <strong>{place.name}</strong>: <span>{place.address}</span>
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
-                  <div className="input-group date-time">
-                    <div className="date-input-container">
-                      <label>Date and time of departure</label>
-                      <input
-                          type="date"
-                          value={date}
-                          onChange={(e) => setDate(e.target.value)}
-                          required
-                      />
-                    </div>
-                    <div className="time-input-container">
-                      <input
-                          type="time"
-                          value={time}
-                          onChange={(e) => setTime(e.target.value)}
-                          required
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group keywords">
-                    <label>keywords</label>
-                    <div className="keywords">
-                      {keywords.map((keyword, index) => (
-                          <div className="keyword" key={index}>
-                            {keyword}
-                            <button type="button" onClick={() => removeKeyword(index)}>×</button>
-                          </div>
-                      ))}
-                      <input
-                          type="text"
-                          onKeyDown={handleKeywordChange}
-                          placeholder="Push the 'Enter' button and add keywords"
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group message-container">
-                    <label>what you want to tell</label>
-                    <textarea
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder="메시지를 입력하세요."
-                        required
-                    />
-                  </div>
-                  <div className="max-participants-input">
-  
-</div>
-<button type="submit" className="register-button">
-  Register
-</button>
-
-
-                </form>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-  );
+
+
+
+    );
 }
 
 export default PassengerPost;
