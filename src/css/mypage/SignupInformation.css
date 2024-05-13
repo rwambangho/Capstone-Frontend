@@ -87,15 +87,85 @@
     margin-bottom: 0.5rem;
     margin-right: 400px;
   }
+
+  .form-group label1 {
+    margin-bottom: 0.5rem;
+    margin-right: 400px;
+    margin-left: 48px;
+  }
+
+.form-group label2 {
+  margin-bottom: 0.5rem;
+  margin-right: 400px;
+  margin-left: 15px;
+}
+
+.form-group label3 {
+  margin-bottom: 0.5rem;
+  margin-right: 400px;
+  margin-left: -38px;
+}
+
+.form-group label4 {
+  margin-bottom: 0.5rem;
+  margin-right: 400px;
+  margin-left: -20px;
+}
+
+.form-group label5 {
+  margin-bottom: 0.5rem;
+  margin-right: 400px;
+  margin-left: 20px;
+}
   
   .form-group input {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 450px;
-  
+    margin-left: 10px;
     background: lightgray;
   }
+
+  .form-group input1 {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 450px;
+    height: 15px;
+    margin-left: 50px;
+    background: lightgray;
+  }
+
+  .form-group input2 {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 450px;
+    height: 15px;
+    margin-left: 17px;
+    background: lightgray;
+  }
+
+.form-group input3 {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 450px;
+  height: 15px;
+  margin-left: 15px;
+  background: lightgray;
+}
+
+.form-group input5 {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 450px;
+  height: 15px;
+  margin-left: 20px;
+  background: lightgray;
+}
   
   .form-actions {
     display: flex;

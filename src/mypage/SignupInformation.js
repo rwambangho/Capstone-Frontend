@@ -110,28 +110,28 @@ function SignupInformation() {
                 </label>
               </div>
               <div className="form-group">
-                <label>Name</label>
+                <label4>Name</label4>
                 <input type="text" name="name" value={user.name} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>ID</label>
-                <input type="text" name="id" value={user.id} onChange={handleChange} />
+                <label3>ID</label3>
+                <input3 type="text" name="id" value={user.id} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Phone Number</label>
-                <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
+                <label1>Phone Number</label1>
+                <input1 type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
               </div>
               <div className="form-group">
                 <label>Bithdate</label>
                 <input type="text" name="birthdate" value={user.birthdate} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Nickname</label>
-                <input type="text" name="nickname" value={user.nickname} onChange={handleChange} />
+                <label2>Nickname</label2>
+                <input2 type="text" name="nickname" value={user.nickname} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Star Rating</label>
-                <input type="text" name="avgStar" value={user.avgStar} readOnly />
+                <label5>Star Rating</label5>
+                <input5 type="text" name="avgStar" value={user.avgStar} readOnly />
               </div>
               <div className="form-actions">
                 <button type="submit">Save</button>
