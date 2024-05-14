@@ -173,7 +173,7 @@ function Booking() {
                                     </div>
                                     <div className='post-form-bottom'>
                                         <div className="post-keywords">
-                                        {post.keywords && post.keywords.map((keyword, kIndex) => (
+                                            {post.keywords && post.keywords.map((keyword, kIndex) => (
                                                 <span key={kIndex} className="post-keyword">{keyword}</span>
                                             ))}
                                         </div>
@@ -474,7 +474,7 @@ function Booking() {
             background-color: #f5f5f5;
             padding: 30px 10px;
             border-radius: 8px;
-            margin-top: 50px;
+            margin-top: 40px;
             padding-bottom: 20px;
             position: relative;
           }
@@ -551,11 +551,10 @@ function Booking() {
           }
 
           .post-keywords {
-            margin-left: 5px;
             display: flex;
             flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
             gap: 10px; /* 키워드 사이의 간격 */
-            margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+            margin-top: 30px; /* 키워드와 다른 컨텐츠 사이의 간격 */
           }
 
           .post-keyword {
@@ -572,7 +571,6 @@ function Booking() {
             color: #666;
             margin-top: 25px;
             margin-bottom: 10px;
-            margin-left: 10px;
           }
 
           .location-marker {
