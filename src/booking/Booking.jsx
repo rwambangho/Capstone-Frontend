@@ -2,8 +2,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
-import Sidebar from '../component/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import PassengerIcon from '../icons/icon.svg';
+import DriverIcon from '../icons/driver.svg';
+import GrayPassengerIcon from '../icons/grayicon.svg';
+import GrayDriverIcon from '../icons/graydriver.svg';
+import ParticipantIcon from '../icons/participant.svg';
 
 
 function Booking() {
@@ -70,41 +74,43 @@ function Booking() {
         <div className="page-container">
             <Navbar />
             <div className="main-content">
-                <Sidebar />
+                {/*<Sidebar />*/}
                 <div className="right-content">
                     <div className="post-form-header">
-                        <h1>Choose the right post for you!</h1>
+                        <h1>Please choose the post that suits you</h1>
                         <div className="post-buttons">
                             <button
                                 className={`passenger-post-btn ${activeButton === 'passenger' ? 'active' : ''}`}
                                 onClick={fetchPassengerPosts}
                             >
-                                Passenger's post
+                                <div className="button-content">
+                                    {activeButton === 'passenger' ? (
+                                        <img src={PassengerIcon} alt="Passenger Icon" className="post-icon"/>
+                                    ) : (
+                                        <img src={GrayPassengerIcon} alt="Gray Passenger Icon" className="post-icon"/>
+                                    )}
+                                    Passenger's post
+                                </div>
                             </button>
                             <button
                                 className={`driver-post-btn ${activeButton === 'driver' ? 'active' : ''}`}
                                 onClick={fetchDriverPosts}
                             >
-                                Driver's post
+                                <div className="button-content">
+                                    {activeButton === 'driver' ? (
+                                        <img src={DriverIcon} alt="Driver Icon" className="post-icon"/>
+                                    ) : (
+                                        <img src={GrayDriverIcon} alt="Gray Driver Icon" className="post-icon"/>
+                                    )}Driver's post
+                                </div>
                             </button>
                         </div>
 
                         <div className="filter-section">
-                            <button className="filter-btn active" onClick={toggleRegionDropdown}>entire</button>
-                            {showRegions && (
-                                <div className="region-dropdown" ref={dropdownRef}>
-                                    <div className="region-item">Seoul</div>
-                                    <div className="region-item">Gyeonggi</div>
-                                    <div className="region-item">Incheon</div>
-                                    <div className="region-item">Busan</div>
-                                    <div className="region-item">Jeju</div>
-                                    <div className="region-item">Ganwon</div>
-                                </div>
-                            )}
                             <div className="filter-options">
                                 <span className="filter-option">Latest</span>
                                 <span className="filter-option">Close</span>
-                                <span className="filter-option">departure time</span>
+                                <span className="filter-option">Departure time</span>
                             </div>
                         </div>
                     </div>
@@ -122,20 +128,24 @@ function Booking() {
                             return (
                                 <div key={index} className="outer-post-card"
                                      onClick={() => navigateToBookingDetail(post.idxNum)}>
-                                    {activeButton === 'passenger' && ( /* Passenger's post인 경우에만 텍스트를 표시 */
-                                        <div className="waiting-for-text">Waiting for Driver</div>
-                                    )}
-                                    {activeButton === 'driver' && (
-                                        <div className="waiting-for-text">Waiting for Passenger</div>
-                                    )}
                                     <div className="post-header">
                                         <div className="post-user-info">
                                             <span className="user-name">{post.nickname}</span>
-                                            <span className="post-date">{displayDate}</span>
                                         </div>
-                                        <div className="post-distance">{post.distance}</div>
+                                        {activeButton === 'passenger' && (
+                                            <div className="waiting-for-text">Waiting<br /> for Driver</div>
+                                        )}
+                                        {activeButton === 'driver' && (
+                                            <div className="waiting-for-text">Waiting<br /> for Passenger</div>
+                                        )}
                                     </div>
                                     <div className="inner-post-card">
+                                        <span className="post-date">Departure time : {displayDate}</span>
+                                        <div className="participant-info">
+                                            <img src={ParticipantIcon} alt="Participant Icon"
+                                                 className="participant-icon"/>
+                                            <span>{post.participant}/{post.maxParticipant}</span>
+                                        </div>
                                         <div className="location-container">
                                             <div className="location-marker departure-marker">
                                                 <div className="location-dot-white"></div>
@@ -159,10 +169,11 @@ function Booking() {
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className="post-distance">{post.distance}km</div>
                                     </div>
                                     <div className='post-form-bottom'>
                                         <div className="post-keywords">
-                                            {post.keywords && post.keywords.map((keyword, kIndex) => (
+                                        {post.keywords && post.keywords.map((keyword, kIndex) => (
                                                 <span key={kIndex} className="post-keyword">{keyword}</span>
                                             ))}
                                         </div>
@@ -171,11 +182,6 @@ function Booking() {
                                         </div>
                                     </div>
                                     <div className="post-actions"></div>
-                                    {post.driverPost && (
-                                        <div>
-                                            {post.participant}/{post.maxParticipant}
-                                        </div>
-                                    )}
                                 </div>
                             );
                         })}
@@ -203,11 +209,12 @@ function Booking() {
             display: flex;
             padding: 20px;
             margin-right: 300px;
+          }
 
           .right-content {
             flex-grow: 1;
             padding: 20px;
-            margin-left: 130px;
+            margin-left: 160px;
           }
 
           .post-form-header {
@@ -215,6 +222,20 @@ function Booking() {
             flex-direction: column;
             align-items: center;
             margin-bottom: 30px;
+          }
+          .post-form-header h1 {
+           font-size: 50px;
+           margin-bottom: 60px; /* 텍스트 아래 여백 추가 */
+           color: #B9CDFF;
+           font-family: 'Sansation', sans-serif;
+           font-weight: bold;
+           display: inline-block;
+           margin-bottom: 30px;
+           background: -webkit-linear-gradient(45deg, #B9CDFF, #123456); /* 크롬, 사파리 등 대부분의 브라우저용 */
+           background: linear-gradient(45deg, #B9CDFF, #123456); /* 표준 그라데이션 */
+           -webkit-background-clip: text; /* 크롬, 사파리용 */
+           background-clip: text; /* 표준 */
+           color: transparent;
           }
 
             
@@ -231,28 +252,30 @@ function Booking() {
             flex-grow: 1; /* 버튼이 동등한 너비 차지 */
             
             color: white; /* 텍스트 색상 */
-            padding: 10px 0px; /* 버튼 내부 여백 */
+            padding: 8px 0px; /* 버튼 내부 여백 */
             margin-right: 10px;
             border: none; /* 테두리 없음 */
             border-radius: 10px; 
-            font-size: 15px; /* 글꼴 크기 */
+            font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
             width: 350px;
-            height: 50px;
+            height: 45px;
+            border: 1px solid #c9c9c9;
         }
         
         .driver-post-btn {
             flex-grow: 1; /* 버튼이 동등한 너비 차지 */
             color: white; /* 텍스트 색상 */
-            padding: 10px 0px; /* 버튼 내부 여백 */
+            padding: 8px 0px; /* 버튼 내부 여백 */
             border: none; /* 테두리 없음 */
             border-radius: 10px; 
-            font-size: 15px; /* 글꼴 크기 */
+            font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
-            width: 250px;
-            height: 50px;
+            width: 350px;
+            height: 45px;
+            border: 1px solid #c9c9c9;
         }
         
         .passenger-post-btn:hover, .driver-post-btn:hover {
@@ -329,7 +352,6 @@ function Booking() {
             margin-top: 5px;
             margin-right: 600px;
             margin-bottom: 20px;
-           
           }
 
           .filter-btn {
@@ -337,7 +359,6 @@ function Booking() {
             border: 1px solid #ccc;
             border-radius: 20px;
             background-color: #87CEEB;
-           
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
             margin-right: 10px; /* 필터 버튼과 옵션 사이 간격을 추가 */
@@ -349,6 +370,7 @@ function Booking() {
           }
 
           .filter-options {
+            margin-left: 70px;
             display: flex;
             flex-direction: row; 
             align-items: center; 
@@ -358,8 +380,15 @@ function Booking() {
           .filter-option {
             cursor: pointer;
             transition: color 0.3s;
-            padding: 5px 0; 
             margin-right: 10px;
+            background-color: #ffffff;
+            color: #779dff;
+            padding: 8px 16px; /* Padding */
+            border-radius: 20px; /* Rounded corners */
+            font-size: 0.9em; /* Text size */
+            white-space: nowrap; /* Prevent wrapping */
+            cursor: pointer; /* Add cursor pointer */
+            border: 1px solid #c9c9c9;
           }
 
           .filter-option:hover {
@@ -386,6 +415,8 @@ function Booking() {
           }
 
           .post-user-info {
+            margin-top: 30px;
+            margin-left: 10px;
             display: flex;
             align-items: center;
             flex-direction: column; /*수직으로 배치*/
@@ -408,8 +439,9 @@ function Booking() {
             
             font-weight: bold;
             color: blue;
-            margin-left: auto; /* 우측으로 정렬 */
-            margin-left: 700px;
+            text-align: right;
+            margin-right: 10px;
+            margin-top: 15px;
         }
 
 
@@ -424,20 +456,47 @@ function Booking() {
           }
 
           .post-date {
-            margin-top: 30px;
-           
-            
+            margin-left: 30px;
+            font-weight: 700;
+            color: #black;
+            margin-bottom: 20px;
           }
 
           .post-distance {
-            /* 거리 스타일 */
+            margin-left: 30px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #888888;
           }
 
           .inner-post-card {
             background-color: #f5f5f5;
-            padding: 10px;
+            padding: 30px 10px;
             border-radius: 8px;
             margin-top: 50px;
+            padding-bottom: 20px;
+            position: relative;
+          }
+
+          .participant-info {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+            background-color: rgba(28, 92, 255, 0.8);
+            color: white; 
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1rem; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+          }
+          .participant-icon {
+           width: 22px; /* 아이콘의 너비 */
+           height: 22px; /* 아이콘의 높이 */
           }
 
           .posts-container {
@@ -469,8 +528,8 @@ function Booking() {
           .post-destination,
           .post-date-time {
             margin-bottom: 10px;
-            
           }
+
 
           .post-actions {
             text-align: right;
@@ -488,9 +547,11 @@ function Booking() {
             align-items: flex-start;
             margin-bottom: 20px;
             position: relative;
+            margin-top:10px;
           }
 
           .post-keywords {
+            margin-left: 5px;
             display: flex;
             flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
             gap: 10px; /* 키워드 사이의 간격 */
@@ -511,6 +572,7 @@ function Booking() {
             color: #666;
             margin-top: 25px;
             margin-bottom: 10px;
+            margin-left: 10px;
           }
 
           .location-marker {
@@ -518,7 +580,6 @@ function Booking() {
             flex-direction: column;
             align-items: center;
             margin-right: 10px;
-            
           }
 
           .location-dot-white {
@@ -551,7 +612,6 @@ function Booking() {
 
           .location-point {
             text-align: center;
-            
           }
           
           .location-title1 {
@@ -569,12 +629,10 @@ function Booking() {
 
           .location-details {
             margin-left: 50px; /* 선과의 간격을 만들기 위해 margin-left 적용 */
-            flex-grow: 1;
             display: flex;
-            justify-content: space-between;
+            justify-content: column;
             align-items: center;
             min-height: 60px; /* 세부사항이 적을 때도 컨테이너가 줄어들지 않도록 최소 높이 설정 */
-            
           }
 
           .location-line {
@@ -597,14 +655,12 @@ function Booking() {
           .location-point.destination {
             text-align: left;
             flex-grow: 1;
-            
           }
 
           .location-title,
           .location-detail {
             color: #333; /* 텍스트 색깔 */
             font-size: 0.9em; /* 텍스트 크기 */
-            
           }
           
           .pagination-container {
@@ -624,6 +680,26 @@ function Booking() {
           color: #1c5cff; /* 활성 상태일 때의 색상 */
           text-decoration: underline; /* 활성 상태일 때의 텍스트 꾸미기 */
         }
+        
+        .post-icon {
+         margin-right: 8px; /* 아이콘과 텍스트 사이 간격 조정 */
+         width: 22px; /* 아이콘의 너비 조정 */
+         height: 22px; /* 아이콘의 높이 조정 */
+         vertical-align: middle; /* 텍스트와 수직 정렬 */
+        }
+        .driver-icon {
+         margin-right: 8px; /* 아이콘과 텍스트 사이 간격 조정 */
+         width: 22px; /* 아이콘의 너비 조정 */
+         height: 22px; /* 아이콘의 높이 조정 */
+         vertical-align: middle; /* 텍스트와 수직 정렬 */
+        }
+        .button-content {
+        display: flex;
+        align-items: center; /* 수직 정렬 */
+        justify-content: center; /* 가로 방향 가운데 정렬 */
+        gap: 6px; /* 아이콘과 텍스트 사이 간격 조정 */
+        }
+
 
           
         `}

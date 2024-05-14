@@ -5,7 +5,7 @@ import Navbar from '../component/Navbar';
 import EllipseSVG from '../icons/ellipse.svg';
 
 const StyledLinkWrapper = styled.div`
-  margin-top: 180px;
+  margin-top: 160px;
 `;
 
 const StyledLink = styled(Link)`
@@ -26,7 +26,7 @@ const StyledLink = styled(Link)`
 const EllipseIcon = styled.img`
   position: fixed;
   bottom: -120px;
-  right: -70px;
+  right: -50px;
 `;
 
 function MyPageMain() {
@@ -36,7 +36,7 @@ function MyPageMain() {
             <div className="my-page-content">
                 <StyledLinkWrapper>
                     <StyledLink to="/mypage/signupInformation">Sign-up information</StyledLink><br />
-                    <StyledLink to="/mypage/carpoolRecords">Recent carpooling records</StyledLink><br />
+                    <StyledLink to="/mypage/carpoolRecords">Carpool history</StyledLink><br />
                     {/*<StyledLink to="/mypage/myPosts">My Post list</StyledLink><br />*/}
                     {/*<StyledLink to="/mypage/myComments">My Comment list</StyledLink><br />*/}
                     <StyledLink to="/chatPage">Chatting list</StyledLink>
