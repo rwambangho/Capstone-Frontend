@@ -183,16 +183,34 @@ function Booking() {
                             const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
 
                             return (
+<<<<<<< HEAD
                                 <div key={index} className="outer-post-card" onClick={() => navigateToBookingDetail(post.idxNum)}>
+=======
+
+                                <div key={index} className="outer-post-card"
+                                     onClick={() => navigateToBookingDetail(post.idxNum)}>
+>>>>>>> 2077cf9 (별점)
                                     <div className="post-header">
                                         <div className="post-user-info">
                                             <span className="user-name">{post.nickname}</span>
                                             {isDriver && <StarRating rating={post.avgStar} />}
+<<<<<<< HEAD
                                               
                                             <span className="post-date">{displayDate}</span>
                                         </div>
                                         <div className="post-distance">{distances[post.idxNum]}km</div>
                                         <div className="post-distance1">{post.distance}km</div>
+=======
+                                        </div>
+                                        <div className="post-distance">{distances[post.idxNum]}km</div>
+                                        
+                                        {activeButton === 'passenger' && (
+                                            <div className="waiting-for-text">Waiting<br /> for Driver</div>
+                                        )}
+                                        {activeButton === 'driver' && (
+                                            <div className="waiting-for-text">Waiting<br /> for Passenger</div>
+                                        )}
+>>>>>>> 2077cf9 (별점)
 
                                     </div>
                                     <div className="inner-post-card">
@@ -317,7 +335,10 @@ function Booking() {
             font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2077cf9 (별점)
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
@@ -520,6 +541,10 @@ function Booking() {
             margin-right: 10px;
             margin-top: 15px;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2077cf9 (별점)
 
 
 

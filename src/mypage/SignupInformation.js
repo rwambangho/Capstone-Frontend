@@ -1,4 +1,3 @@
-//SignupInformation.js
 import React, { useState, useEffect } from 'react';
 import '../css/mypage/SignupInformation.css';
 import Navbar from '../component/Navbar';
@@ -11,7 +10,7 @@ function SignupInformation() {
     nickname: '',
     birthdate: '',
     avgStar: 0.0,
-    profileImage: null // 프로필 이미지 추가
+    profileImage: '' // Initialize as an empty string
   });
 
   useEffect(() => {
@@ -110,7 +109,7 @@ function SignupInformation() {
                       hidden
                   />
                   <div className="profile-image" style={{
-                    backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/home/ubuntu/images', '/images') : '/path/to/default/image'})`
+                   backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/home/ubuntu/images', '/images') : '/path/to/default/image'})`
                   }}>
 
                     {/* 프로필 이미지 표시 */}
@@ -119,28 +118,28 @@ function SignupInformation() {
                 </label>
               </div>
               <div className="form-group">
-                <label4>Name</label4>
+                <label>Name</label>
                 <input type="text" name="name" value={user.name} onChange={handleChange}/>
               </div>
               <div className="form-group">
-              <label3>ID</label3>
-                <input3 type="text" name="id" value={user.id} onChange={handleChange} />
+                <label>ID</label>
+                <input type="text" name="id" value={user.id} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label1>Phone Number</label1>
-                <input1 type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
+                <label>Phone Number</label>
+                <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Bithdate</label>
+                <label>Birthdate</label>
                 <input type="text" name="birthdate" value={user.birthdate} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label2>Nickname</label2>
-                <input2 type="text" name="nickname" value={user.nickname} onChange={handleChange} />
+                <label>Nickname</label>
+                <input type="text" name="nickname" value={user.nickname} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label5>Star Rating</label5>
-                <input5 type="text" name="avgStar" value={user.avgStar} readOnly />
+                <label>Star Rating</label>
+                <input type="text" name="avgStar" value={user.avgStar} readOnly />
               </div>
               <div className="form-actions">
                 <button type="submit">Save</button>
