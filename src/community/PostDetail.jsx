@@ -372,7 +372,7 @@ const PostDetail = () => {
                   </NicknameWrapper>
                 </div>
               </div>
-              {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
+              {post.image && <img src={post.image.replace('/home/ubuntu/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
               <p className="post-content">{post.content}</p>
               <div className="button-container">
                 <button className={`like-button ${liked ? 'liked' : ''}`} onClick={toggleLike}>

@@ -15,6 +15,7 @@ const { kakao } = window;
 
 
 function DriverPost() {
+
     const navigate = useNavigate();
     const [departure, setDeparture] = useState('');
     const [destination, setDestination] = useState('');
@@ -24,6 +25,7 @@ function DriverPost() {
     const [showSearchResults, setShowSearchResults] = useState(false);
     const [message, setMessage] = useState('');
     const [nickname, setNickname] = useState(getCookieValue('nickname'));
+    const [id, setId] = useState(getCookieValue('id'));
     const [maxParticipant ,setMaxParticipant]=useState('');
     const [driverPost]=useState(true);
     const [departurePlaces, setDeparturePlaces] = useState([]);
@@ -31,10 +33,14 @@ function DriverPost() {
     const [selectedDeparturePlace, setSelectedDeparturePlace] = useState({ name: "", address: "", x: "", y: "" });
     const [selectedArrivalPlace, setSelectedArrivalPlace] = useState({ name: "", address: "", x: "", y: "" });
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태를 관리
+
+
     const ps = new kakao.maps.services.Places();
     const [passengerButtonActive, setPassengerButtonActive] = useState(true);
     const [driverButtonActive, setDriverButtonActive] = useState(false);
 
+
+ 
 
 
     const handleSubmit = async (event) => {

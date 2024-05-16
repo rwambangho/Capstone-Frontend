@@ -8,6 +8,40 @@ function CarpoolRecords() {
   // 데이터를 저장할 상태 변수 선언
   const [data, setData] = useState([]);
   const [user,setUser]=useState(getCookieValue("nickname"));
+  const [contents, setContents]=useState('');
+  
+  const handleRating = (userId, star) => {
+    axios.put(`/recruits/star`, { id: userId , star: star})
+      .then(() => {
+        console.log(parseFloat(star));
+        console.log(userId);
+        const updatedData = data.map(item => {
+          if (item.userId === userId) {
+            return { ...item, star }; 
+          }
+          return item;
+        });
+        setData(updatedData);
+      })
+      .catch(error => console.error('Rating update failed:', error));
+  };
+  const StarRating = ({ starsSelected = 0.0, totalStars = 5.0, onRate = f => f }) => {
+    return (
+      <div className="star-rating">
+        {[...Array(totalStars)].map((n, i) =>
+          <Star key={i}
+                selected={i < starsSelected}
+                onClick={() => onRate(i + 1)}
+          />
+        )}
+      </div>
+    );
+  };
+  const Star = ({ selected = false, onClick = f => f }) => (
+    <div className={(selected ? 'star selected' : 'star')} onClick={onClick}>
+      ★
+    </div>
+  );
 
   // 컴포넌트가 마운트될 때 GET 요청 보내기
   useEffect(() => {
@@ -15,7 +49,9 @@ function CarpoolRecords() {
     axios.get('/recruits/records',{
 
       params:{
-        nickname:user
+        nickname:user,
+        contents:contents
+        
       }
 
 
@@ -50,7 +86,8 @@ function CarpoolRecords() {
       <ul>
         {data.map(item => (
           <li key={item.id}>
-            <Link to={`/booking/${item.idxNum}`}>{item.nickname}</Link>
+            <Link to={`/booking/${item.idxNum}`}>{item.nickname} - {item.title}</Link>
+            <StarRating starsSelected={item.star} onRate={star => handleRating(item.id, star)} />
           </li>
         ))}
       </ul>

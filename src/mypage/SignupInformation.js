@@ -110,7 +110,7 @@ function SignupInformation() {
                       hidden
                   />
                   <div className="profile-image" style={{
-                    backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images') : '/path/to/default/image'})`
+                    backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/home/ubuntu/images', '/images') : '/path/to/default/image'})`
                   }}>
 
                     {/* 프로필 이미지 표시 */}
