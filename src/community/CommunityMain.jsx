@@ -1,3 +1,4 @@
+//CommunityMain.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -32,18 +33,6 @@ const ContentWrapper = styled.div`
     border-radius: 10px;
 `;
 
-const PaginationContainer = styled.nav`
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-`;
-
-const PageNumber = styled.span`
-    cursor: pointer;
-    margin: 0 8px;
-    color: ${props => props.active ? '#1c5cff' : '#000'};
-    text-decoration: ${props => props.active ? 'underline' : 'none'};
-`;
 
 const SideBarContainer = styled.div`
     flex: 0 0 17%;
@@ -73,9 +62,9 @@ const Icon = styled.img`
 `;
 function CommunityMain() {
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
-    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('/community/')
@@ -103,25 +92,51 @@ function CommunityMain() {
                     {currentPosts.map(post => (
                         <Post key={post.id} post={post}/>
                     ))}
-                    <PaginationContainer>
-                        {[...Array(Math.ceil(posts.length / postsPerPage)).keys()].map(number => (
-                            <PageNumber
-                                key={number}
-                                active={currentPage === number + 1}
-                                onClick={() => paginate(number + 1)}
-                            >
-                                {number + 1}
-                            </PageNumber>
-                        ))}
-                    </PaginationContainer>
+
+                    <style>
+                        {`
+                        .pagination-container {
+                        display: flex;
+                        justify-content: center;
+                        margin-bottom: 25px;
+                    }
+
+                        .page-number {
+                        cursor: pointer;
+                        margin: 0 8px;
+                        color: #000; /* 기본 색상 */
+                        text-decoration: none; /* 기본 텍스트 꾸미기 제거 */
+                    }
+
+                        .page-number.active {
+                        color: #1c5cff; /* 활성 상태일 때의 색상 */
+                        text-decoration: underline; /* 활성 상태일 때의 텍스트 꾸미기 */
+                    }
+                     `}
+                    </style>
                 </ContentWrapper>
                 <SideBarContainer>
                     <WritePostButton onClick={() => navigate('/registercomform')}>
-                        <Icon src={EditIcon} alt="Edit Icon" /> Write a Post
+                        <Icon src={EditIcon} alt="Edit Icon"/> Write a Post
                     </WritePostButton>
                     <ChatBot/>
                 </SideBarContainer>
+
             </ContentContainer>
+            <div className="pagination-container">
+                            <span className="page-number"
+                                  onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
+                {[...Array(Math.ceil(posts.length / postsPerPage)).keys()].map(number => (
+                    <span
+                        key={number}
+                        className={`page-number ${currentPage === number + 1 ? 'active' : ''}`}
+                        onClick={() => paginate(number + 1)}
+                    >
+                                    {number + 1}
+                                </span>
+                ))}
+                <span className="page-number" onClick={() => paginate(currentPage + 1)}>Next &raquo;</span>
+            </div>
         </Container>
     );
 
