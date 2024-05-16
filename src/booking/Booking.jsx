@@ -223,6 +223,7 @@ function Booking() {
             align-items: center;
             margin-bottom: 30px;
           }
+          
           .post-form-header h1 {
            font-size: 50px;
            margin-bottom: 60px; /* 텍스트 아래 여백 추가 */
@@ -250,7 +251,6 @@ function Booking() {
 
         .passenger-post-btn {
             flex-grow: 1; /* 버튼이 동등한 너비 차지 */
-            
             color: white; /* 텍스트 색상 */
             padding: 8px 0px; /* 버튼 내부 여백 */
             margin-right: 10px;
@@ -444,9 +444,6 @@ function Booking() {
             margin-top: 15px;
         }
 
-
-        
-
           .user-details {
             margin-left: 10px;
           }
@@ -494,6 +491,7 @@ function Booking() {
             justify-content: center;
             gap: 5px;
           }
+          
           .participant-icon {
            width: 22px; /* 아이콘의 너비 */
            height: 22px; /* 아이콘의 높이 */
