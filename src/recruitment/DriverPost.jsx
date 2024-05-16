@@ -15,17 +15,34 @@ function DriverPost() {
   const [time, setTime] = useState('');
   const [keywords, setKeywords] = useState([]);
   const [message, setMessage] = useState('');
-  const [nickname, setNickname] = useState(getCookieValue('nickname'));
+  const [nickname, setNickname] = useState(getCookieValue('nickname')|| 'User');
   const [maxParticipant ,setMaxParticipant]=useState('');
   const [driverPost]=useState(true);
   const [departurePlaces, setDeparturePlaces] = useState([]);
   const [arrivalPlaces, setArrivalPlaces] = useState([]);
   const [selectedDeparturePlace, setSelectedDeparturePlace] = useState({ name: "", address: "", x: "", y: "" });
   const [selectedArrivalPlace, setSelectedArrivalPlace] = useState({ name: "", address: "", x: "", y: "" });
+  const [avgStar, setAvgStar] = useState(0);
+  
 
     const ps = new kakao.maps.services.Places();
 
-
+    useEffect(() => {
+      const fetchUserRating = async () => {
+        const userId = getCookieValue('id');
+        if (userId) {
+          try {
+            const response = await axios.get(`/user/getUser/${userId}`);
+            setNickname(response.data.nickname);
+            setAvgStar(response.data.avgStar);
+          } catch (error) {
+            console.error('Failed to fetch user rating:', error);
+          }
+        }
+      };
+  
+      fetchUserRating();
+    }, []);
 
   
   const handleSubmit = async (event) => {
@@ -40,12 +57,13 @@ function DriverPost() {
         departureDate: date,
         keywords: keywords,
         message : message,
+        avgStar : avgStar,
         maxParticipant:maxParticipant,
         driverPost:driverPost,
         departureX: selectedDeparturePlace.x,
         departureY: selectedDeparturePlace.y,
         arrivalX: selectedArrivalPlace.x,
-        arrivalY: selectedArrivalPlace.y
+        arrivalY: selectedArrivalPlace.y,
       });
 
       console.log('Response from server:', response.data);
@@ -159,6 +177,7 @@ const handleArrivalSubmit = (event) => {
     const keyword = document.getElementById('arrival').value;
     searchArrivalPlaces(keyword);
 };
+
 
 
 
@@ -490,6 +509,7 @@ const handleArrivalSubmit = (event) => {
                         required
                     />
                   </div>
+                
                   <div className="max-participants-input">
   <label>Maximum Participants</label>
   <select onChange={(e) => setMaxParticipant(e.target.value)} required>

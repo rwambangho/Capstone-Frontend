@@ -6,10 +6,10 @@ import SockJS from 'sockjs-client';
 import '../css/chatRoom.css';
 import Navbar from '../component/Navbar';
 
-function ChatRoom() {
+function ChatRoom({param1,param2}) {
   const location = useLocation();
-  const [userId1, setUserId1] = useState('');
-  const [userId2, setUserId2] = useState('');
+
+  const [selectedRoom, setSelectedRoom] = useState({ userId1: '', userId2: '' });
   const [message, setMessage] = useState('');
   const [stompClient, setStompClient] = useState(null);
   const [chatRoomNumber, setChatRoomNumber] = useState('');
@@ -40,7 +40,7 @@ function ChatRoom() {
         const timestamp = new Date().toISOString();
         const messageToSend = {
           message,
-          sender: userId1,
+          sender: selectedRoom.userId1,
           timestamp
         };
         stompClient.send(`/app/chat/${chatRoomNumber}`, {}, JSON.stringify(messageToSend));
@@ -50,52 +50,62 @@ function ChatRoom() {
   
     send(stompClient, chatRoomNumber);
   };
-  
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const userId1Param = searchParams.get('userId1');
-    const userId2Param = searchParams.get('userId2');
+    console.log(param1);
+    console.log(param2);
 
-
-  
-    if (userId1Param && userId2Param) {
-      setUserId1(userId1Param);
-      setUserId2(userId2Param);
-  
-      axios.post('/Chat', {
-        userId1: userId1Param,
-        userId2: userId2Param
-      })
-        .then(function (response) {
-          const chatRoomNumber = response.data;
-          setChatRoomNumber(chatRoomNumber);
-          axios.get(`/chat/history/${chatRoomNumber}`)
-          .then(response => {
-            const previousMessages = response.data.map(item => {
-              const { message, userDto: { nickname }, timestamp } = item;
-              return { message, sender: nickname, timestamp };
-            });
-            setMessages(previousMessages);
-          })
-          .catch(error => {
-            console.error('Error fetching chat history:', error);
-          });
-      
-           
-            console.log(stompClient);
-           
-        
-            connectWebSocket(chatRoomNumber);
-            console.log("웹소켓 연결시도");
-          
-    
-  
-        })
-        .catch(function (error) {
-          console.error('Error fetching chat room number:', error);
+    if (param1 !== undefined && param2 !== undefined) {
+        console.log("props로 전달");
+        setSelectedRoom({
+            userId1: param1,
+            userId2: param2
+        });
+    } else {
+        console.log("쿼리문으로 전달");
+        const searchParams = new URLSearchParams(location.search);
+        const userId1Param = searchParams.get('userId1');
+        const userId2Param = searchParams.get('userId2');
+        setSelectedRoom({
+            userId1: userId1Param,
+            userId2: userId2Param
         });
     }
-  }, []);
+}, [param1, param2]);
+
+useEffect(() => {
+    if (selectedRoom.userId1 !== '' && selectedRoom.userId2 !== '') {
+        console.log("selectedRoom 업데이트");
+        axios.post('/Chat', {
+            userId1: selectedRoom.userId1,
+            userId2: selectedRoom.userId2
+        })
+        .then(function (response) {
+            const chatRoomNumber = response.data;
+            setChatRoomNumber(chatRoomNumber);
+            
+            axios.get(`/chat/history/${chatRoomNumber}`)
+            .then(response => {
+                const previousMessages = response.data.map(item => {
+                    const { message, userDto: { nickname }, timestamp } = item;
+                    return { message, sender: nickname, timestamp };
+                });
+                setMessages(previousMessages);
+            })
+            .catch(error => {
+                console.error('Error fetching chat history:', error);
+            });
+    
+            console.log(stompClient);
+            connectWebSocket(chatRoomNumber);
+            console.log("웹소켓 연결시도");
+        })
+        .catch(function (error) {
+            console.error('Error fetching chat room number:', error);
+        });
+    }
+}, [selectedRoom]);
+
+
   
 
   function formatTimestamp(timestamp) {
@@ -113,13 +123,13 @@ function ChatRoom() {
 
    return (
       <div>
-        <Navbar />
+       
         <h1 className="chat-title">Chat Room</h1>
         <div className="chat-container">
           <div className="messages-container">
             {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.sender === userId1 ? 'receiver' : 'sender'}`}>
-                <div className="message-sender">{msg.sender === userId1 ? 'Me' : msg.sender}</div>
+              <div key={index} className={`message ${msg.sender === selectedRoom.userId1 ? 'receiver' : 'sender'}`}>
+                <div className="message-sender">{msg.sender === selectedRoom.userId1 ? 'Me' : msg.sender}</div>
                 <div className="message-text">{msg.message}</div>
                 <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
               </div>

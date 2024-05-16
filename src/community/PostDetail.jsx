@@ -6,9 +6,18 @@ import CommunitySidebar from '../component/CommunitySidebar';
 import styled from 'styled-components';
 import ChatBot from '../chat/ChatBot';
 import { useNavigate } from 'react-router-dom';
+import EditIcon from "../icons/edit.svg";
+import blueIcon from '../icons/blueicon.svg';
+import commentIcon from '../icons/comment.svg';
+import blueHeartIcon from '../icons/blueheart.svg';
+import heartIcon from '../icons/heart.svg';
 
 // Styled components 정의
+
 const PageContainer = styled.div`
+  border-top: 1px solid #ccc !important; // CSS 우선순위 강제 적용
+  display: block; // 요소가 확실히 블록 레벨로 렌더링되도록 함
+  min-height: 1px;
   .post-detail {
     margin-bottom: 20px;
   }
@@ -71,6 +80,7 @@ const PageContainer = styled.div`
   }
 
   .button-container button {
+    margin-top: 20px;
     padding: 8px 20px;
     font-size: 0.9rem;
     cursor: pointer;
@@ -90,11 +100,12 @@ const PageContainer = styled.div`
   .comment-section {
     border-top: 1px solid #ccc;
     padding-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
   }
 
   .comment-container {
     margin-bottom: 20px;
+    margin-top: 15px;
   }
 
   .comment {
@@ -131,12 +142,12 @@ const PageContainer = styled.div`
   }
 
   .comment-form button[type='submit'] {
-    padding: 10px 10px;
+    padding: 10px 20px;
     font-size: 0.9rem;
-    border: 1px solid #007bff;
+    border: 1px solid #1C5CFF;
     border-radius: 5px;
     height: auto;
-    background-color: #007bff;
+    background-color: #1C5CFF;
     cursor: pointer;
     width: auto;
   }
@@ -181,13 +192,16 @@ const SidebarContainer = styled.div`
 
 // 버튼 스타일드 컴포넌트 정의
 const WritePostButton = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: auto;
+    display: flex;        // Use flexbox to align children
+    align-items: center;  // Align children vertically in the center
+    justify-content: center;  // Align children horizontally in the center
+    padding: 8px 20px;
+    background-color: #1C5CFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
 `;
 
 const PageNumber = styled.span`
@@ -195,6 +209,30 @@ const PageNumber = styled.span`
   margin: 0 8px;
   color: ${props => props.active ? '#1c5cff' : '#000'};
   text-decoration: ${props => props.active ? 'underline' : 'none'};
+`;
+const Icon = styled.img`
+    width: 20px; /* 아이콘 크기 조정 */
+    height: 20px; /* 아이콘 크기 조정 */
+    margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 조정 */
+`;
+const CommentButton = styled.button`
+    display: flex;        // Use flexbox to align children
+    align-items: center;  // Align children vertically in the center
+    justify-content: center;  // Align children horizontally in the center
+    padding: 8px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+`;
+
+const NicknameWrapper = styled.div`
+  border-radius: 20px; /* 타원 모양의 테두리 반경 설정 */
+  border: 1px solid #969696; /* 테두리 색상 및 두께 설정 */
+  padding: 5px 20px; /* 내부 패딩 설정 */
+  display: inline-block; /* 요소를 인라인 블록으로 표시하여 너비와 높이를 컨텐츠 크기에 맞게 조절 */
 `;
 
 
@@ -281,10 +319,10 @@ const PostDetail = () => {
   const deletePost= async()=>{
     try{
       await axios.delete(`/community/${post.id}`)
-     }
-     catch(error){
+    }
+    catch(error){
       console.error("삭제 실패");
-     }
+    }
 
   };
 
@@ -318,33 +356,49 @@ const PostDetail = () => {
         <Navbar />
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
           <CommunitySidebar />
-          <div style={{ flex: '1', backgroundColor: '#ffffff', padding: '60px' }}>
+
+          <div style={{ flex: '1', backgroundColor: '#ffffff',  padding: '60px', marginLeft: '30px', borderRadius: '10px' }}>
+
             <div className="post-detail">
               <div className="post-detail-header">
                 <p>{formatDateTime(post.time)}</p>
                 <h2>{post.title}</h2>
-                <button onClick={deletePost}>삭제</button>
+                {post.nickName === userId && <button onClick={deletePost}>삭제</button>}
                 <div className="info-container">
                   <div className="stats">
                     <span>hits {post.clickCount}</span>
                     <span>likes {post.likeCount}</span>
                     <span>comments {post.commentsDto.length}</span>
                   </div>
-                  <p className='author-info'> By {post.nickName}</p>
+                  {/*<p className='author-info'> By {post.nickName}</p>*/}
+                  <NicknameWrapper className="NicknameWrapper">
+                    <p style={{ margin: '0', color: "grey", fontSize: "12px" }}> By {post.nickName}</p>
+                  </NicknameWrapper>
                 </div>
               </div>
               {post.image && <img src={post.image.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
               <p className="post-content">{post.content}</p>
               <div className="button-container">
                 <button className={`like-button ${liked ? 'liked' : ''}`} onClick={toggleLike}>
-                  {liked ? 'Likes ♥' : 'Likes ♡'}
+                  {liked ? (
+                      <div style={{display: 'flex', alignItems: 'center'}}>
+                        <img src={blueHeartIcon} alt="Blue Heart Icon"/>
+                        <span style={{marginLeft: '5px'}}>Like</span>
+                      </div>
+                  ) : (
+                      <div style={{display: 'flex', alignItems: 'center'}}>
+                        <img src={heartIcon} alt="Heart Icon"/>
+                        <span style={{marginLeft: '5px'}}>Like</span>
+                      </div>
+                  )}
                 </button>
-                <button className='comment-button' onClick={() => {
+                <CommentButton className='comment-button' onClick={() => {
                   setShowComments(!showComments);
                   setShowPagination(!showComments); // 댓글 보기 버튼을 누를 때 페이지네이션 상태를 댓글 보기 상태의 반대로 설정
                 }}>
-                  {showComments ? 'Comments ▼' : 'Comments ▲'}
-                </button>
+                  <Icon src={commentIcon} alt="Comment Icon"/>
+                  <span>{showComments ? 'Comments ▲' : 'Comments ▼'}</span>
+                </CommentButton>
               </div>
               {showComments && (
                   <div className='comment-section'>
@@ -352,7 +406,15 @@ const PostDetail = () => {
                       {currentComments.length > 0 ? (
                           currentComments.map((comment, index) => (
                               <div className='comment' key={index}>
-                                <p>{comment.nickName}</p>
+                                <div style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  marginLeft: '10px',
+                                  marginTop: '10px'
+                                }}>
+                                  <Icon src={blueIcon} alt="Blue Icon" /> {/* 파란색 아이콘 추가 */}
+                                  <p style={{ margin: '0' }}>{comment.nickName}</p> {/* 닉네임 */}
+                                </div>
                                 <p>{comment.comment}</p>
                                 <p>{formatDateTime(comment.time)}</p>
                               </div>
@@ -368,7 +430,7 @@ const PostDetail = () => {
                           value={commentInput}
                           onChange={handleInputChange}
                       />
-                      <button type="submit">register</button>
+                      <button type="submit" style={{color: '#ffffff'}}>Register</button>
                     </form>
                   </div>
               )}
@@ -389,7 +451,7 @@ const PostDetail = () => {
           </div>
           <SidebarContainer>
             <WritePostButton onClick={() => navigate('/registercomform')}>
-              Write a Post
+              <Icon src={EditIcon} alt="Edit Icon" /> Write a Post
             </WritePostButton>
             <ChatBot />
           </SidebarContainer>

@@ -1,3 +1,4 @@
+//Booking.js
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
@@ -14,52 +15,87 @@ const StarRating = ({ rating }) => {
   }
   return <div>{stars}</div>;
 };
+
+
+
 function Booking() {
-  const [posts, setPosts] = useState([]);
-  const [showRegions, setShowRegions] = useState(false);  // 드롭다운 리스트 표시 상태
-  const navigate = useNavigate();
-  const dropdownRef = useRef(null); // useRef로 참조 생성
+    const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
+    const [showRegions, setShowRegions] = useState(false);
+    const [activeButton, setActiveButton] = useState(null);
+    const dropdownRef = useRef(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(5);
+    const [distances, setDistances] = useState({});
+
   
-  useEffect(() => {
     
-    fetchPassengerPosts();
-    fetchDriverPosts();
-  }, []);
 
+    useEffect(() => {
+        
+        fetchDriverPosts();
+        fetchPessengerPosts();
+        
+        navigator.geolocation.getCurrentPosition((position) => { //사용자현재위치 불러오기
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          updateDistances(latitude, longitude);
+          
+      });
+    }, []);
 
-  const fetchDriverPosts = async () => {
-    try {
-      const response = await axios.get('/recruits/driver');
-      setPosts(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
+    const updateDistances = (latitude, longitude) => {
+      posts.forEach(post => {
+          const postData = {
+              currentX: latitude,
+              currentY: longitude,
+              departureX: post.departureLatitude, // 예를 들어 post 데이터에 위도, 경도 정보가 있다고 가정
+              departureY: post.departureLongitude 
+          };
+          axios.post('/recruits/distance2', postData)
+              .then(response => {
+                  setDistances(prev => ({ ...prev, [post.id]: response.data.distance2 }));
+              })
+              .catch(error => console.error('Error calculating distance:', error));
+      });
   };
 
-  const fetchPassengerPosts = async () => {
-    try {
-      const response = await axios.get('/recruits/passenger');
-      setPosts(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
-  };
-  
-  useEffect(() => {
-    // 외부 클릭 감지를 위한 함수
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowRegions(false); // 드롭다운 외부 클릭 시 숨김
-      }
+    const fetchDriverPosts = async () => {
+        try {
+            const response = await axios.get('/recruits/driver');
+        //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
+        setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setActiveButton('driver');
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+    const fetchPessengerPosts = async () => {
+        try {
+            const response = await axios.get('/recruits/passenger');
+        //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
+        setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setActiveButton('passenger');
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
     };
-  }, [dropdownRef]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowRegions(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownRef]);
 
 
   // 포스트 클릭 시 상세 페이지로 이동
@@ -67,121 +103,175 @@ function Booking() {
     navigate(`/booking/${postId}`); // 해당 포스트의 ID를 파라미터로 전달하여 상세 페이지로 이동
   };
   // 'entire' 버튼을 클릭할 때 실행될 함수
-  const toggleRegionDropdown = () => {
-    setShowRegions(!showRegions);  // 상태 토글
-  };
+    const toggleRegionDropdown = () => {
+        setShowRegions(!showRegions);
+    };
+    // 글 필터링
+    const filterPosts = (filter) => {
+      if (filter === 'latest') {
+        const sorted = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setPosts(sorted);
+      } else if (filter === 'close') {
+        // "Close" 필터 로직 (가까운 거리순, 이 예시에서는 distance 값을 기준으로 정렬)
+        const sorted = [...posts].sort((a, b) => a.distance - b.distance);
+        setPosts(sorted);
+      } else if (filter === 'departure time') {
+        // "Departure Time" 필터 로직 (출발 시간순)
+        const sorted = [...posts].sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
+        setPosts(sorted);
+      }
+    };
+    
+    
+    
 
-  return (
-      <div className="page-container">
-        <Navbar />
-        <div className="main-content">
-          <Sidebar />
-          <div className="right-content">
-            <div className="post-form-header">
-              <h1>Choose the right post for you!</h1>
-              <div className="post-buttons">
-                <button className="passenger-post-btn" onClick={fetchPassengerPosts}>Passenger's post</button>
-                <button className="driver-post-btn" onClick={fetchDriverPosts}>Driver's post</button>
-              </div>
-              <div className="search-section">
-                <input type="text" className="search-input" placeholder="Search for regions and keywords..." />
-              </div>
-              <div className="filter-section">
-              <button className="filter-btn active" onClick={toggleRegionDropdown}>entire</button>
-                {showRegions && (
-                    <div className="region-dropdown" ref={dropdownRef}>
-                      <div className="region-item">Seoul</div>
-                      <div className="region-item">Gyeonggi</div>
-                      <div className="region-item">Incheon</div>
-                      <div className="region-item">Busan</div>
-                      <div className="region-item">Jeju</div>
-                      <div className="region-item">Ganwon</div>
-                    </div>
-                )}
-                <div className="filter-options">
-                  <span className="filter-option">Latest</span>
-                  <span className="filter-option">Close</span>
-                  <span className="filter-option">departure time</span>
-                </div>
-              </div>
-            </div>
-            <div className="posts-container">
-              {posts.map((post, index) => {
-                const departureDate = new Date(post.departureDate);
-                const formattedDate = departureDate.toLocaleDateString('ko-KR', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit'
-                });
-                const dayOfWeek = departureDate.toLocaleDateString('en-US', { weekday: 'short' });
-                const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
+    
 
-                return (
-                    <div key={index} className="outer-post-card" onClick={() => navigateToBookingDetail(post.idxNum)}>
-                      <div className="post-header">
-                        <div className="post-user-info">
-                          <span className="nick-name">{post.nickname}</span>
-                          <StarRating rating={post.avgStar} />
-                          <span className="post-date">{displayDate}</span>
+  
+    
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+    return (
+        <div className="page-container">
+            <Navbar />
+            <div className="main-content">
+                <Sidebar />
+                <div className="right-content">
+                    <div className="post-form-header">
+                        <h1>Choose the right post for you!</h1>
+                        <div className="post-buttons">
+                            <button
+                                className={`passenger-post-btn ${activeButton === 'passenger' ? 'active' : ''}`}
+                                onClick={fetchPessengerPosts}
+                            >
+                                Passenger's post
+                            </button>
+                            <button
+                                className={`driver-post-btn ${activeButton === 'driver' ? 'active' : ''}`}
+                                onClick={fetchDriverPosts}
+                            >
+                                Driver's post
+                            </button>
                         </div>
-                        
-                        <div className="post-distance">{post.distance}</div>
-                      </div>
-                      <div className="inner-post-card">
-                        <div className="location-container">
-                          <div className="location-marker departure-marker">
-                            <div className="location-dot-white"></div>
-                            <div className="location-line"></div>
-                          </div>
-                          <div className="location-details">
-                            <div className="location-point departure">
-                              <span className="location-title">{post.departure}</span>
-                              <span className="location-detail">{post.departureDetail}</span>
-                            </div>
-                          </div>
+                        <div className="search-section">
+                            <input type="text" className="search-input" placeholder="Search for regions and keywords..." />
                         </div>
-                        <div className="location-container">
-                          <div className="location-marker destination-marker">
-                            <div className="location-dot-blue"></div>
-                          </div>
-                          <div className="location-details">
-                            <div className="location-point destination">
-                              <span className="location-title">{post.destination}</span>
-                              <span className="location-detail">{post.destinationDetail}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='post-form-bottom'>
-                        <div className="post-keywords">
-                          {post.keywords && post.keywords.map((keyword, kIndex) => (
-                              <span key={kIndex} className="post-keyword">{keyword}</span>
-                          ))}
-                        </div>
-                        <div className="post-created-at">
-                          {new Date(post.createdAt).toLocaleString()}
-                        </div>
-                      </div>
-                      <div className="post-actions"></div>
-                      {post.driverPost && (
-    <div>
-        {post.participant}/{post.maxParticipant}
-    </div>
-)}
-                    </div>
-                );
-              })}
-            </div>
-          </div>
+                        <div className="filter-section">
+                            <button className="filter-btn active" onClick={toggleRegionDropdown}>entire</button>
+                            {showRegions && (
+                                <div className="region-dropdown" ref={dropdownRef}>
+                                    <div className="region-item">Seoul</div>
+                                    <div className="region-item">Gyeonggi</div>
+                                    <div className="region-item">Incheon</div>
+                                    <div className="region-item">Busan</div>
+                                    <div className="region-item">Jeju</div>
+                                    <div className="region-item">Ganwon</div>
+                                </div>
+                            )}
+                            <div className="filter-options">
+          <span className="filter-option" onClick={() => filterPosts('latest')}>Latest</span>
+          <span className="filter-option" onClick={() => filterPosts('close')}>Close</span>
+          <span className="filter-option" onClick={() => filterPosts('departure time')}>Departure Time</span>
         </div>
-        <style>
-          {`
-            .main-content {
+                        </div>
+                    </div>
+                    <div className="posts-container">
+                        {currentPosts.map((post, index) => {
+                            const departureDate = new Date(post.departureDate);
+                            const formattedDate = departureDate.toLocaleDateString('ko-KR', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit'
+                            });
+                            const dayOfWeek = departureDate.toLocaleDateString('en-US', { weekday: 'short' });
+                            const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
+
+                            return (
+                                <div key={index} className="outer-post-card" onClick={() => navigateToBookingDetail(post.idxNum)}>
+                                    <div className="post-header">
+                                        <div className="post-user-info">
+                                            <span className="user-name">{post.nickname}</span>
+                                            <StarRating rating={post.avgStar} />
+                                            <span className="post-date">{displayDate}</span>
+                                        </div>
+                                        <div className="post-distance2">{distances[post.id]}</div>
+                                        <div className="post-distance1">{post.distance}</div>
+                                      
+                                        <div className="post-fare">{post.fare}</div>
+                                        
+                                    </div>
+                                    <div className="inner-post-card">
+                                        <div className="location-container">
+                                            <div className="location-marker departure-marker">
+                                                <div className="location-dot-white"></div>
+                                                <div className="location-line"></div>
+                                            </div>
+                                            <div className="location-details">
+                                                <div className="location-point departure">
+                                                    <span className="location-title1">{post.departure}</span>
+                                                    <span className="location-detail">{post.departureDetail}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="location-container">
+                                            <div className="location-marker destination-marker">
+                                                <div className="location-dot-blue"></div>
+                                            </div>
+                                            <div className="location-details">
+                                                <div className="location-point destination">
+                                                    <span className="location-title2">{post.destination}</span>
+                                                    <span className="location-detail">{post.destinationDetail}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='post-form-bottom'>
+                                        <div className="post-keywords">
+                                            {post.keywords && post.keywords.map((keyword, kIndex) => (
+                                                <span key={kIndex} className="post-keyword">{keyword}</span>
+                                            ))}
+                                        </div>
+                                        <div className="post-created-at">
+                                            {new Date(post.createdAt).toLocaleString()}
+                                        </div>
+                                    </div>
+                                    <div className="post-actions"></div>
+                                    {post.driverPost && (
+                                        <div>
+                                            {post.participant}/{post.maxParticipant}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                        <div className="pagination-container">
+                            <span className="page-number" onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
+                            {[...Array(Math.ceil(posts.length / postsPerPage)).keys()].map(number => (
+                                <span
+                                    key={number}
+                                    className={`page-number ${currentPage === number + 1 ? 'active' : ''}`}
+                                    onClick={() => paginate(number + 1)}
+                                >
+                  {number + 1}
+                </span>
+                            ))}
+                            <span className="page-number" onClick={() => paginate(currentPage + 1)}>Next &raquo;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                {`
+          .main-content {
             flex-grow: 1;
             display: flex;
             padding: 20px;
             margin-right: 300px;
-          }
 
           .right-content {
             flex-grow: 1;
@@ -196,21 +286,81 @@ function Booking() {
             margin-bottom: 30px;
           }
 
-          .post-buttons {
-            display: flex;
-            margin-top: 20px;
-            justify-content: space-between; /* 버튼을 양쪽으로 정렬 */
-            gap: 600px;
             
-          }
+         .post-buttons {
+          display: flex;
+          justify-content: space-between; /* 버튼을 양쪽으로 정렬 */
+          width: 55%; /* 버튼 바 전체 너비 */
+          margin-top: 20px; /* 버튼 바 상단 여백 */
+          gap: 400px;
+         }
+
+        .passenger-post-btn {
+            flex-grow: 1; /* 버튼이 동등한 너비 차지 */
+            
+            color: white; /* 텍스트 색상 */
+            padding: 10px 0px; /* 버튼 내부 여백 */
+            margin-right: 10px;
+            border: none; /* 테두리 없음 */
+            border-radius: 10px; 
+            font-size: 15px; /* 글꼴 크기 */
+            cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
+            transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+        }
+        
+        .driver-post-btn {
+            flex-grow: 1; /* 버튼이 동등한 너비 차지 */
+            
+            color: white; /* 텍스트 색상 */
+            padding: 10px 0px; /* 버튼 내부 여백 */
+            border: none; /* 테두리 없음 */
+            border-radius: 10px; 
+            font-size: 15px; /* 글꼴 크기 */
+            cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
+            transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+        }
+        
+        .passenger-post-btn:hover, .driver-post-btn:hover {
+            background-color: #0056b3; /* 호버 시 더 어두운 색상으로 변경 */
+        }
+        
+        
+        
+        /* 접근성을 높이기 위해 포커스 스타일 추가 */
+        .passenger-post-btn:focus, .driver-post-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+        }
+        
+        .passenger-post-btn.active {
+          background-image: linear-gradient(to right, #87CEEB, #50c878);
+        }
+        
+        .driver-post-btn.active {
+          background-image: linear-gradient(to right, #87CEEB, #000080);
+        }
+        
+        .passenger-post-btn:not(.active) {
+          background-color: #ffffff;
+          color: grey;
+        }
+        
+        .driver-post-btn:not(.active) {
+          background-color: #ffffff;
+          color: grey;
+        }
+
+
+   
+            
+         
 
           .search-section {
             display: flex;
             justify-content: center;
             padding: 15px 20px;
             margin-top: 20px;
-            width: 65%;
-            
+            width: 60%;
           }
 
           .search-input {
@@ -241,10 +391,9 @@ function Booking() {
             transition: background-color 0.2s;
           }
     
-    .region-item:hover {
-      background-color: #f0f0f0;
-    }
-
+          .region-item:hover {
+            background-color: #f0f0f0;
+          }
 
           .filter-buttons {
             display: flex;
@@ -256,24 +405,25 @@ function Booking() {
           .filter-section {
             display: flex;
             flex-direction: column; 
-            margin-top: -8px;
-            margin-right: 620px;
-            margin-bottom: 30px;
-            
+            margin-top: 5px;
+            margin-right: 600px;
+            margin-bottom: 20px;
+           
           }
 
           .filter-btn {
             padding: 10px 20px;
             border: 1px solid #ccc;
             border-radius: 20px;
-            background-color: #779DFF;
+            background-color: #87CEEB;
+           
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
             margin-right: 10px; /* 필터 버튼과 옵션 사이 간격을 추가 */
           }
 
           .filter-btn.active {
-            background-color: #007bff;
+            background-color: #4E96FFB;
             color: white;
           }
 
@@ -305,9 +455,6 @@ function Booking() {
             margin-bottom: 20px;
             padding: 20px;
           }
-          
-          
-
 
           .post-header {
             display: flex;
@@ -349,7 +496,6 @@ function Booking() {
             padding: 10px;
             border-radius: 8px;
             margin-top: 50px;
-            margin-bottom: 10px;
           }
 
           .posts-container {
@@ -402,21 +548,26 @@ function Booking() {
             position: relative;
           }
 
+          .post-keywords {
+            display: flex;
+            flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
+            gap: 10px; /* 키워드 사이의 간격 */
+            margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+          }
+
           .post-keyword {
-            background-color: green;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 15px;
-            margin-right: 20px;
-            
-            
-            
+            background-color: #50c878; /* 밝은 녹색 배경 */
+            color: white; /* 흰색 텍스트 */
+            padding: 8px 16px; /* 상하 8px, 좌우 16px의 패딩 */
+            border-radius: 20px; /* 둥근 모서리 */
+            font-size: 0.9em; /* 적절한 텍스트 크기 */
+            white-space: nowrap; /* 키워드를 한 줄로 표시 */
           }
 
           .post-created-at {
             font-size: 1rem;
             color: #666;
-            margin-top: 55px;
+            margin-top: 25px;
             margin-bottom: 10px;
           }
 
@@ -433,12 +584,12 @@ function Booking() {
             height: 12px;
             border-radius: 50%;
             background-color: #fff;
-            border: 2px solid blue; /* 흰색 동그라미에 파란색 테두리 */
+            border: 3px solid blue; /* 흰색 동그라미에 파란색 테두리 */
             z-index: 2;
             position: relative; /* 위치를 조정하기 위해 relative로 설정 */
             margin-top: 20px;
             margin-bottom: 10px; /* 선과의 간격 */
-            margin-left: 30px;
+            margin-left: 28px;
           }
 
           .location-dot-blue {
@@ -446,7 +597,7 @@ function Booking() {
             height: 12px;
             border-radius: 50%;
             background-color: blue;
-            border: 2px solid white; /* 흰색 테두리 추가 */
+            border: 2px solid blue; /* 파란색 테두리 추가 */
             position: absolute; /* 절대 위치 지정 */
             top: 50%; /* 부모 요소의 상단에서 50% 위치 */
             left: 0; /* 부모 요소의 왼쪽에 배치 */
@@ -460,13 +611,18 @@ function Booking() {
             text-align: center;
             
           }
-
-          .location-title {
+          
+          .location-title1 {
             font-weight: bold;
-            
+            display: block; /* 타이틀을 블록 요소로 만들어 줄 바꿈 */
+            margin-top: 8px;
+            margin-left: -45px;
+          }
+
+          .location-title2 {
+            font-weight: bold;
             display: block; /* 타이틀을 블록 요소로 만들어 줄 바꿈 */
             margin-top: 35px;
-            
           }
 
           .location-details {
@@ -495,13 +651,7 @@ function Booking() {
             margin-top: 20px;
           }
 
-          .location-point.departure {
-            text-align: left;
-            flex-grow: 1;
-            
-          }
-          
-     
+          .location-point.departure,
           .location-point.destination {
             text-align: left;
             flex-grow: 1;
@@ -514,10 +664,30 @@ function Booking() {
             font-size: 0.9em; /* 텍스트 크기 */
             
           }
+          
+          .pagination-container {
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+        }
+
+        .page-number {
+          cursor: pointer;
+          margin: 0 8px;
+          color: #000; /* 기본 색상 */
+          text-decoration: none; /* 기본 텍스트 꾸미기 제거 */
+        }
+        
+        .page-number.active {
+          color: #1c5cff; /* 활성 상태일 때의 색상 */
+          text-decoration: underline; /* 활성 상태일 때의 텍스트 꾸미기 */
+        }
+
+          
         `}
-        </style>
-      </div>
-  );
+            </style>
+        </div>
+    );
 }
 
 export default Booking;

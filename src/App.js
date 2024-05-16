@@ -19,6 +19,7 @@ import ChatRoom from './chat/chatRoom';
 import ChatRoomList from './chat/chatRoomList';
 import ChatBot from './chat/ChatBot';
 import BookingDetail from "./booking/BookingDetail";
+import ChatPage from './chat/chatPage';
 
 
 import MainDetail from './main/mainDetail';
@@ -58,6 +59,7 @@ function App() {
           <Route path="/chatRoomList" element={<ChatRoomList/>}/>
           <Route path="/chatBot" element={<ChatBot/>}/>
           <Route path="/booking/:postId" element={<BookingDetail />} />
+          <Route path="/chatPage" element={<ChatPage></ChatPage>}/>
          
         </Routes>
       </div>

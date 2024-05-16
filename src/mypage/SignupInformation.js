@@ -84,65 +84,65 @@ function SignupInformation() {
   };
 
   return (
-    <div className="page-container">
-      <Navbar />
-      <div className="subscription-container">
-        <h2 className="subscription-title">Subscription information</h2>
-        <div className="subscription-form-container">
-          <form onSubmit={handleSubmit} className="subscription-form">
-            {/* Form fields */}
-            <div className="form-group">
-              <label htmlFor="profile-image-upload" className="profile-image-upload-label">
-                <input
-                  id="profile-image-upload"
-                  type="file"
-                  onChange={handleImageChange}
-                  accept="image/*" // 이미지 파일만 허용
-                  hidden
-                />
-                <div className="profile-image" style={{ 
-               backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images') : '/path/to/default/image'})` 
-                }}>
+      <div className="page-container">
+        <Navbar />
+        <div className="subscription-container">
+          <h2 className="subscription-title">Subscription information</h2>
+          <div className="subscription-form-container">
+            <form onSubmit={handleSubmit} className="subscription-form">
+              {/* Form fields */}
+              <div className="form-group">
+                <label htmlFor="profile-image-upload" className="profile-image-upload-label">
+                  <input
+                      id="profile-image-upload"
+                      type="file"
+                      onChange={handleImageChange}
+                      accept="image/*" // 이미지 파일만 허용
+                      hidden
+                  />
+                  <div className="profile-image" style={{
+                    backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images') : '/path/to/default/image'})`
+                  }}>
 
-                  {/* 프로필 이미지 표시 */}
-                </div>
-               
-              </label>
-            </div>
-            <div className="form-group">
-              <label>Name</label>
-              <input type="text" name="name" value={user.name} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label>ID</label>
-              <input type="text" name="id" value={user.id} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label>Phone Number</label>
-              <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
-            </div>
-            <div className="form-group">
+                    {/* 프로필 이미지 표시 */}
+                  </div>
+
+                </label>
+              </div>
+              <div className="form-group">
+                <label>Name</label>
+                <input type="text" name="name" value={user.name} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>ID</label>
+                <input type="text" name="id" value={user.id} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
+              </div>
+              <div className="form-group">
                 <label>Bithdate</label>
                 <input type="text" name="birthdate" value={user.birthdate} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label>Nickname</label>
-              <input type="text" name="nickname" value={user.nickname} onChange={handleChange} />
-            </div>
-            <div className="form-group">
+              </div>
+              <div className="form-group">
+                <label>Nickname</label>
+                <input type="text" name="nickname" value={user.nickname} onChange={handleChange} />
+              </div>
+              <div className="form-group">
                 <label>Star Rating</label>
                 <input type="text" name="avgStar" value={user.avgStar} readOnly />
-            </div>
-            <div className="form-actions">
-              <button type="submit">Save</button>
-              <button type="button">Cancel</button>
-            </div>
-          </form>
+              </div>
+              <div className="form-actions">
+                <button type="submit">Save</button>
+                <button type="button">Cancel</button>
+              </div>
+            </form>
+          </div>
         </div>
-    </div>
 
-</div>
-);
+      </div>
+  );
 }
 
 export default SignupInformation;
