@@ -5,6 +5,7 @@ import axios from 'axios';
 import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import { useParams } from 'react-router-dom';
+import BlueDriverIcon from '../icons/bluedriver.svg';
 
 function BookingDetail() {
     const [post, setPost] = useState(null);
@@ -120,20 +121,24 @@ function BookingDetail() {
                 <div className="right-content">
 
                     <div className="outer-post-card">
-                        <div className="waiting-for-text">{isDriverPost ? "Waiting for Passenger" : "Waiting for Driver"}</div>
                         <div className="post-header">
                             <div className="post-user-info">
                                 <span className="user-name">{post.nickname}</span>
-                                <span className="post-date">{displayDate}</span>
                                 <span className="post-role">{isDriverPost ? "Driver" : "Passenger"}</span>
                             </div>
-                            <div className="post-distance">{post.distance}km</div>
+                            <div className="waiting-for-text">
+                                {isDriverPost ? (
+                                    <>Waiting <br/> for Passenger</>
+                                ) : (
+                                    <>Waiting <br/> for Driver</>
+                                )}
+                            </div>
                         </div>
                         <div className="inner-post-card">
-
+                            <span className="post-date">{displayDate}</span>
                             <div className="location-container">
                                 <div className="location-marker departure-marker">
-                                    <div className="location-dot-white"></div>
+                                <div className="location-dot-white"></div>
                                     <div className="location-line"></div>
                                 </div>
                                 <div className="location-details">
@@ -154,6 +159,7 @@ function BookingDetail() {
                                     </div>
                                 </div>
                             </div>
+                            <div className="post-distance">{post.distance}km</div>
                         </div>
                         <div className='post-form-bottom'>
                             <div className="post-keywords">
@@ -165,7 +171,10 @@ function BookingDetail() {
                                 {new Date(post.createdAt).toLocaleString()}
                             </div>
                             <div className="comment-section">
-                                <div className="comment-header">{post.nickname}'s Comment</div>
+                                <div className="comment-header">
+                                    <img src={BlueDriverIcon} alt="Blue Driver Icon" className="comment-icon"/>
+                                    {post.nickname}'s Comment
+                                </div>
                                 <div className="comment-body">{post.message}</div>
                             </div>
                             {post.driverPost && (
@@ -190,8 +199,9 @@ function BookingDetail() {
                                     <button className="btn-comment-cancel" type="button"
                                             onClick={handleBooking}>Booking</button>
                                 )}
-                                 {post.nickname !== nickname && (
-                                    <button className="btn-comment-confirm" onClick={sendNicknameToServer}>Chatting</button>
+                                {post.nickname !== nickname && (
+                                    <button className="btn-comment-confirm"
+                                            onClick={sendNicknameToServer}>Chatting</button>
                                 )}
                             </div>
                         </div>
@@ -215,42 +225,43 @@ function BookingDetail() {
              
              
              .main-content {
-                 display: flex;
-                 justify-content: center; /* Center the content horizontally */
-                 padding: 20px;
-                 margin-right: 600px;
+                flex-grow: 1;
+                display: flex;
+                padding: 20px;
+                margin-right: 300px;
              }
-             
-         
-             .right-content {
-                 flex-grow: 1;
-                 padding: 20px;
-                 background-color: #f5f5f5;
-                 max-width: 800px; /* Limit the width of the right content */
-                 margin-left: 600px;
-             }
+
+            .right-content {
+                flex-grow: 1;
+                padding: 20px;
+                margin-left: 300px;
+            }
              
 
-                  .post-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 20px;
-                    flex-wrap: wrap;
-                  }
+            .post-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             align-bottom: 20px;
+             flex-wrap: wrap;
+             }
         
-                  .post-user-info {
-                    display: flex;
-                    align-items: center;
-                    flex-direction: column; /*수직으로 배치*/
-                  }
-        
-                  .waiting-for-text {
-                    font-weight: bold;
-                    color: blue;
-                    margin-left: auto; /* 우측으로 정렬 */
-                    margin-left: 700px;
-                }
+             .post-user-info {
+                margin-top: 30px;
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+       
+             }
+
+             .waiting-for-text {
+               font-weight: bold;
+               color: blue;
+               margin-right: 10px;
+               margin-top: 15px;
+               text-align: right;
+               white-space: pre-line; /* 줄 바꿈을 적용하여 텍스트가 제대로 표시되도록 함 */
+             }
         
                   .user-details {
                     margin-left: 10px;
@@ -268,25 +279,33 @@ function BookingDetail() {
                     font-weight: normal; /* 일반체로 설정 */
                     border-radius: 20px; /* 원형 모양 */
                     padding: 3px 8px; /* 내부 여백 */
-                    margin-right: -110px; /* 사용자 이름과의 간격 */
-                    margin-top: -72px;
+                    margin-left: 15px; /* 사용자 이름과의 간격 */
                   }
         
                   .post-date {
-                    margin-top: 30px;
+                    margin-left: 30px;
+                    font-weight: 700;
+                    color: #black;
+                    margin-bottom: 20px;
                    
                     
                   }
         
                   .post-distance {
-                    /* 거리 스타일 */
+                    margin-left: 30px;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    font-weight: 600;
+                    color: #888888;
                   }
         
                   .inner-post-card {
                     background-color: #f5f5f5;
-                    padding: 10px;
+                    padding: 30px 10px;
                     border-radius: 8px;
-                    margin-top: 50px;
+                    margin-top: 40px;
+                    padding-bottom: 20px;
+                    position: relative;
                   }
         
                  
@@ -333,13 +352,14 @@ function BookingDetail() {
                     align-items: flex-start;
                     margin-bottom: 20px;
                     position: relative;
+                    margin-top:10px;
                   }
         
                   .post-keywords {
                     display: flex;
                     flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
                     gap: 10px; /* 키워드 사이의 간격 */
-                    margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+                    margin-top: 30px; /* 키워드와 다른 컨텐츠 사이의 간격 */
                   }
         
                   .post-keyword {
@@ -355,7 +375,7 @@ function BookingDetail() {
                   .post-created-at {
                     font-size: 1rem;
                     color: #666;
-                    margin-top: 55px;
+                    margin-top: 30px;
                     margin-bottom: 10px;
                   }
         
@@ -377,7 +397,7 @@ function BookingDetail() {
                     position: relative; /* 위치를 조정하기 위해 relative로 설정 */
                     margin-top: 20px;
                     margin-bottom: 10px; /* 선과의 간격 */
-                    margin-left: 30px;
+                    margin-left: 28px;
                   }
         
                   .location-dot-blue {
@@ -385,7 +405,7 @@ function BookingDetail() {
                     height: 12px;
                     border-radius: 50%;
                     background-color: blue;
-                    border: 2px solid white; /* 흰색 테두리 추가 */
+                    border: 2px solid blue;
                     position: absolute; /* 절대 위치 지정 */
                     top: 50%; /* 부모 요소의 상단에서 50% 위치 */
                     left: 0; /* 부모 요소의 왼쪽에 배치 */
@@ -460,6 +480,24 @@ function BookingDetail() {
                     margin-top: 50px;
                     height: 130px;
                   }
+                  .comment-header {
+                    display: flex;
+                    align-items: center; 
+                    font-size: 1.1em; 
+                    font-weight: bolder;
+                    padding: 10px 10px;
+                  }
+
+                .comment-icon {
+                    width: 24px; /* 아이콘 너비 조정 */
+                    height: 24px; /* 아이콘 높이 조정 */
+                    margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
+                 }
+                 .comment-body {
+                    font-size: 1.1em;
+                    padding: 6px 12px;
+                    font-weight: 600;
+                  }
                   
                   .comment-actions {
                       display: flex;
@@ -467,10 +505,6 @@ function BookingDetail() {
                       padding: 10px 0; /* 상하 패딩 추가 */
                     }
                     
-                    .comment-header {
-                        font-size: 1em; /* 텍스트 크기 */
-                        font-weight: bolder;
-                    }
                     
                     .user-list {
                         margin-top: 25px;
@@ -479,11 +513,14 @@ function BookingDetail() {
                     
                     .btn-comment-cancel, .btn-comment-confirm {
                       flex-grow: 1; /* 버튼들이 동일한 크기를 가지도록 함 */
-                      margin: 0 50px; /* 좌우 마진을 추가하여 버튼 사이 간격 조정 */
-                      padding: 15px 5px; /* 패딩을 조정하여 버튼 크기 감소 */
-                      font-size: 0.8em; /* 폰트 크기를 줄임 */
+                      margin: 0 10px; /* 좌우 마진을 추가하여 버튼 사이 간격 조정 */
+                      padding: 12px 5px; /* 패딩을 조정하여 버튼 크기 감소 */
+                      font-size: 1em; /* 폰트 크기를 줄임 */
+                      font-weight: 700;
                       border-radius: 20px;
                       margin-top : 30px;
+                      border: 1px solid #1c5cff;
+                      margin-bottom: 20px;
                     }
                     
                     .btn-comment-cancel {
