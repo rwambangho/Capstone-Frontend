@@ -10,10 +10,6 @@ import GrayDriverIcon from '../icons/graydriver.svg';
 import ParticipantIcon from '../icons/participant.svg';
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 92daa05 (수정본)
 const StarRating = ({ rating }) => {
   console.log(rating);
   const totalStars = 5;
@@ -74,14 +70,13 @@ function Booking() {
     const fetchDriverPosts = async () => {
         try {
             const response = await axios.get('/recruits/driver');
-<<<<<<< HEAD
+
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(true);
-=======
+
             setPosts(response.data);
->>>>>>> 92daa05 (수정본)
             setActiveButton('driver');
             setDriver(true);
         } catch (error) {
@@ -92,14 +87,11 @@ function Booking() {
     const fetchPassengerPosts = async () => {
         try {
             const response = await axios.get('/recruits/passenger');
-<<<<<<< HEAD
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(false);
-=======
             setPosts(response.data);
->>>>>>> 92daa05 (수정본)
             setActiveButton('passenger');
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -222,18 +214,15 @@ function Booking() {
                                               <span className="post-date">{displayDate}</span>
                                         </div>
                                         <div className="post-distance">{distances[post.idxNum]}km</div>
-<<<<<<< HEAD
                                         <div className="post-distance1">{post.distance}km</div>
                                         <div className="post-fare">{post.fare}원</div>
-=======
-                                       
+
                                         {activeButton === 'passenger' && (
                                             <div className="waiting-for-text">Waiting<br /> for Driver</div>
                                         )}
                                         {activeButton === 'driver' && (
                                             <div className="waiting-for-text">Waiting<br /> for Passenger</div>
                                         )}
->>>>>>> 92daa05 (수정본)
                                     </div>
                                     <div className="inner-post-card">
                                         <span className="post-date">Departure time : {displayDate}</span>
