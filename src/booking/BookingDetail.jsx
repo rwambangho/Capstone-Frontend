@@ -109,7 +109,7 @@ function BookingDetail() {
         day: '2-digit'
     });
     const dayOfWeek = departureDate.toLocaleDateString('en-US', { weekday: 'short' });
-    const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
+    const displayDate = `${formattedDate}(${dayOfWeek}) ${post.time}`;
 
     // driver's post 여부를 확인하여 상태를 설정합니다.
     const isDriverPost = post.driverPost;

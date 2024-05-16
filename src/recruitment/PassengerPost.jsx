@@ -1,4 +1,3 @@
-//PassengerPost.jsx
 import PassengerIcon from '../icons/icon.svg';
 import DriverIcon from '../icons/driver.svg';
 import GrayPassengerIcon from '../icons/grayicon.svg';
@@ -12,8 +11,6 @@ import Sidebar from '../component/Sidebar';
 import axios from 'axios';
 import Kakao from './Kakao';
 const { kakao } = window;
-
-
 
 function PassengerPost() {
     const navigate = useNavigate();
@@ -35,7 +32,6 @@ function PassengerPost() {
     const ps = new kakao.maps.services.Places();
     const [passengerButtonActive, setPassengerButtonActive] = useState(true);
     const [driverButtonActive, setDriverButtonActive] = useState(false);
-
 
     useEffect(() => {
         const fetchUserRating = async () => {
@@ -64,6 +60,7 @@ function PassengerPost() {
                 departure: departure,
                 destination: destination,
                 departureDate: date,
+                time:time,
                 isDriverPost: false,
                 keywords: selectedKeywords,
                 message: message,
@@ -232,6 +229,8 @@ function PassengerPost() {
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             padding: 40px;
+            width: 800px;
+            margin-left: 120px;
         }
 
         .right-content {
@@ -352,7 +351,7 @@ function PassengerPost() {
             border-radius: 5px;
             border: 1px solid #ccc;
             padding: 8px;
-            width: 650px;
+            width: 670px;
         }
         
         
@@ -362,7 +361,6 @@ function PassengerPost() {
             border-radius: 5px;
             border: 1px solid #ccc;
             padding: 8px;
-            width: 100%;
         }
         
         .input-group button {
@@ -371,12 +369,12 @@ function PassengerPost() {
             border: none;
             border-radius: 5px;
             padding: 8px 15px;
-            margin-left: 750px;
+            margin-left: 720px;
             margin-top: -35px;
             cursor: pointer;
             transition: background-color 0.3s ease;
             width: 80px;
-            height: 30px;
+            height: 35px;
         }
         
         .input-group button:hover,
@@ -395,40 +393,36 @@ function PassengerPost() {
             justify-content: space-between;
         }
         
+        .date-time-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px; /* 각 그룹 사이의 공간 추가 */
+        }
+
         .date-time-container {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            gap: 30px; /* 날짜와 시간 입력 필드 사이의 간격 조정 */
         }
 
         .date-input-container,
         .time-input-container {
             flex: 1;
-            margin-right: 10px;
-        }
-
-        .date-input-container:last-child,
-        .time-input-container:last-child {
-            margin-right: 0;
         }
 
         .date-input-container input,
         .time-input-container input {
-            width: 650px;
-            height: 18px;
+            width: 95%; /* 부모 컨테이너의 너비에 맞춤 */
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 8px;
-            margin-bottom: 10px;
         }
         
         .message-container textarea {
             height: 120px;
             resize: none;
         }
-        
-       
 
         .input-group.keywords .keyword {
             display: inline-block; /* 키워드를 수평으로 표시 */
@@ -438,7 +432,6 @@ function PassengerPost() {
             background-color: #5bc0de;
             color: #fff;
             border-radius: 22px;
-            
         }
         
        .selected-keywords {
@@ -446,36 +439,34 @@ function PassengerPost() {
            align-items: center; /* 세로 방향 가운데 정렬 */
            flex-wrap: wrap; /* 키워드가 넘칠 경우 자동으로 줄 바꿈 */
            margin-top: 10px;
-          
        }
 
-.keyword {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 20px; /* 각 키워드 사이의 간격 조정 */
-    margin-bottom: 5px; /* 아래쪽 간격 추가 */
-    border-radius: 22px;
-    background-color: #5bc0de;
-    }
+        .keyword {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px; /* 각 키워드 사이의 간격 조정 */
+            margin-bottom: 5px; /* 아래쪽 간격 추가 */
+            border-radius: 22px;
+            background-color: #5bc0de;
+        }
 
-.keyword button {
-    background-color: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    margin-left: -20px;
-    margin-right: -20px; 
-   
-}
+        .keyword button {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            margin-left: -20px;
+            margin-right: -20px; 
+        }
 
-.keyword button:hover {
-    background-color: transparent;
-}
+        .keyword button:hover {
+            background-color: transparent;
+        }
 
-.keyword button:focus {
-    outline: none;
-}
+        .keyword button:focus {
+            outline: none;
+        }
       
         .max-participants-input {
             margin-bottom: 20px;
@@ -525,6 +516,35 @@ function PassengerPost() {
         align-items: center; /* 수직 정렬 */
         justify-content: center; /* 가로 방향 가운데 정렬 */
         gap: 6px; /* 아이콘과 텍스트 사이 간격 조정 */
+        }
+        .search-results {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .search-results li {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .search-results li:last-child {
+            border-bottom: none; /* 마지막 아이템의 하단 보더 제거 */
+        }
+
+        .search-results li:hover {
+            background-color: #f5f5f5; /* 호버 시 배경색 변경 */
+        }
+
+        .search-results li strong {
+            font-weight: bold;
+            color: #333; /* 강조 텍스트 색상 */
+        }
+
+        .search-results li span {
+            color: #666; /* 보조 텍스트 색상 */
         }
         `}
             </style>
@@ -614,24 +634,25 @@ function PassengerPost() {
                                         </ul>
                                     )}
                                 </div>
-                                <div className="input-group date-time-container">
-                                    <div className="date-input-container">
-                                        <label>Date of departure</label>
-                                        <input
-                                            type="date"
-                                            value={date}
-                                            onChange={(e) => setDate(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="time-input-container">
-                                        <label>Time of departure</label>
-                                        <input
-                                            type="time"
-                                            value={time}
-                                            onChange={(e) => setTime(e.target.value)}
-                                            required
-                                        />
+                                <div className="input-group date-time-group">
+                                    <label>Date and Time of departure</label>
+                                    <div className="date-time-container">
+                                        <div className="date-input-container">
+                                            <input
+                                                type="date"
+                                                value={date}
+                                                onChange={(e) => setDate(e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="time-input-container">
+                                            <input
+                                                type="time"
+                                                value={time}
+                                                onChange={(e) => setTime(e.target.value)}
+                                                required
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="input-group keywords">

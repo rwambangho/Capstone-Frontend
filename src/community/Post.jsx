@@ -110,7 +110,7 @@ const Post = ({ post }) => {
                 <PostDateTime>{formatDateTime(post.time)}</PostDateTime>
                 <PostTitle onClick={navigateToPostDetail}>{post.title}</PostTitle>
                 <PostText>{post.content}</PostText>
-                <button onClick={sendNicknameToServer}>채팅</button>
+               
                 <PostMeta>
                     <MetaItem color="#1c5cff" fontWeight="600">
                         <span style={{ marginRight: '10px' }}>hits {post.clickCount}</span>
@@ -121,7 +121,7 @@ const Post = ({ post }) => {
                 </PostMeta>
             </PostContent>
             <div style={{ width: '30%', display: 'flex', alignItems: 'center' }}>
-                {post.image && <img src={post.image} alt="Post" style={{ width: '100%', height: 'auto', borderRadius: '5px' }} />}
+                {post.image && <img src={post.image.replace('/home/ubuntu/images', '/images')} alt="Post" style={{ width: '100%', height: 'auto', borderRadius: '5px' }} />}
             </div>
         </PostContainer>
     );

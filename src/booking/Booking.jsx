@@ -1,4 +1,4 @@
-//Booking.js
+// Booking.js
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
@@ -10,8 +10,12 @@ import GrayDriverIcon from '../icons/graydriver.svg';
 import ParticipantIcon from '../icons/participant.svg';
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 92daa05 (수정본)
 const StarRating = ({ rating }) => {
+  console.log(rating);
   const totalStars = 5;
   let stars = [];
   for (let i = 1; i <= totalStars; i++) {
@@ -21,8 +25,6 @@ const StarRating = ({ rating }) => {
   }
   return <div>{stars}</div>;
 };
-
-
 
 function Booking() {
     const [posts, setPosts] = useState([]);
@@ -38,19 +40,18 @@ function Booking() {
     const [isDriver,setDriver]=useState();
 
     useEffect(() => {
-      fetchDriverPosts();
-      fetchPessengerPosts();
-      navigator.geolocation.getCurrentPosition((position) => { 
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          setLatitude(latitude);
-          setLongitude(longitude);
-          console.log(latitude,longitude);
-       
-      });
-      updateDistances(latitude,longitude); 
-  }, [latitude]);
-  
+        fetchDriverPosts();
+        fetchPassengerPosts();
+        navigator.geolocation.getCurrentPosition((position) => { 
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            setLatitude(latitude);
+            setLongitude(longitude);
+            console.log(latitude,longitude);
+         
+        });
+        updateDistances(latitude,longitude); 
+    }, [latitude]);
 
     const updateDistances = (latitude, longitude) => {
      
@@ -70,31 +71,36 @@ function Booking() {
               .catch(error => console.error('Error calculating distance:', error));
       });
   };
-
     const fetchDriverPosts = async () => {
         try {
             const response = await axios.get('/recruits/driver');
+<<<<<<< HEAD
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(true);
+=======
+            setPosts(response.data);
+>>>>>>> 92daa05 (수정본)
             setActiveButton('driver');
-          
+            setDriver(true);
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
     };
 
-    const fetchPessengerPosts = async () => {
+    const fetchPassengerPosts = async () => {
         try {
             const response = await axios.get('/recruits/passenger');
+<<<<<<< HEAD
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(false);
+=======
+            setPosts(response.data);
+>>>>>>> 92daa05 (수정본)
             setActiveButton('passenger');
-
-           
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
@@ -113,12 +119,10 @@ function Booking() {
         };
     }, [dropdownRef]);
 
+    const navigateToBookingDetail = (postId) => {
+        navigate(`/booking/${postId}`);
+    };
 
-  // 포스트 클릭 시 상세 페이지로 이동
-  const navigateToBookingDetail = (postId) => {
-    navigate(`/booking/${postId}`); // 해당 포스트의 ID를 파라미터로 전달하여 상세 페이지로 이동
-  };
-  // 'entire' 버튼을 클릭할 때 실행될 함수
     const toggleRegionDropdown = () => {
         setShowRegions(!showRegions);
     };
@@ -154,7 +158,6 @@ function Booking() {
 
     return (
         <div className="page-container">
-        
             <Navbar />
             <div className="main-content">
                 {/*<Sidebar />*/}
@@ -162,10 +165,9 @@ function Booking() {
                     <div className="post-form-header">
                         <h1>Please choose the post that suits you</h1>
                         <div className="post-buttons">
-                          
                             <button
                                 className={`passenger-post-btn ${activeButton === 'passenger' ? 'active' : ''}`}
-                                onClick={fetchPessengerPosts}
+                                onClick={fetchPassengerPosts}
                             >
                                 <div className="button-content">
                                     {activeButton === 'passenger' ? (
@@ -189,9 +191,7 @@ function Booking() {
                                 </div>
                             </button>
                         </div>
-                        <div className="search-section">
-                            <input type="text" className="search-input" placeholder="Search for regions and keywords..." />
-                        </div>
+
                         <div className="filter-section">
                             <div className="filter-options">
           <span className="filter-option" onClick={() => filterPosts('latest')}>Latest</span>
@@ -209,20 +209,31 @@ function Booking() {
                                 day: '2-digit'
                             });
                             const dayOfWeek = departureDate.toLocaleDateString('en-US', { weekday: 'short' });
-                            const displayDate = `${formattedDate}(${dayOfWeek}) ${post.departureTime}`;
+                            const displayDate = `${formattedDate}(${dayOfWeek}) ${post.time}`;
 
                             return (
-                                <div key={index} className="outer-post-card" onClick={() => navigateToBookingDetail(post.idxNum)}>
+                                <div key={index} className="outer-post-card"
+                                     onClick={() => navigateToBookingDetail(post.idxNum)}>
                                     <div className="post-header">
                                         <div className="post-user-info">
                                             <span className="user-name">{post.nickname}</span>
                                             {isDriver && <StarRating rating={post.avgStar} />}
                                               
-                                            <span className="post-date">{displayDate}</span>
+                                              <span className="post-date">{displayDate}</span>
                                         </div>
                                         <div className="post-distance">{distances[post.idxNum]}km</div>
+<<<<<<< HEAD
                                         <div className="post-distance1">{post.distance}km</div>
                                         <div className="post-fare">{post.fare}원</div>
+=======
+                                       
+                                        {activeButton === 'passenger' && (
+                                            <div className="waiting-for-text">Waiting<br /> for Driver</div>
+                                        )}
+                                        {activeButton === 'driver' && (
+                                            <div className="waiting-for-text">Waiting<br /> for Passenger</div>
+                                        )}
+>>>>>>> 92daa05 (수정본)
                                     </div>
                                     <div className="inner-post-card">
                                         <span className="post-date">Departure time : {displayDate}</span>
@@ -271,15 +282,16 @@ function Booking() {
                             );
                         })}
                         <div className="pagination-container">
-                            <span className="page-number" onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
+                            <span className="page-number"
+                                  onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
                             {[...Array(Math.ceil(posts.length / postsPerPage)).keys()].map(number => (
                                 <span
                                     key={number}
                                     className={`page-number ${currentPage === number + 1 ? 'active' : ''}`}
                                     onClick={() => paginate(number + 1)}
                                 >
-                  {number + 1}
-                </span>
+                                    {number + 1}
+                                </span>
                             ))}
                             <span className="page-number" onClick={() => paginate(currentPage + 1)}>Next &raquo;</span>
                         </div>
@@ -298,11 +310,7 @@ function Booking() {
           .right-content {
             flex-grow: 1;
             padding: 20px;
-
             margin-left: 160px;
-
-            background-color: #f5f5f5;
-
           }
 
           .post-form-header {
@@ -331,8 +339,9 @@ function Booking() {
          .post-buttons {
           display: flex;
           justify-content: space-between; /* 버튼을 양쪽으로 정렬 */
-          width: 55%; /* 버튼 바 전체 너비 */
+          width: 75%; /* 버튼 바 전체 너비 */
           margin-top: 20px; /* 버튼 바 상단 여백 */
+          margin-bottom: 30px;
           gap: 400px;
          }
 
@@ -346,17 +355,18 @@ function Booking() {
             font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 92daa05 (수정본)
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
-
         }
         
         .driver-post-btn {
             flex-grow: 1; /* 버튼이 동등한 너비 차지 */
-            
             color: white; /* 텍스트 색상 */
             padding: 8px 0px; /* 버튼 내부 여백 */
             border: none; /* 테두리 없음 */
@@ -367,8 +377,11 @@ function Booking() {
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 92daa05 (수정본)
         }
         
         .passenger-post-btn:hover, .driver-post-btn:hover {
@@ -401,19 +414,6 @@ function Booking() {
           color: grey;
         }
 
-
-   
-            
-         
-
-          .search-section {
-            display: flex;
-            justify-content: center;
-            padding: 15px 20px;
-            margin-top: 20px;
-            width: 60%;
-          }
-
           .search-input {
             width: calc(100% - 42px);
             padding: 15px 20px;
@@ -421,8 +421,7 @@ function Booking() {
             border-radius: 10px;
             margin-right: -2px; 
           }
-
-           
+          
           .region-dropdown {
           background-color: white;
           border: 1px solid #ccc;
@@ -507,7 +506,7 @@ function Booking() {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             border-radius: 8px;
             width: 100%;
-            height: 400px;
+            height: 500px;
             max-width: 800px; /* 적절한 최대 너비 설정 */
             margin-bottom: 20px;
             padding: 20px;
@@ -518,6 +517,7 @@ function Booking() {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
           }
 
           .post-user-info {
@@ -527,7 +527,6 @@ function Booking() {
             align-items: center;
             flex-direction: column; /*수직으로 배치*/
           }
-
           
           .user-name::after {
             content: '${activeButton === 'driver' ? 'driver' : 'passenger'}';
@@ -550,8 +549,6 @@ function Booking() {
             margin-right: 10px;
             margin-top: 15px;
         }
-
-
 
           .user-details {
             margin-left: 10px;

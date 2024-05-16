@@ -97,7 +97,7 @@ function SignupInformation() {
                   <div className="profile-upload-placeholder">
 
                     {user.profileImage ? (
-                        <img src={user.profileImage} alt="Profile"
+                        <img src={user.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
                              style={{width: '100%', height: '100%', borderRadius: '50%'}}/>
                     ) : null}
                   </div>
