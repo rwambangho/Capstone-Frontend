@@ -10,16 +10,18 @@ import GrayDriverIcon from '../icons/graydriver.svg';
 import ParticipantIcon from '../icons/participant.svg';
 
 
+
+
 const StarRating = ({ rating }) => {
-  console.log(rating);
-  const totalStars = 5;
-  let stars = [];
-  for (let i = 1; i <= totalStars; i++) {
-      stars.push(
-          <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
-      );
-  }
-  return <div>{stars}</div>;
+    console.log(rating);
+    const totalStars = 5;
+    let stars = [];
+    for (let i = 1; i <= totalStars; i++) {
+        stars.push(
+            <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
+        );
+    }
+    return <div>{stars}</div>;
 };
 
 function Booking() {
@@ -38,47 +40,46 @@ function Booking() {
     useEffect(() => {
         fetchDriverPosts();
         fetchPassengerPosts();
-        navigator.geolocation.getCurrentPosition((position) => { 
+        navigator.geolocation.getCurrentPosition((position) => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             setLatitude(latitude);
             setLongitude(longitude);
             console.log(latitude,longitude);
-         
+
         });
-        updateDistances(latitude,longitude); 
+        updateDistances(latitude,longitude);
     }, [latitude]);
 
     const updateDistances = (latitude, longitude) => {
-     
-      posts.forEach(post => {
-          const postData = {
-            currentX: longitude,
-            currentY: latitude,
-            arrivalX: post.departureX,
-            arrivalY: post.departureY
-          };
-          axios.put('/recruits/distance2', postData)
-              .then(response => {
-                  setDistances(prev => ({ ...prev, [post.idxNum]: response.data }));
-                  console.log(post.idxNum);
-                 
-              })
-              .catch(error => console.error('Error calculating distance:', error));
-      });
-  };
+
+        posts.forEach(post => {
+            const postData = {
+                currentX: longitude,
+                currentY: latitude,
+                arrivalX: post.departureX,
+                arrivalY: post.departureY
+            };
+            axios.put('/recruits/distance2', postData)
+                .then(response => {
+                    setDistances(prev => ({ ...prev, [post.idxNum]: response.data }));
+                    console.log(post.idxNum);
+
+                })
+                .catch(error => console.error('Error calculating distance:', error));
+        });
+    };
     const fetchDriverPosts = async () => {
         try {
             const response = await axios.get('/recruits/driver');
 
-        //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
-        setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
+            setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(true);
 
-            setPosts(response.data);
             setActiveButton('driver');
-            setDriver(true);
+
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
@@ -87,11 +88,12 @@ function Booking() {
     const fetchPassengerPosts = async () => {
         try {
             const response = await axios.get('/recruits/passenger');
-        //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
-        setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+
+            //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
+            setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(false);
-            setPosts(response.data);
+
             setActiveButton('passenger');
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -120,27 +122,27 @@ function Booking() {
     };
     // 글 필터링
     const filterPosts = (filter) => {
-      if (filter === 'latest') {
-        const sorted = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sorted);
-      } else if (filter === 'close') {
-        // "Close" 필터 로직 (가까운 거리순, 이 예시에서는 distance 값을 기준으로 정렬)
-        const sorted = [...posts].sort((a, b) => a.distance - b.distance);
-        setPosts(sorted);
-      } else if (filter === 'departure time') {
-        // "Departure Time" 필터 로직 (출발 시간순)
-        const sorted = [...posts].sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
-        setPosts(sorted);
-      }
+        if (filter === 'latest') {
+            const sorted = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setPosts(sorted);
+        } else if (filter === 'close') {
+            // "Close" 필터 로직 (가까운 거리순, 이 예시에서는 distance 값을 기준으로 정렬)
+            const sorted = [...posts].sort((a, b) => a.distance - b.distance);
+            setPosts(sorted);
+        } else if (filter === 'departure time') {
+            // "Departure Time" 필터 로직 (출발 시간순)
+            const sorted = [...posts].sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
+            setPosts(sorted);
+        }
     };
-    
-    
-    
 
-    
 
-  
-    
+
+
+
+
+
+
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -186,10 +188,10 @@ function Booking() {
 
                         <div className="filter-section">
                             <div className="filter-options">
-          <span className="filter-option" onClick={() => filterPosts('latest')}>Latest</span>
-          <span className="filter-option" onClick={() => filterPosts('close')}>Close</span>
-          <span className="filter-option" onClick={() => filterPosts('departure time')}>Departure Time</span>
-        </div>
+                                <span className="filter-option" onClick={() => filterPosts('latest')}>Latest</span>
+                                <span className="filter-option" onClick={() => filterPosts('close')}>Close</span>
+                                <span className="filter-option" onClick={() => filterPosts('departure time')}>Departure Time</span>
+                            </div>
                         </div>
                     </div>
                     <div className="posts-container">
@@ -210,12 +212,13 @@ function Booking() {
                                         <div className="post-user-info">
                                             <span className="user-name">{post.nickname}</span>
                                             {isDriver && <StarRating rating={post.avgStar} />}
-                                              
-                                              <span className="post-date">{displayDate}</span>
+
+                                            <span className="post-date">{displayDate}</span>
                                         </div>
                                         <div className="post-distance">{distances[post.idxNum]}km</div>
-                                        <div className="post-distance1">{post.distance}km</div>
+
                                         <div className="post-fare">{post.fare}원</div>
+
 
                                         {activeButton === 'passenger' && (
                                             <div className="waiting-for-text">Waiting<br /> for Driver</div>
@@ -344,11 +347,7 @@ function Booking() {
             font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 92daa05 (수정본)
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
@@ -366,11 +365,7 @@ function Booking() {
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 92daa05 (수정본)
         }
         
         .passenger-post-btn:hover, .driver-post-btn:hover {
