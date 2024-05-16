@@ -10,7 +10,7 @@ function SignupInformation() {
     nickname: '',
     birthdate: '',
     avgStar: 0.0,
-    profileImage: null // 프로필 이미지 추가
+    profileImage: '' // Initialize as an empty string
   });
 
   useEffect(() => {
@@ -93,6 +93,14 @@ function SignupInformation() {
               {/* Form fields */}
               <div className="form-group">
                 <label htmlFor="profile-image-upload" className="profile-image-upload-label">
+                  <p className="profile-image-label">Profile Image</p>
+                  <div className="profile-upload-placeholder">
+
+                    {user.profileImage ? (
+                        <img src={user.profileImage} alt="Profile"
+                             style={{width: '100%', height: '100%', borderRadius: '50%'}}/>
+                    ) : null}
+                  </div>
                   <input
                       id="profile-image-upload"
                       type="file"
@@ -101,7 +109,7 @@ function SignupInformation() {
                       hidden
                   />
                   <div className="profile-image" style={{
-                    backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/Users/kimseungzzang/ideaProjects/capstone-frontend/public/images', '/images') : '/path/to/default/image'})`
+                   backgroundImage: `url(${user.profileImage ? user.profileImage.replace('/home/ubuntu/images', '/images') : '/path/to/default/image'})`
                   }}>
 
                     {/* 프로필 이미지 표시 */}
@@ -111,7 +119,7 @@ function SignupInformation() {
               </div>
               <div className="form-group">
                 <label>Name</label>
-                <input type="text" name="name" value={user.name} onChange={handleChange} />
+                <input type="text" name="name" value={user.name} onChange={handleChange}/>
               </div>
               <div className="form-group">
                 <label>ID</label>
@@ -122,7 +130,7 @@ function SignupInformation() {
                 <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Bithdate</label>
+                <label>Birthdate</label>
                 <input type="text" name="birthdate" value={user.birthdate} onChange={handleChange} />
               </div>
               <div className="form-group">

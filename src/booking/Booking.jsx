@@ -2,8 +2,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
-import Sidebar from '../component/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import PassengerIcon from '../icons/icon.svg';
+import DriverIcon from '../icons/driver.svg';
+import GrayPassengerIcon from '../icons/grayicon.svg';
+import GrayDriverIcon from '../icons/graydriver.svg';
+import ParticipantIcon from '../icons/participant.svg';
+
+
 
 const StarRating = ({ rating }) => {
   const totalStars = 5;
@@ -27,34 +33,39 @@ function Booking() {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
     const [distances, setDistances] = useState({});
-
-  
-    
+    const [latitude,setLatitude]=useState({});
+    const [longitude,setLongitude]=useState({});
+    const [isDriver,setDriver]=useState();
 
     useEffect(() => {
-        
-        fetchDriverPosts();
-        fetchPessengerPosts();
-        
-        navigator.geolocation.getCurrentPosition((position) => { //사용자현재위치 불러오기
+      fetchDriverPosts();
+      fetchPessengerPosts();
+      navigator.geolocation.getCurrentPosition((position) => { 
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          updateDistances(latitude, longitude);
-          
+          setLatitude(latitude);
+          setLongitude(longitude);
+          console.log(latitude,longitude);
+       
       });
-    }, []);
+      updateDistances(latitude,longitude); 
+  }, [latitude]);
+  
 
     const updateDistances = (latitude, longitude) => {
+     
       posts.forEach(post => {
           const postData = {
-              currentX: latitude,
-              currentY: longitude,
-              departureX: post.departureLatitude, // 예를 들어 post 데이터에 위도, 경도 정보가 있다고 가정
-              departureY: post.departureLongitude 
+            currentX: longitude,
+            currentY: latitude,
+            arrivalX: post.departureX,
+            arrivalY: post.departureY
           };
-          axios.post('/recruits/distance2', postData)
+          axios.put('/recruits/distance2', postData)
               .then(response => {
-                  setDistances(prev => ({ ...prev, [post.id]: response.data.distance2 }));
+                  setDistances(prev => ({ ...prev, [post.idxNum]: response.data }));
+                  console.log(post.idxNum);
+                 
               })
               .catch(error => console.error('Error calculating distance:', error));
       });
@@ -66,7 +77,9 @@ function Booking() {
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setDriver(true);
             setActiveButton('driver');
+          
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
@@ -78,7 +91,10 @@ function Booking() {
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setDriver(false);
             setActiveButton('passenger');
+
+           
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
@@ -138,41 +154,45 @@ function Booking() {
 
     return (
         <div className="page-container">
+        
             <Navbar />
             <div className="main-content">
-                <Sidebar />
+                {/*<Sidebar />*/}
                 <div className="right-content">
                     <div className="post-form-header">
-                        <h1>Choose the right post for you!</h1>
+                        <h1>Please choose the post that suits you</h1>
                         <div className="post-buttons">
+                          
                             <button
                                 className={`passenger-post-btn ${activeButton === 'passenger' ? 'active' : ''}`}
                                 onClick={fetchPessengerPosts}
                             >
-                                Passenger's post
+                                <div className="button-content">
+                                    {activeButton === 'passenger' ? (
+                                        <img src={PassengerIcon} alt="Passenger Icon" className="post-icon"/>
+                                    ) : (
+                                        <img src={GrayPassengerIcon} alt="Gray Passenger Icon" className="post-icon"/>
+                                    )}
+                                    Passenger's post
+                                </div>
                             </button>
                             <button
                                 className={`driver-post-btn ${activeButton === 'driver' ? 'active' : ''}`}
                                 onClick={fetchDriverPosts}
                             >
-                                Driver's post
+                                <div className="button-content">
+                                    {activeButton === 'driver' ? (
+                                        <img src={DriverIcon} alt="Driver Icon" className="post-icon"/>
+                                    ) : (
+                                        <img src={GrayDriverIcon} alt="Gray Driver Icon" className="post-icon"/>
+                                    )}Driver's post
+                                </div>
                             </button>
                         </div>
                         <div className="search-section">
                             <input type="text" className="search-input" placeholder="Search for regions and keywords..." />
                         </div>
                         <div className="filter-section">
-                            <button className="filter-btn active" onClick={toggleRegionDropdown}>entire</button>
-                            {showRegions && (
-                                <div className="region-dropdown" ref={dropdownRef}>
-                                    <div className="region-item">Seoul</div>
-                                    <div className="region-item">Gyeonggi</div>
-                                    <div className="region-item">Incheon</div>
-                                    <div className="region-item">Busan</div>
-                                    <div className="region-item">Jeju</div>
-                                    <div className="region-item">Ganwon</div>
-                                </div>
-                            )}
                             <div className="filter-options">
           <span className="filter-option" onClick={() => filterPosts('latest')}>Latest</span>
           <span className="filter-option" onClick={() => filterPosts('close')}>Close</span>
@@ -196,16 +216,21 @@ function Booking() {
                                     <div className="post-header">
                                         <div className="post-user-info">
                                             <span className="user-name">{post.nickname}</span>
-                                            <StarRating rating={post.avgStar} />
+                                            {isDriver && <StarRating rating={post.avgStar} />}
+                                              
                                             <span className="post-date">{displayDate}</span>
                                         </div>
-                                        <div className="post-distance2">{distances[post.id]}</div>
-                                        <div className="post-distance1">{post.distance}</div>
-                                      
-                                        <div className="post-fare">{post.fare}</div>
-                                        
+                                        <div className="post-distance">{distances[post.idxNum]}km</div>
+                                        <div className="post-distance1">{post.distance}km</div>
+                                        <div className="post-fare">{post.fare}원</div>
                                     </div>
                                     <div className="inner-post-card">
+                                        <span className="post-date">Departure time : {displayDate}</span>
+                                        <div className="participant-info">
+                                            <img src={ParticipantIcon} alt="Participant Icon"
+                                                 className="participant-icon"/>
+                                            <span>{post.participant}/{post.maxParticipant}</span>
+                                        </div>
                                         <div className="location-container">
                                             <div className="location-marker departure-marker">
                                                 <div className="location-dot-white"></div>
@@ -229,6 +254,7 @@ function Booking() {
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className="post-distance">{post.distance}km</div>
                                     </div>
                                     <div className='post-form-bottom'>
                                         <div className="post-keywords">
@@ -241,11 +267,6 @@ function Booking() {
                                         </div>
                                     </div>
                                     <div className="post-actions"></div>
-                                    {post.driverPost && (
-                                        <div>
-                                            {post.participant}/{post.maxParticipant}
-                                        </div>
-                                    )}
                                 </div>
                             );
                         })}
@@ -272,11 +293,16 @@ function Booking() {
             display: flex;
             padding: 20px;
             margin-right: 300px;
+          }
 
           .right-content {
             flex-grow: 1;
             padding: 20px;
+
+            margin-left: 160px;
+
             background-color: #f5f5f5;
+
           }
 
           .post-form-header {
@@ -284,6 +310,21 @@ function Booking() {
             flex-direction: column;
             align-items: center;
             margin-bottom: 30px;
+          }
+          
+          .post-form-header h1 {
+           font-size: 50px;
+           margin-bottom: 60px; /* 텍스트 아래 여백 추가 */
+           color: #B9CDFF;
+           font-family: 'Sansation', sans-serif;
+           font-weight: bold;
+           display: inline-block;
+           margin-bottom: 30px;
+           background: -webkit-linear-gradient(45deg, #B9CDFF, #123456); /* 크롬, 사파리 등 대부분의 브라우저용 */
+           background: linear-gradient(45deg, #B9CDFF, #123456); /* 표준 그라데이션 */
+           -webkit-background-clip: text; /* 크롬, 사파리용 */
+           background-clip: text; /* 표준 */
+           color: transparent;
           }
 
             
@@ -297,27 +338,37 @@ function Booking() {
 
         .passenger-post-btn {
             flex-grow: 1; /* 버튼이 동등한 너비 차지 */
-            
             color: white; /* 텍스트 색상 */
-            padding: 10px 0px; /* 버튼 내부 여백 */
+            padding: 8px 0px; /* 버튼 내부 여백 */
             margin-right: 10px;
             border: none; /* 테두리 없음 */
             border-radius: 10px; 
-            font-size: 15px; /* 글꼴 크기 */
+            font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+
+
+            width: 350px;
+            height: 45px;
+            border: 1px solid #c9c9c9;
+
         }
         
         .driver-post-btn {
             flex-grow: 1; /* 버튼이 동등한 너비 차지 */
             
             color: white; /* 텍스트 색상 */
-            padding: 10px 0px; /* 버튼 내부 여백 */
+            padding: 8px 0px; /* 버튼 내부 여백 */
             border: none; /* 테두리 없음 */
             border-radius: 10px; 
-            font-size: 15px; /* 글꼴 크기 */
+            font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
+            width: 350px;
+            height: 45px;
+            border: 1px solid #c9c9c9;
+
+
         }
         
         .passenger-post-btn:hover, .driver-post-btn:hover {
@@ -408,7 +459,6 @@ function Booking() {
             margin-top: 5px;
             margin-right: 600px;
             margin-bottom: 20px;
-           
           }
 
           .filter-btn {
@@ -416,7 +466,6 @@ function Booking() {
             border: 1px solid #ccc;
             border-radius: 20px;
             background-color: #87CEEB;
-           
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
             margin-right: 10px; /* 필터 버튼과 옵션 사이 간격을 추가 */
@@ -428,6 +477,7 @@ function Booking() {
           }
 
           .filter-options {
+            margin-left: 70px;
             display: flex;
             flex-direction: row; 
             align-items: center; 
@@ -437,8 +487,15 @@ function Booking() {
           .filter-option {
             cursor: pointer;
             transition: color 0.3s;
-            padding: 5px 0; 
             margin-right: 10px;
+            background-color: #ffffff;
+            color: #779dff;
+            padding: 8px 16px; /* Padding */
+            border-radius: 20px; /* Rounded corners */
+            font-size: 0.9em; /* Text size */
+            white-space: nowrap; /* Prevent wrapping */
+            cursor: pointer; /* Add cursor pointer */
+            border: 1px solid #c9c9c9;
           }
 
           .filter-option:hover {
@@ -464,14 +521,37 @@ function Booking() {
           }
 
           .post-user-info {
+            margin-top: 30px;
+            margin-left: 10px;
             display: flex;
             align-items: center;
             flex-direction: column; /*수직으로 배치*/
           }
 
-          .user-avatar {
-            /* 아바타 스타일 */
-          }
+          
+          .user-name::after {
+            content: '${activeButton === 'driver' ? 'driver' : 'passenger'}';
+            display: inline-block;
+            background-color: rgba(28, 92, 255, 0.6); /* 배경색 */
+            color: white; /* 텍스트 색상 */
+            font-size: 0.8em; /* 글꼴 크기 */
+            font-weight: normal; /* 일반체로 설정 */
+            border-radius: 20px; /* 원형 모양 */
+            padding: 3px 8px; /* 내부 여백 */
+            margin-left: 15px; /* 사용자 이름과의 간격 */
+            margin-top: -5px;
+        }
+        
+        .waiting-for-text {
+            
+            font-weight: bold;
+            color: blue;
+            text-align: right;
+            margin-right: 10px;
+            margin-top: 15px;
+        }
+
+
 
           .user-details {
             margin-left: 10px;
@@ -482,20 +562,48 @@ function Booking() {
           }
 
           .post-date {
-            margin-top: 30px;
-           
-            
+            margin-left: 30px;
+            font-weight: 700;
+            color: #black;
+            margin-bottom: 20px;
           }
 
           .post-distance {
-            /* 거리 스타일 */
+            margin-left: 30px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #888888;
           }
 
           .inner-post-card {
             background-color: #f5f5f5;
-            padding: 10px;
+            padding: 30px 10px;
             border-radius: 8px;
-            margin-top: 50px;
+            margin-top: 40px;
+            padding-bottom: 20px;
+            position: relative;
+          }
+
+          .participant-info {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+            background-color: rgba(28, 92, 255, 0.8);
+            color: white; 
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1rem; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+          }
+          
+          .participant-icon {
+           width: 22px; /* 아이콘의 너비 */
+           height: 22px; /* 아이콘의 높이 */
           }
 
           .posts-container {
@@ -527,8 +635,8 @@ function Booking() {
           .post-destination,
           .post-date-time {
             margin-bottom: 10px;
-            
           }
+
 
           .post-actions {
             text-align: right;
@@ -546,13 +654,14 @@ function Booking() {
             align-items: flex-start;
             margin-bottom: 20px;
             position: relative;
+            margin-top:10px;
           }
 
           .post-keywords {
             display: flex;
             flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
             gap: 10px; /* 키워드 사이의 간격 */
-            margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+            margin-top: 30px; /* 키워드와 다른 컨텐츠 사이의 간격 */
           }
 
           .post-keyword {
@@ -576,7 +685,6 @@ function Booking() {
             flex-direction: column;
             align-items: center;
             margin-right: 10px;
-            
           }
 
           .location-dot-white {
@@ -609,7 +717,6 @@ function Booking() {
 
           .location-point {
             text-align: center;
-            
           }
           
           .location-title1 {
@@ -627,12 +734,10 @@ function Booking() {
 
           .location-details {
             margin-left: 50px; /* 선과의 간격을 만들기 위해 margin-left 적용 */
-            flex-grow: 1;
             display: flex;
-            justify-content: space-between;
+            justify-content: column;
             align-items: center;
             min-height: 60px; /* 세부사항이 적을 때도 컨테이너가 줄어들지 않도록 최소 높이 설정 */
-            
           }
 
           .location-line {
@@ -655,14 +760,12 @@ function Booking() {
           .location-point.destination {
             text-align: left;
             flex-grow: 1;
-            
           }
 
           .location-title,
           .location-detail {
             color: #333; /* 텍스트 색깔 */
             font-size: 0.9em; /* 텍스트 크기 */
-            
           }
           
           .pagination-container {
@@ -682,6 +785,26 @@ function Booking() {
           color: #1c5cff; /* 활성 상태일 때의 색상 */
           text-decoration: underline; /* 활성 상태일 때의 텍스트 꾸미기 */
         }
+        
+        .post-icon {
+         margin-right: 8px; /* 아이콘과 텍스트 사이 간격 조정 */
+         width: 22px; /* 아이콘의 너비 조정 */
+         height: 22px; /* 아이콘의 높이 조정 */
+         vertical-align: middle; /* 텍스트와 수직 정렬 */
+        }
+        .driver-icon {
+         margin-right: 8px; /* 아이콘과 텍스트 사이 간격 조정 */
+         width: 22px; /* 아이콘의 너비 조정 */
+         height: 22px; /* 아이콘의 높이 조정 */
+         vertical-align: middle; /* 텍스트와 수직 정렬 */
+        }
+        .button-content {
+        display: flex;
+        align-items: center; /* 수직 정렬 */
+        justify-content: center; /* 가로 방향 가운데 정렬 */
+        gap: 6px; /* 아이콘과 텍스트 사이 간격 조정 */
+        }
+
 
           
         `}

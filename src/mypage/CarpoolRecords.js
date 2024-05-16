@@ -9,12 +9,15 @@ function CarpoolRecords() {
   const [data, setData] = useState([]);
   const [user,setUser]=useState(getCookieValue("nickname"));
   const [contents, setContents]=useState('');
-  const handleRating = (userId, rating) => {
-    axios.post(`/${userId}/star`,  { params: { star: rating } })
+  
+  const handleRating = (userId, star) => {
+    axios.put(`/recruits/star`, { id: userId , star: star})
       .then(() => {
+        console.log(parseFloat(star));
+        console.log(userId);
         const updatedData = data.map(item => {
           if (item.userId === userId) {
-            return { ...item, rating }; // 평균 별점을 업데이트하려면 서버로부터 새 평균 별점을 받아야 할 수도 있습니다.
+            return { ...item, star }; 
           }
           return item;
         });
@@ -22,7 +25,7 @@ function CarpoolRecords() {
       })
       .catch(error => console.error('Rating update failed:', error));
   };
-  const StarRating = ({ starsSelected = 0, totalStars = 5, onRate = f => f }) => {
+  const StarRating = ({ starsSelected = 0.0, totalStars = 5.0, onRate = f => f }) => {
     return (
       <div className="star-rating">
         {[...Array(totalStars)].map((n, i) =>
@@ -84,7 +87,7 @@ function CarpoolRecords() {
         {data.map(item => (
           <li key={item.id}>
             <Link to={`/booking/${item.idxNum}`}>{item.nickname} - {item.title}</Link>
-            <StarRating starsSelected={item.star} onRate={star => handleRating(item.userId, star)} />
+            <StarRating starsSelected={item.star} onRate={star => handleRating(item.id, star)} />
           </li>
         ))}
       </ul>
