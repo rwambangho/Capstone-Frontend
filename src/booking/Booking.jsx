@@ -46,13 +46,11 @@ function Booking() {
             setLatitude(latitude);
             setLongitude(longitude);
             console.log(latitude,longitude);
-
         });
         updateDistances(latitude,longitude);
     }, [latitude]);
 
     const updateDistances = (latitude, longitude) => {
-
         posts.forEach(post => {
             const postData = {
                 currentX: longitude,
@@ -64,7 +62,6 @@ function Booking() {
                 .then(response => {
                     setDistances(prev => ({ ...prev, [post.idxNum]: response.data }));
                     console.log(post.idxNum);
-
                 })
                 .catch(error => console.error('Error calculating distance:', error));
         });
@@ -72,14 +69,11 @@ function Booking() {
     const fetchDriverPosts = async () => {
         try {
             const response = await axios.get('/recruits/driver');
-
             //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
             setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(true);
-
             setActiveButton('driver');
-
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
@@ -88,17 +82,16 @@ function Booking() {
     const fetchPassengerPosts = async () => {
         try {
             const response = await axios.get('/recruits/passenger');
-
             //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
             setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(false);
-
             setActiveButton('passenger');
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
     };
+
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -115,6 +108,7 @@ function Booking() {
 
     const navigateToBookingDetail = (postId) => {
         navigate(`/booking/${postId}`);
+        navigate(`/chatroom/${postId}`);
     };
 
     const toggleRegionDropdown = () => {
@@ -136,14 +130,6 @@ function Booking() {
         }
     };
 
-
-
-
-
-
-
-
-
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
@@ -154,7 +140,6 @@ function Booking() {
         <div className="page-container">
             <Navbar />
             <div className="main-content">
-                {/*<Sidebar />*/}
                 <div className="right-content">
                     <div className="post-form-header">
                         <h1>Please choose the post that suits you</h1>
@@ -216,10 +201,7 @@ function Booking() {
                                             <span className="post-date">{displayDate}</span>
                                         </div>
                                         <div className="post-distance">{distances[post.idxNum]}km</div>
-
                                         <div className="post-fare">{post.fare}원</div>
-
-
                                         {activeButton === 'passenger' && (
                                             <div className="waiting-for-text">Waiting<br /> for Driver</div>
                                         )}

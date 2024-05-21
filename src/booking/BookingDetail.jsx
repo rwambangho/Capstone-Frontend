@@ -48,7 +48,6 @@ function BookingDetail() {
                 console.error('Error fetching post:', error);
             }
         };
-
         fetchPost();
     }, [postId]);
 
