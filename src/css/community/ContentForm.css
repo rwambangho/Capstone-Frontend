@@ -1,7 +1,5 @@
-/* ContentForm.css */
-
 .content-form {
-  position: absolute; /* 절대 위치로 설정 */
+  position: relative; /* 상대 위치로 설정 */
   top: 50%; /* 화면 세로 중앙에 위치시키기 위해 top 값을 50%로 설정 */
   left: 50%; /* 화면 가로 중앙에 위치시키기 위해 left 값을 50%로 설정 */
   transform: translate(-50%, -50%); /* 수평 및 수직으로 반만큼 이동하여 중앙에 정렬 */
@@ -11,7 +9,8 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   width: 80%; /* 더 작은 크기로 조정 */
   max-width: 800px; /* 최대 너비 설정 */
-  margin-top: 40px;
+  margin-top: 100px;
+  box-sizing: border-box;
 }
 
 .content-form .form-group {
@@ -42,12 +41,14 @@
   border-radius: 4px;
   margin-top: 0.5rem;
   resize: none;
+  box-sizing: border-box;
 }
 
 /* 제목 입력 필드의 너비 조정 */
 .content-form .form-group.title-group input {
-  width: 785px;
+  width: calc(100% - 10px);
   margin-left: -5px;
+  box-sizing: border-box;
 }
 
 .content-form .form-group.content-group {
@@ -68,13 +69,21 @@
 
 .add-photo-btn {
   align-self: flex-end;
+  margin-right: 13px;
+}
+
+.content-form .uploaded-image {
+  max-width: 150px; /* 이미지의 최대 너비를 150px로 설정 */
+  height: 200px;
+  margin-top: 10px;
 }
 
 .content-form .form-group textarea {
   height: 200px; /* 높이를 줄임 */
   margin-left: 0; /* textarea를 왼쪽에 정렬 */
   flex-grow: 1; /* 남은 공간을 모두 차지하도록 조정 */
-  width: 98%;
+  width: calc(100% - 10px);
+  box-sizing: border-box;
 }
 
 .content-form .form-actions {

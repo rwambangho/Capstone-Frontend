@@ -23,7 +23,7 @@ function ContentForm({ onRegister }) {
         img.onload = () => {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
-          canvas.width = 300;
+          canvas.width = 150; // 이미지 너비를 150px로 조정
           canvas.height = (canvas.width / img.width) * img.height;
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           const dataUrl = canvas.toDataURL('image/jpeg');
@@ -92,7 +92,7 @@ function ContentForm({ onRegister }) {
               />
             </div>
             {selectedImage && (
-                <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />
+                <img src={selectedImage} alt="Selected" className="uploaded-image" />
             )}
             <textarea
                 id="content"
