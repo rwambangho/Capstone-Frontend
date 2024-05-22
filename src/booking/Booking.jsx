@@ -1,4 +1,3 @@
-// Booking.js
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
@@ -19,7 +18,7 @@ const StarRating = ({ rating }) => {
         );
     }
     return (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: '-30px', marginTop:'5px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: '-5px', marginTop: '5px' }}>
             {stars}
         </div>
     );
@@ -34,9 +33,9 @@ function Booking() {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
     const [distances, setDistances] = useState({});
-    const [latitude,setLatitude]=useState({});
-    const [longitude,setLongitude]=useState({});
-    const [isDriver,setDriver]=useState();
+    const [latitude, setLatitude] = useState({});
+    const [longitude, setLongitude] = useState({});
+    const [isDriver, setDriver] = useState();
 
     useEffect(() => {
         fetchDriverPosts();
@@ -46,9 +45,9 @@ function Booking() {
             const longitude = position.coords.longitude;
             setLatitude(latitude);
             setLongitude(longitude);
-            console.log(latitude,longitude);
+            console.log(latitude, longitude);
         });
-        updateDistances(latitude,longitude);
+        updateDistances(latitude, longitude);
     }, [latitude]);
 
     const updateDistances = (latitude, longitude) => {
@@ -111,17 +110,14 @@ function Booking() {
         setShowRegions(!showRegions);
     };
 
-    // 글 필터링
     const filterPosts = (filter) => {
         if (filter === 'latest') {
             const sorted = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPosts(sorted);
         } else if (filter === 'close') {
-            // "Close" 필터 로직 (가까운 거리순, 이 예시에서는 distance 값을 기준으로 정렬)
             const sorted = [...posts].sort((a, b) => a.distance - b.distance);
             setPosts(sorted);
         } else if (filter === 'departure time') {
-            // "Departure Time" 필터 로직 (출발 시간순)
             const sorted = [...posts].sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
             setPosts(sorted);
         }
@@ -147,9 +143,9 @@ function Booking() {
                             >
                                 <div className="button-content">
                                     {activeButton === 'passenger' ? (
-                                        <img src={PassengerIcon} alt="Passenger Icon" className="post-icon"/>
+                                        <img src={PassengerIcon} alt="Passenger Icon" className="post-icon" />
                                     ) : (
-                                        <img src={GrayPassengerIcon} alt="Gray Passenger Icon" className="post-icon"/>
+                                        <img src={GrayPassengerIcon} alt="Gray Passenger Icon" className="post-icon" />
                                     )}
                                     Passenger's post
                                 </div>
@@ -160,9 +156,9 @@ function Booking() {
                             >
                                 <div className="button-content">
                                     {activeButton === 'driver' ? (
-                                        <img src={DriverIcon} alt="Driver Icon" className="post-icon"/>
+                                        <img src={DriverIcon} alt="Driver Icon" className="post-icon" />
                                     ) : (
-                                        <img src={GrayDriverIcon} alt="Gray Driver Icon" className="post-icon"/>
+                                        <img src={GrayDriverIcon} alt="Gray Driver Icon" className="post-icon" />
                                     )}Driver's post
                                 </div>
                             </button>
@@ -194,26 +190,31 @@ function Booking() {
                                         <div className="post-user-info">
                                             {post.userDto.profileImage ? (
                                                 <img src={post.userDto.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
-                                                     style={{width: '10%', height: '10%', borderRadius: '50%'}}/>
+                                                     className="profile-image" />
                                             ) : null}
-                                            <span className="user-name">{post.nickname}</span>
-                                            {isDriver && <StarRating rating={post.avgStar}/>}
+                                            <div className="user-details">
+                                                <div className="user-name">
+                                                    {post.nickname}
+                                                    <span className="user-role">{isDriver ? 'Driver' : 'Passenger'}</span>
+                                                </div>
+                                                {isDriver && <StarRating rating={post.avgStar} />}
+                                            </div>
                                         </div>
                                         {activeButton === 'passenger' && (
-                                            <div className="waiting-for-text">Waiting<br/> for Driver</div>
+                                            <div className="waiting-for-text">Waiting<br /> for Driver</div>
                                         )}
                                         {activeButton === 'driver' && (
-                                            <div className="waiting-for-text">Waiting<br/> for Passenger</div>
+                                            <div className="waiting-for-text">Waiting<br /> for Passenger</div>
                                         )}
                                     </div>
-                                    <div className="post-distance" style={{textAlign: 'right', marginRight: '5px'}}>
+                                    <div className="post-distance" style={{ textAlign: 'right', marginRight: '5px' }}>
                                         current location : {distances[post.idxNum]}km
                                     </div>
                                     <div className="inner-post-card">
                                         <span className="post-date">Departure time : {displayDate}</span>
                                         <div className="participant-info">
                                             <img src={ParticipantIcon} alt="Participant Icon"
-                                                 className="participant-icon"/>
+                                                 className="participant-icon" />
                                             <span>{post.participant}/{post.maxParticipant}</span>
                                         </div>
                                         <div className="location-container">
@@ -332,7 +333,6 @@ function Booking() {
             font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
-
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
@@ -490,47 +490,50 @@ function Booking() {
           }
 
           .post-user-info {
-            margin-top: 30px;
-            margin-left: 10px;
             display: flex;
             align-items: center;
-            flex-direction: column; /*수직으로 배치*/
           }
-          
-          .user-name::after {
-            content: '${activeButton === 'driver' ? 'driver' : 'passenger'}';
-            display: inline-block;
+
+          .profile-image {
+            width: 60px; 
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
+
+          .user-details {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .user-name {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+          }
+
+          .user-role {
             background-color: rgba(28, 92, 255, 0.6); /* 배경색 */
             color: white; /* 텍스트 색상 */
             font-size: 0.8em; /* 글꼴 크기 */
             font-weight: normal; /* 일반체로 설정 */
             border-radius: 20px; /* 원형 모양 */
             padding: 3px 8px; /* 내부 여백 */
-            margin-left: 15px; /* 사용자 이름과의 간격 */
-            margin-top: -5px;
-        }
-        
-        .waiting-for-text {
-            
+            margin-left: 10px; /* 사용자 이름과의 간격 */
+          }
+
+          .waiting-for-text {
             font-weight: bold;
             color: blue;
             text-align: right;
             margin-right: 10px;
             margin-top: 15px;
-        }
-
-          .user-details {
-            margin-left: 10px;
-          }
-
-          .user-name {
-            font-weight: bold;
           }
 
           .post-date {
             margin-left: 30px;
             font-weight: 700;
-            color: #black;
+            color: black;
             margin-bottom: 20px;
           }
 
