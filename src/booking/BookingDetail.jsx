@@ -1,4 +1,4 @@
-//BookingDetail
+//BookingDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -6,6 +6,22 @@ import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import { useParams } from 'react-router-dom';
 import BlueDriverIcon from '../icons/bluedriver.svg';
+
+const StarRating = ({ rating }) => {
+    console.log(rating);
+    const totalStars = 5;
+    let stars = [];
+    for (let i = 1; i <= totalStars; i++) {
+        stars.push(
+            <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
+        );
+    }
+    return (
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: '-5px', marginTop: '5px' }}>
+            {stars}
+        </div>
+    );
+};
 
 function BookingDetail() {
     const [post, setPost] = useState(null);
@@ -118,14 +134,20 @@ function BookingDetail() {
             <Navbar />
             <div className="main-content">
                 <div className="right-content">
-
                     <div className="outer-post-card">
                         <div className="post-header">
                             <div className="post-user-info">
-                                <span className="user-name">{post.nickname}</span>
-                                <span className="post-role">{isDriverPost ? "Driver" : "Passenger"}</span>
+                                {post.userDto.profileImage ? (
+                                    <img src={post.userDto.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
+                                         className="profile-image" />
+                                ) : null}
+                                <div className="user-details">
+                                    <span className="user-name">{post.nickname}</span>
+                                    <span className="post-role">{isDriverPost ? "Driver" : "Passenger"}</span>
+                                    {isDriverPost && <StarRating rating={post.avgStar} />}
+                                </div>
                             </div>
-                            <div className="waiting-for-text">
+                                <div className="waiting-for-text">
                                 {isDriverPost ? (
                                     <>Waiting <br/> for Passenger</>
                                 ) : (
@@ -137,7 +159,7 @@ function BookingDetail() {
                             <span className="post-date">{displayDate}</span>
                             <div className="location-container">
                                 <div className="location-marker departure-marker">
-                                <div className="location-dot-white"></div>
+                                    <div className="location-dot-white"></div>
                                     <div className="location-line"></div>
                                 </div>
                                 <div className="location-details">
@@ -246,12 +268,16 @@ function BookingDetail() {
              }
         
              .post-user-info {
-                margin-top: 30px;
-                margin-left: 10px;
-                display: flex;
-                align-items: center;
-       
-             }
+            display: flex;
+            align-items: center;
+          }
+          
+          .profile-image {
+            width: 60px; 
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
 
              .waiting-for-text {
                font-weight: bold;

@@ -193,8 +193,7 @@ function Booking() {
                                                      className="profile-image" />
                                             ) : null}
                                             <div className="user-details">
-                                                <div className="user-name">
-                                                    {post.nickname}
+                                                <div className="user-name">{post.nickname}
                                                     <span className="user-role">{isDriver ? 'Driver' : 'Passenger'}</span>
                                                 </div>
                                                 {isDriver && <StarRating rating={post.avgStar} />}
