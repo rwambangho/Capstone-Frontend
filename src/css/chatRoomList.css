@@ -1,0 +1,81 @@
+.chatting-container {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.chatting-title {
+    color: #B9CDFF;
+    background: -webkit-linear-gradient(45deg, #B9CDFF, #123456); /* 크롬, 사파리 등 대부분의 브라우저용 */
+    background: linear-gradient(45deg, #B9CDFF, #123456); /* 표준 그라데이션 */
+    -webkit-background-clip: text; /* 크롬, 사파리용 */
+    background-clip: text; /* 표준 */
+    color: transparent;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: -10px;
+    margin-left: -80px;
+}
+
+.chat-room-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.chat-room-list-ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+.chat-room-list-li {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 70%;
+    margin-right: 10px;
+    max-width: 400px;
+    background-color: white;
+    color: black;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.chat-room-list-li.active {
+    background-color: #d3d3d3;
+}
+
+.chat-room-list-li:hover {
+    background-color: #f0f0f0;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.searchh-input {
+    width: 80%;
+    padding: 10px 40px 10px 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+    margin-top: -50px;
+}
+

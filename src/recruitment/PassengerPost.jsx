@@ -21,7 +21,8 @@ function PassengerPost() {
     const [selectedKeywords, setSelectedKeywords] = useState([]);
     const [showSearchResults, setShowSearchResults] = useState(false); // 검색 결과를 표시할 지 여부를 추적하는 상태를 추가
     const [message, setMessage] = useState('');
-    const [nickname, setNickname] = useState(getCookieValue('id') || 'User');
+    const [nickname, setNickname] = useState(getCookieValue('nickname'));
+    const[id]=useState(getCookieValue('id'));
     const [isDriverPost] = useState(false);
     const [departurePlaces, setDeparturePlaces] = useState([]);
     const [arrivalPlaces, setArrivalPlaces] = useState([]);
@@ -68,7 +69,8 @@ function PassengerPost() {
                 departureX: selectedDeparturePlace.x,
                 departureY: selectedDeparturePlace.y,
                 arrivalX: selectedArrivalPlace.x,
-                arrivalY: selectedArrivalPlace.y
+                arrivalY: selectedArrivalPlace.y,
+                id:id
             });
 
             console.log('Response from server:', response.data);
