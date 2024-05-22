@@ -13,6 +13,23 @@ import blueHeartIcon from '../icons/blueheart.svg';
 import heartIcon from '../icons/heart.svg';
 
 // Styled components 정의
+const DeleteButton = styled.button`
+  padding: 8px 20px;
+  background-color: #dc3545; /* 삭제 버튼 배경색 */
+  color: white;
+  border: 1px solid #dc3545; /* 삭제 버튼 테두리 색상 */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s; /* transition 추가 */
+  &:hover {
+    background-color: #c82333; /* 마우스를 올렸을 때 배경색 변경 */
+    border-color: #c82333; /* 마우스를 올렸을 때 테두리 색상 변경 */
+  }
+  &:active {
+    transform: translateY(1px); /* 클릭할 때 약간 아래로 이동 */
+  }
+`;
+
 
 const PageContainer = styled.div`
   border-top: 1px solid #ccc !important; // CSS 우선순위 강제 적용
@@ -244,8 +261,9 @@ const PostDetail = () => {
   const [post, setPost] = useState(null);
   const { id } = useParams();
   const [commentInput, setCommentInput] = useState('');
-  const [liked, setLiked] = useState(false);
-  const userId = getCookieValue('nickname');
+  const [liked, setLiked] = useState('');
+  const usernickname = getCookieValue('nickname');
+  const userId=getCookieValue('id');
   const currentTime = new Date();
   const [showComments, setShowComments] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -256,7 +274,10 @@ const PostDetail = () => {
   useEffect(() => {
     axios.get(`/community/posts/read/${id}`)
         .then(response => {
+          console.log(response.data.likesDto);
           const likedByUser = response.data.likesDto.find(like => like.userId === userId);
+          console.log(likedByUser);
+          console.log(userId);
           setLiked(likedByUser ? likedByUser.liked : false);
           setPost(response.data);
         })
@@ -319,6 +340,7 @@ const PostDetail = () => {
   const deletePost= async()=>{
     try{
       await axios.delete(`/community/${post.id}`)
+      navigate("/community");
     }
     catch(error){
       console.error("삭제 실패");
@@ -352,6 +374,7 @@ const PostDetail = () => {
   }
 
   return (
+    
       <PageContainer>
         <Navbar />
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
@@ -363,7 +386,7 @@ const PostDetail = () => {
               <div className="post-detail-header">
                 <p>{formatDateTime(post.time)}</p>
                 <h2>{post.title}</h2>
-                {post.nickName === userId && <button onClick={deletePost}>삭제</button>}
+                {post.nickName === usernickname && <DeleteButton  onClick={deletePost}>Delete</DeleteButton>}
                 <div className="info-container">
                   <div className="stats">
                     <span>hits {post.clickCount}</span>

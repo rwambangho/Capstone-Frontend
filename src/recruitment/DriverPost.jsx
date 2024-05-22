@@ -22,6 +22,7 @@ function DriverPost() {
     const [showSearchResults, setShowSearchResults] = useState(false);
     const [message, setMessage] = useState('');
     const [nickname, setNickname] = useState(getCookieValue('nickname'));
+    const[id]=useState(getCookieValue('id'));
     const [maxParticipant ,setMaxParticipant]=useState('');
     const [driverPost]=useState(true);
     const [departurePlaces, setDeparturePlaces] = useState([]);
@@ -51,7 +52,8 @@ function DriverPost() {
                 departureX: selectedDeparturePlace.x,
                 departureY: selectedDeparturePlace.y,
                 arrivalX: selectedArrivalPlace.x,
-                arrivalY: selectedArrivalPlace.y
+                arrivalY: selectedArrivalPlace.y,
+                id:id
             });
 
             console.log('Response from server:', response.data);

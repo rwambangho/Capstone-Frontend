@@ -1,6 +1,6 @@
-.chat-button {
+.chat-bot {
     border: none;
-    background: black; /* 배경 투명하게 설정 */
+
     cursor: pointer;
     border-radius: 50%; 
     width: 40px; /* 버튼의 가로 길이 설정 */
@@ -10,13 +10,13 @@
     align-items: center; 
   }
   
-  .chat-button svg {
+  .chat-bot svg {
     width: 32px; /* 아이콘 크기 조정 */
     height: 32px; /* 아이콘 크기 조정 */
   } 
   
   /* 버튼에 호버n 효과 추가 */
-  .chat-button:hover {
+  .chat-bot:hover {
     opacity: 0.6;
   }
 

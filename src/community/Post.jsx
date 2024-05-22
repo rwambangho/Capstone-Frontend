@@ -76,20 +76,7 @@ const Post = ({ post }) => {
         return null;
     }
 
-    const sendNicknameToServer = () => {
-        const userId = getCookieValue('nickname');
-        axios.post('/Chat', {
-            userId1: userId,
-            userId2: post.nickName
-        })
-            .then(response => {
-                navigate(`/chat?userId1=${userId}&userId2=${post.nickName}`);
-                console.log('Nickname sent to server:', response.data);
-            })
-            .catch(error => {
-                console.error('Error sending nickname to server:', error);
-            });
-    };
+   
 
     const navigateToPostDetail = () => {
         axios.put('/community/addClickCount', {

@@ -10,10 +10,8 @@ import GrayDriverIcon from '../icons/graydriver.svg';
 import ParticipantIcon from '../icons/participant.svg';
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 92daa05 (수정본)
+
 const StarRating = ({ rating }) => {
   console.log(rating);
   const totalStars = 5;
@@ -74,16 +72,14 @@ function Booking() {
     const fetchDriverPosts = async () => {
         try {
             const response = await axios.get('/recruits/driver');
-<<<<<<< HEAD
+
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(true);
-=======
-            setPosts(response.data);
->>>>>>> 92daa05 (수정본)
+
             setActiveButton('driver');
-            setDriver(true);
+          
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
@@ -92,14 +88,12 @@ function Booking() {
     const fetchPassengerPosts = async () => {
         try {
             const response = await axios.get('/recruits/passenger');
-<<<<<<< HEAD
+
         //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
         setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(false);
-=======
-            setPosts(response.data);
->>>>>>> 92daa05 (수정본)
+
             setActiveButton('passenger');
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -216,16 +210,19 @@ function Booking() {
                                      onClick={() => navigateToBookingDetail(post.idxNum)}>
                                     <div className="post-header">
                                         <div className="post-user-info">
+                                        {post.userDto.profileImage ? (
+                        <img src={post.userDto.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
+                             style={{width: '10%', height: '10%', borderRadius: '50%'}}/>
+                    ) : null}
                                             <span className="user-name">{post.nickname}</span>
-                                            {isDriver && <StarRating rating={post.avgStar} />}
+                                            {isDriver && <StarRating rating={post.userDto.avgStar} />}
                                               
                                               <span className="post-date">{displayDate}</span>
                                         </div>
                                         <div className="post-distance">{distances[post.idxNum]}km</div>
-<<<<<<< HEAD
-                                        <div className="post-distance1">{post.distance}km</div>
+
                                         <div className="post-fare">{post.fare}원</div>
-=======
+
                                        
                                         {activeButton === 'passenger' && (
                                             <div className="waiting-for-text">Waiting<br /> for Driver</div>
@@ -233,8 +230,7 @@ function Booking() {
                                         {activeButton === 'driver' && (
                                             <div className="waiting-for-text">Waiting<br /> for Passenger</div>
                                         )}
->>>>>>> 92daa05 (수정본)
-                                    </div>
+        </div>
                                     <div className="inner-post-card">
                                         <span className="post-date">Departure time : {displayDate}</span>
                                         <div className="participant-info">
@@ -355,11 +351,7 @@ function Booking() {
             font-size: 17px; /* 글꼴 크기 */
             cursor: pointer; /* 클릭 가능하다는 것을 나타내는 커서 */
             transition: background-color 0.3s; /* 호버 효과를 위한 부드러운 전환 */
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 92daa05 (수정본)
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
@@ -377,11 +369,7 @@ function Booking() {
             width: 350px;
             height: 45px;
             border: 1px solid #c9c9c9;
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 92daa05 (수정본)
         }
         
         .passenger-post-btn:hover, .driver-post-btn:hover {

@@ -43,6 +43,7 @@ function ContentForm({ onRegister }) {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
+      formData.append('time',)
       if (selectedImage) {
         formData.append('image', selectedImage);
       }
