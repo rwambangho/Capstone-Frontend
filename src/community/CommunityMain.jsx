@@ -1,4 +1,3 @@
-//CommunityMain.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -33,7 +32,6 @@ const ContentWrapper = styled.div`
     border-radius: 10px;
 `;
 
-
 const SideBarContainer = styled.div`
     flex: 0 0 17%;
     display: flex;
@@ -44,9 +42,9 @@ const SideBarContainer = styled.div`
 `;
 
 const WritePostButton = styled.button`
-    display: flex;        // Use flexbox to align children
-    align-items: center;  // Align children vertically in the center
-    justify-content: center;  // Align children horizontally in the center
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 8px 20px;
     background-color: #1C5CFF;
     color: white;
@@ -55,11 +53,13 @@ const WritePostButton = styled.button`
     cursor: pointer;
     width: auto;
 `;
+
 const Icon = styled.img`
-    width: 20px; /* 아이콘 크기 조정 */
-    height: 20px; /* 아이콘 크기 조정 */
-    margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 조정 */
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 `;
+
 function CommunityMain() {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
@@ -69,7 +69,8 @@ function CommunityMain() {
     useEffect(() => {
         axios.get('/community/')
             .then(response => {
-                setPosts(response.data);
+                const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setPosts(sortedPosts);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -81,7 +82,6 @@ function CommunityMain() {
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
 
     return (
         <Container>
@@ -121,25 +121,22 @@ function CommunityMain() {
                     </WritePostButton>
                     <ChatBot/>
                 </SideBarContainer>
-
             </ContentContainer>
             <div className="pagination-container">
-                            <span className="page-number"
-                                  onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
+                <span className="page-number" onClick={() => paginate(currentPage - 1)}>&laquo; Previous</span>
                 {[...Array(Math.ceil(posts.length / postsPerPage)).keys()].map(number => (
                     <span
                         key={number}
                         className={`page-number ${currentPage === number + 1 ? 'active' : ''}`}
                         onClick={() => paginate(number + 1)}
                     >
-                                    {number + 1}
-                                </span>
+                        {number + 1}
+                    </span>
                 ))}
                 <span className="page-number" onClick={() => paginate(currentPage + 1)}>Next &raquo;</span>
             </div>
         </Container>
     );
-
 }
 
 export default CommunityMain;
