@@ -9,9 +9,6 @@ import GrayPassengerIcon from '../icons/grayicon.svg';
 import GrayDriverIcon from '../icons/graydriver.svg';
 import ParticipantIcon from '../icons/participant.svg';
 
-
-
-
 const StarRating = ({ rating }) => {
     console.log(rating);
     const totalStars = 5;
@@ -21,7 +18,11 @@ const StarRating = ({ rating }) => {
             <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
         );
     }
-    return <div>{stars}</div>;
+    return (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: '-30px', marginTop:'5px' }}>
+            {stars}
+        </div>
+    );
 };
 
 function Booking() {
@@ -66,11 +67,10 @@ function Booking() {
                 .catch(error => console.error('Error calculating distance:', error));
         });
     };
+
     const fetchDriverPosts = async () => {
         try {
             const response = await axios.get('/recruits/driver');
-            //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
             setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(true);
             setActiveButton('driver');
@@ -82,8 +82,6 @@ function Booking() {
     const fetchPassengerPosts = async () => {
         try {
             const response = await axios.get('/recruits/passenger');
-            //     const sortedResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            // setPosts(prevPosts => [...prevPosts, ...sortedResponse]);
             setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(false);
             setActiveButton('passenger');
@@ -91,7 +89,6 @@ function Booking() {
             console.error('Error fetching posts:', error);
         }
     };
-
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -108,12 +105,12 @@ function Booking() {
 
     const navigateToBookingDetail = (postId) => {
         navigate(`/booking/${postId}`);
-        navigate(`/chatroom/${postId}`);
     };
 
     const toggleRegionDropdown = () => {
         setShowRegions(!showRegions);
     };
+
     // 글 필터링
     const filterPosts = (filter) => {
         if (filter === 'latest') {
@@ -195,19 +192,22 @@ function Booking() {
                                      onClick={() => navigateToBookingDetail(post.idxNum)}>
                                     <div className="post-header">
                                         <div className="post-user-info">
+                                            {post.userDto.profileImage ? (
+                                                <img src={post.userDto.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
+                                                     style={{width: '10%', height: '10%', borderRadius: '50%'}}/>
+                                            ) : null}
                                             <span className="user-name">{post.nickname}</span>
-                                            {isDriver && <StarRating rating={post.avgStar} />}
-
-                                            <span className="post-date">{displayDate}</span>
+                                            {isDriver && <StarRating rating={post.avgStar}/>}
                                         </div>
-                                        <div className="post-distance">{distances[post.idxNum]}km</div>
-                                        <div className="post-fare">{post.fare}원</div>
                                         {activeButton === 'passenger' && (
-                                            <div className="waiting-for-text">Waiting<br /> for Driver</div>
+                                            <div className="waiting-for-text">Waiting<br/> for Driver</div>
                                         )}
                                         {activeButton === 'driver' && (
-                                            <div className="waiting-for-text">Waiting<br /> for Passenger</div>
+                                            <div className="waiting-for-text">Waiting<br/> for Passenger</div>
                                         )}
+                                    </div>
+                                    <div className="post-distance" style={{textAlign: 'right', marginRight: '5px'}}>
+                                        current location : {distances[post.idxNum]}km
                                     </div>
                                     <div className="inner-post-card">
                                         <span className="post-date">Departure time : {displayDate}</span>
@@ -239,7 +239,10 @@ function Booking() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="post-distance">{post.distance}km</div>
+                                        <div className="post-details">
+                                            <div className="post-fare">Taxi fare : {post.fare}₩</div>
+                                            <div className="post-distance">({post.distance}km)</div>
+                                        </div>
                                     </div>
                                     <div className='post-form-bottom'>
                                         <div className="post-keywords">
@@ -472,7 +475,7 @@ function Booking() {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             border-radius: 8px;
             width: 100%;
-            height: 500px;
+            height: 580px;
             max-width: 800px; /* 적절한 최대 너비 설정 */
             margin-bottom: 20px;
             padding: 20px;
@@ -532,7 +535,7 @@ function Booking() {
           }
 
           .post-distance {
-            margin-left: 30px;
+            margin-left: 20px;
             margin-top: 10px;
             margin-bottom: 10px;
             font-weight: 600;
@@ -599,7 +602,6 @@ function Booking() {
           .post-date-time {
             margin-bottom: 10px;
           }
-
 
           .post-actions {
             text-align: right;
@@ -685,7 +687,7 @@ function Booking() {
           .location-title1 {
             font-weight: bold;
             display: block; /* 타이틀을 블록 요소로 만들어 줄 바꿈 */
-            margin-top: 8px;
+            margin-top: 3px;
             margin-left: -45px;
           }
 
@@ -767,9 +769,20 @@ function Booking() {
         justify-content: center; /* 가로 방향 가운데 정렬 */
         gap: 6px; /* 아이콘과 텍스트 사이 간격 조정 */
         }
-
-
-          
+        
+        .post-details {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-top: 20px;
+        }
+        .post-fare {
+            margin-left: 30px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #888888;
+          }
         `}
             </style>
         </div>

@@ -1,4 +1,3 @@
-// ContentForm.jsx
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -69,7 +68,7 @@ function ContentForm({ onRegister }) {
   return (
       <div className="content-form">
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form-group title-group">
             <label htmlFor="title">Title</label>
             <input
                 id="title"
@@ -78,9 +77,9 @@ function ContentForm({ onRegister }) {
                 onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group content-group">
             <div className="content-label">
-              <label htmlFor="content">Content</label>
+              <label htmlFor="content" className="content-label-text">Content</label>
               <button type="button" className="add-photo-btn" onClick={handleAddPhoto}>
                 Add photos
               </button>
