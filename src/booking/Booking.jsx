@@ -1,3 +1,4 @@
+//Booking.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbar from '../component/Navbar';
@@ -277,40 +278,40 @@ function Booking() {
             </div>
             <style>
                 {`
-          .main-content {
-            flex-grow: 1;
-            display: flex;
-            padding: 20px;
-            margin-right: 300px;
-          }
+                  .main-content {
+                     flex-grow: 1;
+                     display: flex;
+                     padding: 20px;
+                     margin-right: 300px;
+                  }
 
-          .right-content {
-            flex-grow: 1;
-            padding: 20px;
-            margin-left: 160px;
-          }
+                  .right-content {
+                      flex-grow: 1;
+                      padding: 20px;
+                      margin-left: 160px;
+                  }
 
-          .post-form-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-          }
+                  .post-form-header {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-bottom: 30px;
+                  }
           
-          .post-form-header h1 {
-           font-size: 50px;
-           margin-bottom: 60px; /* 텍스트 아래 여백 추가 */
-           color: #B9CDFF;
-           font-family: 'Sansation', sans-serif;
-           font-weight: bold;
-           display: inline-block;
-           margin-bottom: 30px;
-           background: -webkit-linear-gradient(45deg, #B9CDFF, #123456); /* 크롬, 사파리 등 대부분의 브라우저용 */
-           background: linear-gradient(45deg, #B9CDFF, #123456); /* 표준 그라데이션 */
-           -webkit-background-clip: text; /* 크롬, 사파리용 */
-           background-clip: text; /* 표준 */
-           color: transparent;
-          }
+                  .post-form-header h1 {
+                       font-size: 50px;
+                       margin-bottom: 60px; /* 텍스트 아래 여백 추가 */
+                       color: #B9CDFF;
+                       font-family: 'Sansation', sans-serif;
+                       font-weight: bold;
+                       display: inline-block;
+                       margin-bottom: 30px;
+                       background: -webkit-linear-gradient(45deg, #B9CDFF, #123456); /* 크롬, 사파리 등 대부분의 브라우저용 */
+                       background: linear-gradient(45deg, #B9CDFF, #123456); /* 표준 그라데이션 */
+                       -webkit-background-clip: text; /* 크롬, 사파리용 */
+                       background-clip: text; /* 표준 */
+                       color: transparent;
+                  }
 
             
          .post-buttons {

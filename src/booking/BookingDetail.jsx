@@ -1,4 +1,3 @@
-//BookingDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -6,6 +5,7 @@ import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import { useParams } from 'react-router-dom';
 import BlueDriverIcon from '../icons/bluedriver.svg';
+import ParticipantIcon from "../icons/participant.svg";
 
 const StarRating = ({ rating }) => {
     console.log(rating);
@@ -67,10 +67,8 @@ function BookingDetail() {
         fetchPost();
     }, [postId]);
 
-
     const handleBooking = async () => {
         try {
-
             const response = await axios.post('/recruits/booking', null, {
                 params: {
                     idxNum: postId,
@@ -89,6 +87,7 @@ function BookingDetail() {
             console.error('Error booking:', error);
         }
     };
+
     const handleAddBooking = async (user) => {
         const confirmBooking = window.confirm("정말 예약을 완료하시겠습니까?");
         if (confirmBooking) {
@@ -126,7 +125,6 @@ function BookingDetail() {
     const dayOfWeek = departureDate.toLocaleDateString('en-US', { weekday: 'short' });
     const displayDate = `${formattedDate}(${dayOfWeek}) ${post.time}`;
 
-    // driver's post 여부를 확인하여 상태를 설정합니다.
     const isDriverPost = post.driverPost;
 
     return (
@@ -147,7 +145,7 @@ function BookingDetail() {
                                     {isDriverPost && <StarRating rating={post.avgStar} />}
                                 </div>
                             </div>
-                                <div className="waiting-for-text">
+                            <div className="waiting-for-text">
                                 {isDriverPost ? (
                                     <>Waiting <br/> for Passenger</>
                                 ) : (
@@ -200,19 +198,24 @@ function BookingDetail() {
                             </div>
                             {post.driverPost && (
                                 <div>
-                                    현재 인원:{post.participant}/{post.maxParticipant}
+                                    <span
+                                        className="participant-count"></span>
+                                    <img src={ParticipantIcon} alt="Participant Icon"
+                                         className="participant-icon"/>
+                                    <span>{post.participant}/{post.maxParticipant}</span>
                                 </div>
                             )}
                             <div className="user-list">
-                                현재 예약 인원:
+                                현재 예약 인원 :
                                 {post.nickname === nickname && post.users && post.users.map((user, index) => (
                                     <button key={index} className="user-button" type="button"
                                             onClick={() => handleAddBooking(user)}>{user}</button>
                                 ))}
                             </div>
-                            <div>
+                            <div className="complete-member">
+                                예약 완료된 인원 :
                                 {post.nickname === nickname && post.users && post.bookingUsers.map((user, index) => (
-                                    <span key={index} className="user-text">{user}, </span>
+                                    <span key={index} className="user-text">{user} </span>
                                 ))}
                             </div>
                             <div className="comment-actions">
@@ -499,6 +502,7 @@ function BookingDetail() {
                   }
                   
                   .comment-section {
+                    margin-bottom: 15px;
                     background-color: #f5f5f5;
                     padding: 10px;
                     border-radius: 8px;
@@ -530,9 +534,50 @@ function BookingDetail() {
                       padding: 10px 0; /* 상하 패딩 추가 */
                     }
                     
+                    .participant-count {
+                    margin-top: 10px;
+                    margin-left: 10px;
+                      font-weight: bold;
+                    }
+                    
+                    .participant-icon {
+                        margin-left:5px;
+                    }
                     
                     .user-list {
-                        margin-top: 25px;
+                        font-weight: bold;
+                        display: flex;
+                        flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
+                        gap: 10px; /* 키워드 사이의 간격 */
+                        margin-top: 15px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+                    }
+                    
+                    .user-button {
+                        background-color: #C0EBFF; 
+                        color: grey; 
+                        padding: 4px 14px; /* 상하 8px, 좌우 16px의 패딩 */
+                        border-radius: 20px; /* 둥근 모서리 */
+                        border: none; /* 테두리 제거 */
+                        font-size: 0.9em; /* 적절한 텍스트 크기 */
+                        white-space: nowrap; /* 키워드를 한 줄로 표시 */
+                        cursor: pointer; /* 마우스를 올렸을 때 커서 변경 */
+                    }
+                    
+                    .complete-member {
+                        font-weight: bold;
+                        margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+                    }
+                    
+                    .user-text {
+                        margin-left: 10px;
+                        background-color: #C0EBFF; 
+                        color: white; /* 흰색 텍스트 */
+                        padding: 4px 14px; /* 상하 8px, 좌우 16px의 패딩 */
+                        border-radius: 20px; /* 둥근 모서리 */
+                        border: none; /* 테두리 제거 */
+                        font-size: 0.9em; /* 적절한 텍스트 크기 */
+                        white-space: nowrap; /* 키워드를 한 줄로 표시 */
+                        font-weight: bold;
                     }
                     
                     
