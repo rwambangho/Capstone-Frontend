@@ -34,7 +34,7 @@ const Header = () => {
     })
       .then(response => {
         if (response.ok) {
-          document.cookie = "nickname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "nickname=; id:; JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
           setUserId(null);
           navigate('/');
         } else {

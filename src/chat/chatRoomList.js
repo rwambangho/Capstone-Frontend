@@ -8,9 +8,9 @@ const StarRating = ({ rating }) => {
   const totalStars = 5;
   let stars = [];
   for (let i = 1; i <= totalStars; i++) {
-      stars.push(
-          <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
-      );
+    stars.push(
+        <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
+    );
   }
   return <div>{stars}</div>;
 };
@@ -56,7 +56,6 @@ function ChatRoomList({ handleQueryParams }) {
     return users.filter(user => user.nickname.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 
-
   const sendNicknameToServer = (roomNumber) => {
     const userId = getCookieValue('nickname');
     console.log("이름1" + roomNumber);
@@ -68,10 +67,6 @@ function ChatRoomList({ handleQueryParams }) {
     handleQueryParams(userId1, userId2);
     setActiveUser(roomNumber); // 클릭한 닉네임을 활성화 상태로 설정
   };
-
-  
-
-
 
   return (
       <div className="chatting-container">
@@ -87,21 +82,21 @@ function ChatRoomList({ handleQueryParams }) {
             />
           </div>
           <ul className="chat-room-list-ul">
-          {filterUsersBySearchTerm().map((roomNumber, index) => (
-            <li
-              key={index}
-              className={`chat-room-list-li ${activeUser === roomNumber.nickname ? 'active' : ''}`}
-              onClick={() => sendNicknameToServer(roomNumber.nickname)}
-            >
-              {roomNumber.nickname}
-              <StarRating rating={roomNumber.avgStar} />
-              {roomNumber.profileImage ? (
-                <img src={roomNumber.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
-                  style={{width: '100%', height: '100%', borderRadius: '50%'}}/>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+            {filterUsersBySearchTerm().map((roomNumber, index) => (
+                <li
+                    key={index}
+                    className={`chat-room-list-li ${activeUser === roomNumber.nickname ? 'active' : ''}`}
+                    onClick={() => sendNicknameToServer(roomNumber.nickname)}
+                >
+                  {roomNumber.profileImage ? (
+                      <img src={roomNumber.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
+                           style={{width: '20%', height: '20%', borderRadius: '50%', marginRight: '10px'}}/>
+                  ) : null}
+                  <span style={{ marginRight: '10px' }}>{roomNumber.nickname}</span>
+                  <StarRating rating={roomNumber.avgStar} />
+                </li>
+            ))}
+          </ul>
         </div>
       </div>
   );

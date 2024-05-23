@@ -1,4 +1,3 @@
-// ContentForm.jsx
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -24,7 +23,7 @@ function ContentForm({ onRegister }) {
         img.onload = () => {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
-          canvas.width = 300;
+          canvas.width = 150; // 이미지 너비를 150px로 조정
           canvas.height = (canvas.width / img.width) * img.height;
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           const dataUrl = canvas.toDataURL('image/jpeg');
@@ -43,7 +42,6 @@ function ContentForm({ onRegister }) {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('time',)
       if (selectedImage) {
         formData.append('image', selectedImage);
       }
@@ -63,6 +61,7 @@ function ContentForm({ onRegister }) {
       navigate('/community');
     } catch (error) {
       console.error('Error saving content:', error);
+      alert("로그인 후 이용하세요");
       navigate('/community');
     }
   };
@@ -70,7 +69,7 @@ function ContentForm({ onRegister }) {
   return (
       <div className="content-form">
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form-group title-group">
             <label htmlFor="title">Title</label>
             <input
                 id="title"
@@ -79,9 +78,9 @@ function ContentForm({ onRegister }) {
                 onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group content-group">
             <div className="content-label">
-              <label htmlFor="content">Content</label>
+              <label htmlFor="content" className="content-label-text">Content</label>
               <button type="button" className="add-photo-btn" onClick={handleAddPhoto}>
                 Add photos
               </button>
@@ -94,7 +93,7 @@ function ContentForm({ onRegister }) {
               />
             </div>
             {selectedImage && (
-                <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />
+                <img src={selectedImage} alt="Selected" className="uploaded-image" />
             )}
             <textarea
                 id="content"
