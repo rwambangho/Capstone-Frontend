@@ -1,4 +1,3 @@
-//BookingDetail
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -6,6 +5,23 @@ import Navbar from '../component/Navbar';
 import Sidebar from '../component/Sidebar';
 import { useParams } from 'react-router-dom';
 import BlueDriverIcon from '../icons/bluedriver.svg';
+import ParticipantIcon from "../icons/participant.svg";
+
+const StarRating = ({ rating }) => {
+    console.log(rating);
+    const totalStars = 5;
+    let stars = [];
+    for (let i = 1; i <= totalStars; i++) {
+        stars.push(
+            <span key={i} style={{ color: i <= rating ? 'gold' : 'gray' }}>★</span>
+        );
+    }
+    return (
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: '-5px', marginTop: '5px' }}>
+            {stars}
+        </div>
+    );
+};
 
 function BookingDetail() {
     const [post, setPost] = useState(null);
@@ -14,7 +30,7 @@ function BookingDetail() {
     const navigate = useNavigate();
 
     const sendNicknameToServer = () => {
-        axios.post('/Chat', {
+        axios.post('/api/Chat', {
             userId1: nickname,
             userId2: post.nickname
         })
@@ -41,22 +57,19 @@ function BookingDetail() {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`/recruits/${postId}`);
+                const response = await axios.get(`/api/recruits/${postId}`);
                 setPost(response.data);
                 console.log(response.data);
             } catch (error) {
                 console.error('Error fetching post:', error);
             }
         };
-
         fetchPost();
     }, [postId]);
 
-
     const handleBooking = async () => {
         try {
-
-            const response = await axios.post('/recruits/booking', null, {
+            const response = await axios.post('/api/recruits/booking', null, {
                 params: {
                     idxNum: postId,
                     nickname: nickname
@@ -74,11 +87,12 @@ function BookingDetail() {
             console.error('Error booking:', error);
         }
     };
+
     const handleAddBooking = async (user) => {
         const confirmBooking = window.confirm("정말 예약을 완료하시겠습니까?");
         if (confirmBooking) {
             try {
-                const response = await axios.post('/recruits/addBooking', null, {
+                const response = await axios.post('/api/recruits/addBooking', null, {
                     params: {
                         idxNum: postId,
                         nickname: user
@@ -111,7 +125,6 @@ function BookingDetail() {
     const dayOfWeek = departureDate.toLocaleDateString('en-US', { weekday: 'short' });
     const displayDate = `${formattedDate}(${dayOfWeek}) ${post.time}`;
 
-    // driver's post 여부를 확인하여 상태를 설정합니다.
     const isDriverPost = post.driverPost;
 
     return (
@@ -119,12 +132,18 @@ function BookingDetail() {
             <Navbar />
             <div className="main-content">
                 <div className="right-content">
-
                     <div className="outer-post-card">
                         <div className="post-header">
                             <div className="post-user-info">
-                                <span className="user-name">{post.nickname}</span>
-                                <span className="post-role">{isDriverPost ? "Driver" : "Passenger"}</span>
+                                {post.userDto.profileImage ? (
+                                    <img src={post.userDto.profileImage.replace('/home/ubuntu/images', '/images')} alt="Profile"
+                                         className="profile-image" />
+                                ) : null}
+                                <div className="user-details">
+                                    <span className="user-name">{post.nickname}</span>
+                                    <span className="post-role">{isDriverPost ? "Driver" : "Passenger"}</span>
+                                    {isDriverPost && <StarRating rating={post.avgStar} />}
+                                </div>
                             </div>
                             <div className="waiting-for-text">
                                 {isDriverPost ? (
@@ -138,7 +157,7 @@ function BookingDetail() {
                             <span className="post-date">{displayDate}</span>
                             <div className="location-container">
                                 <div className="location-marker departure-marker">
-                                <div className="location-dot-white"></div>
+                                    <div className="location-dot-white"></div>
                                     <div className="location-line"></div>
                                 </div>
                                 <div className="location-details">
@@ -179,23 +198,35 @@ function BookingDetail() {
                             </div>
                             {post.driverPost && (
                                 <div>
-                                    현재 인원:{post.participant}/{post.maxParticipant}
+                                    <span
+                                        className="participant-count"></span>
+                                    <img src={ParticipantIcon} alt="Participant Icon"
+                                         className="participant-icon"/>
+                                    <span>{post.participant}/{post.maxParticipant}</span>
                                 </div>
                             )}
                             <div className="user-list">
-                                현재 예약 인원:
-                                {post.nickname === nickname && post.users && post.users.map((user, index) => (
-                                    <button key={index} className="user-button" type="button"
-                                            onClick={() => handleAddBooking(user)}>{user}</button>
-                                ))}
+                            {post.driverPost && (
+        <>
+            현재 예약 인원 :
+            {post.nickname === nickname && post.users && post.users.map((user, index) => (
+                <button key={index} className="user-button" type="button" onClick={() => handleAddBooking(user)}>{user}</button>
+            ))}
+        </>
+    )}
                             </div>
-                            <div>
-                                {post.nickname === nickname && post.users && post.bookingUsers.map((user, index) => (
-                                    <span key={index} className="user-text">{user}, </span>
-                                ))}
+                            <div className="complete-member">
+                            {post.driverPost && (
+        <>
+            예약 완료된 인원 :
+            {post.nickname === nickname && post.bookingUsers && post.bookingUsers.map((user, index) => (
+                <span key={index} className="user-text">{user} </span>
+            ))}
+        </>
+    )}
                             </div>
                             <div className="comment-actions">
-                                {post.driverPost && (
+                                {post.driverPost && post.nickname !== nickname &&(
                                     <button className="btn-comment-cancel" type="button"
                                             onClick={handleBooking}>Booking</button>
                                 )}
@@ -247,12 +278,16 @@ function BookingDetail() {
              }
         
              .post-user-info {
-                margin-top: 30px;
-                margin-left: 10px;
-                display: flex;
-                align-items: center;
-       
-             }
+            display: flex;
+            align-items: center;
+          }
+          
+          .profile-image {
+            width: 60px; 
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
 
              .waiting-for-text {
                font-weight: bold;
@@ -474,6 +509,7 @@ function BookingDetail() {
                   }
                   
                   .comment-section {
+                    margin-bottom: 15px;
                     background-color: #f5f5f5;
                     padding: 10px;
                     border-radius: 8px;
@@ -505,9 +541,50 @@ function BookingDetail() {
                       padding: 10px 0; /* 상하 패딩 추가 */
                     }
                     
+                    .participant-count {
+                    margin-top: 10px;
+                    margin-left: 10px;
+                      font-weight: bold;
+                    }
+                    
+                    .participant-icon {
+                        margin-left:5px;
+                    }
                     
                     .user-list {
-                        margin-top: 25px;
+                        font-weight: bold;
+                        display: flex;
+                        flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
+                        gap: 10px; /* 키워드 사이의 간격 */
+                        margin-top: 15px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+                    }
+                    
+                    .user-button {
+                        background-color: #C0EBFF; 
+                        color: grey; 
+                        padding: 4px 14px; /* 상하 8px, 좌우 16px의 패딩 */
+                        border-radius: 20px; /* 둥근 모서리 */
+                        border: none; /* 테두리 제거 */
+                        font-size: 0.9em; /* 적절한 텍스트 크기 */
+                        white-space: nowrap; /* 키워드를 한 줄로 표시 */
+                        cursor: pointer; /* 마우스를 올렸을 때 커서 변경 */
+                    }
+                    
+                    .complete-member {
+                        font-weight: bold;
+                        margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+                    }
+                    
+                    .user-text {
+                        margin-left: 10px;
+                        background-color: #C0EBFF; 
+                        color: white; /* 흰색 텍스트 */
+                        padding: 4px 14px; /* 상하 8px, 좌우 16px의 패딩 */
+                        border-radius: 20px; /* 둥근 모서리 */
+                        border: none; /* 테두리 제거 */
+                        font-size: 0.9em; /* 적절한 텍스트 크기 */
+                        white-space: nowrap; /* 키워드를 한 줄로 표시 */
+                        font-weight: bold;
                     }
                     
                     

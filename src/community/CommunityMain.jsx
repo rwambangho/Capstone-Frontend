@@ -67,7 +67,7 @@ function CommunityMain() {
     const [postsPerPage] = useState(5);
 
     useEffect(() => {
-        axios.get('/community/')
+        axios.get('/api/community/')
             .then(response => {
                 setPosts(response.data);
             })

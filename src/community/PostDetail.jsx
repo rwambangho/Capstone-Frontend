@@ -272,7 +272,7 @@ const PostDetail = () => {
   const navigate = useNavigate(); // useNavigate 추가
 
   useEffect(() => {
-    axios.get(`/community/posts/read/${id}`)
+    axios.get(`/api/community/posts/read/${id}`)
         .then(response => {
           console.log(response.data.likesDto);
           const likedByUser = response.data.likesDto.find(like => like.userId === userId);
@@ -303,12 +303,12 @@ const PostDetail = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`/comments/save`, {
+      const response = await axios.post(`/api/comments/save`, {
         communityId: post.id,
         comment: commentInput,
         time: currentTime.toISOString()
       });
-      const updatedPostResponse = await axios.get(`/community/posts/read/${id}`);
+      const updatedPostResponse = await axios.get(`/api/community/posts/read/${id}`);
       setPost(updatedPostResponse.data);
       setCommentInput('');
     } catch (error) {
@@ -319,13 +319,13 @@ const PostDetail = () => {
   const toggleLike = async () => {
     try {
       if (liked) {
-        await axios.put(`/community/subLike/${id}`);
+        await axios.put(`/api/community/subLike/${id}`);
         setPost(prevPost => ({
           ...prevPost,
           likeCount: prevPost.likeCount - 1
         }));
       } else {
-        await axios.put(`/community/addLike/${id}`);
+        await axios.put(`/api/community/addLike/${id}`);
         setPost(prevPost => ({
           ...prevPost,
           likeCount: prevPost.likeCount + 1
@@ -339,7 +339,11 @@ const PostDetail = () => {
 
   const deletePost= async()=>{
     try{
+<<<<<<< HEAD
       await axios.delete(`/community/${post.id}`)
+=======
+      await axios.delete(`/api/community/${post.id}`)
+>>>>>>> front
       navigate("/community");
     }
     catch(error){

@@ -28,13 +28,13 @@ const Header = () => {
   }
 
   const handleLogout = () => {
-    fetch('/user/logout', {
+    fetch('/api/user/logout', {
       method: 'GET',
       credentials: 'same-origin',
     })
       .then(response => {
         if (response.ok) {
-          document.cookie = "nickname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "nickname=; id:; JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
           setUserId(null);
           navigate('/');
         } else {

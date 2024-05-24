@@ -79,7 +79,7 @@ const Post = ({ post }) => {
    
 
     const navigateToPostDetail = () => {
-        axios.put('/community/addClickCount', {
+        axios.put('/api/community/addClickCount', {
             id: post.id
         })
             .then(response => {

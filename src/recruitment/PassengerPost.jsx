@@ -54,7 +54,7 @@ function PassengerPost() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('/recruits', {
+            const response = await axios.post('/api/recruits', {
                 title: 'Passenger Post',
                 contents: `${departure} to ${destination} at ${date} ${time}`,
                 nickname: nickname,

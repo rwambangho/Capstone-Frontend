@@ -37,7 +37,7 @@ function DriverPost() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('/recruits', {
+            const response = await axios.post('/api/recruits', {
                 title: 'Driver Post',
                 contents: `${departure} to ${destination} at ${date} ${time}`,
                 nickname: nickname,

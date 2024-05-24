@@ -17,7 +17,13 @@ function SignupInformation() {
     async function fetchUserData() {
       try {
         const userId = getCookieValue('id');
-        const response = await fetch(`/user/getUser/${userId}`);
+        const response = await fetch(`/api/user/getUser/${userId}`, {
+          method: 'GET', // Assuming you are making a GET request, adjust if necessary
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
 
         if (!response.ok) {
           throw new Error('사용자 정보를 가져오는 데 실패했습니다');
@@ -118,27 +124,27 @@ function SignupInformation() {
                 </label>
               </div>
               <div className="form-group">
-                <label>Name</label>
+                <label0>Name</label0>
                 <input type="text" name="name" value={user.name} onChange={handleChange}/>
               </div>
               <div className="form-group">
-                <label>ID</label>
+                <label1>ID</label1>
                 <input type="text" name="id" value={user.id} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Phone Number</label>
+                <label2>Phone Number</label2>
                 <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Birthdate</label>
+                <label3>Birthdate</label3>
                 <input type="text" name="birthdate" value={user.birthdate} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Nickname</label>
+                <label4>Nickname</label4>
                 <input type="text" name="nickname" value={user.nickname} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Star Rating</label>
+                <label5>Star Rating</label5>
                 <input type="text" name="avgStar" value={user.avgStar} readOnly />
               </div>
               <div className="form-actions">

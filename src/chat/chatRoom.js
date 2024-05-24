@@ -75,7 +75,7 @@ function ChatRoom({param1,param2}) {
 useEffect(() => {
     if (selectedRoom.userId1 !== '' && selectedRoom.userId2 !== '') {
         console.log("selectedRoom 업데이트");
-        axios.post('/Chat', {
+        axios.post('/api/Chat', {
             userId1: selectedRoom.userId1,
             userId2: selectedRoom.userId2
         })
@@ -83,7 +83,7 @@ useEffect(() => {
             const chatRoomNumber = response.data;
             setChatRoomNumber(chatRoomNumber);
             
-            axios.get(`/chat/history/${chatRoomNumber}`)
+            axios.get(`/api/chat/history/${chatRoomNumber}`)
             .then(response => {
                 const previousMessages = response.data.map(item => {
                     const { message, userDto: { nickname }, timestamp } = item;

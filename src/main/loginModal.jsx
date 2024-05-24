@@ -13,7 +13,7 @@ const LoginModal = ({ isOpen, closeModal }) => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
   
     try {
-      const response = await axios.post('/user/login', {
+      const response = await axios.post('api/user/login', {
         id: id,
         password: password
       });
