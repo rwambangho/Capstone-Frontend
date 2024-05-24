@@ -30,7 +30,7 @@ function BookingDetail() {
     const navigate = useNavigate();
 
     const sendNicknameToServer = () => {
-        axios.post('/Chat', {
+        axios.post('/api/Chat', {
             userId1: nickname,
             userId2: post.nickname
         })
@@ -57,7 +57,7 @@ function BookingDetail() {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`/recruits/${postId}`);
+                const response = await axios.get(`/api/recruits/${postId}`);
                 setPost(response.data);
                 console.log(response.data);
             } catch (error) {
@@ -69,7 +69,7 @@ function BookingDetail() {
 
     const handleBooking = async () => {
         try {
-            const response = await axios.post('/recruits/booking', null, {
+            const response = await axios.post('/api/recruits/booking', null, {
                 params: {
                     idxNum: postId,
                     nickname: nickname
@@ -92,7 +92,7 @@ function BookingDetail() {
         const confirmBooking = window.confirm("정말 예약을 완료하시겠습니까?");
         if (confirmBooking) {
             try {
-                const response = await axios.post('/recruits/addBooking', null, {
+                const response = await axios.post('/api/recruits/addBooking', null, {
                     params: {
                         idxNum: postId,
                         nickname: user

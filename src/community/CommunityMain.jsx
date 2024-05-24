@@ -67,12 +67,7 @@ function CommunityMain() {
     const [postsPerPage] = useState(5);
 
     useEffect(() => {
-        axios.get('/community/',{
-            params: {
-                _sort: 'id',   // ID 기준으로 정렬
-                _order: 'desc' // 내림차순으로 정렬
-            }
-        })
+        axios.get('/api/community/')
             .then(response => {
                 setPosts(response.data);
             })

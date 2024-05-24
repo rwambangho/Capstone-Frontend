@@ -11,7 +11,7 @@ function CommunitySidebar() {
   const navigate = useNavigate();
  
   const navigateToPostDetail = (postId) => { // postId 매개변수 추가
-    axios.put('/community/addClickCount', {
+    axios.put('/api/community/addClickCount', {
         id: postId
     })
         .then(response => {
@@ -24,7 +24,7 @@ function CommunitySidebar() {
   };
 
   useEffect(() => {
-    axios.get('/community/PopularCommunity')
+    axios.get('/api/community/PopularCommunity')
       .then(response => {
         const titles = response.data.map(item => ({ id: item.id, title: item.title }));
         setPopularPosts(titles);
@@ -40,7 +40,7 @@ function CommunitySidebar() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    axios.get(`/community/search?title=${encodeURIComponent(searchInput)}`)
+    axios.get(`/api/community/search?title=${encodeURIComponent(searchInput)}`)
       .then(response => {
         setSearchResults(response.data); // 검색 결과 저장
       })

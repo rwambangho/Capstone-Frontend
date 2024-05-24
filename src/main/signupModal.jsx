@@ -44,7 +44,7 @@ const SignUpModal = ({ isOpen, closeModal }) => {
 
   const sendVerificationCode = async () => {
     try {
-      await axios.post('/user/sendSMS', { phoneNumber: formData.phoneNumber });
+      await axios.post('/api/user/sendSMS', { phoneNumber: formData.phoneNumber });
       alert('인증번호가 전송되었습니다!');
       startTimer();
     } catch (error) {
@@ -54,7 +54,7 @@ const SignUpModal = ({ isOpen, closeModal }) => {
 
   const checkIdAvailability = async () => {
     try {
-      const response = await axios.get(`/user/checkId?id=${formData.id}`);
+      const response = await axios.get(`/api/user/checkId?id=${formData.id}`);
       setIdAvailable(response.data);
       if (!response.data) {
         alert('사용할 수 없는 아이디입니다.');
@@ -75,7 +75,7 @@ const SignUpModal = ({ isOpen, closeModal }) => {
     }
 
     try {
-      const response = await axios.post('/user/sendSMS/check', {
+      const response = await axios.post('/api/user/sendSMS/check', {
         phoneNumber: formData.phoneNumber,
         verificationCode: formData.verificationCode,
       });
@@ -105,7 +105,7 @@ const SignUpModal = ({ isOpen, closeModal }) => {
       return;
     }
     try {
-      const response = await axios.post('/user/signUp', formData);
+      const response = await axios.post('/api/user/signUp', formData);
 
       console.log(response.data);
       navigate("/");

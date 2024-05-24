@@ -17,7 +17,13 @@ function SignupInformation() {
     async function fetchUserData() {
       try {
         const userId = getCookieValue('id');
-        const response = await fetch(`/user/getUser/${userId}`);
+        const response = await fetch(`/api/user/getUser/${userId}`, {
+          method: 'GET', // Assuming you are making a GET request, adjust if necessary
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
 
         if (!response.ok) {
           throw new Error('사용자 정보를 가져오는 데 실패했습니다');

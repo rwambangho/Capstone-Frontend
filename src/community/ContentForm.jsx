@@ -46,7 +46,7 @@ function ContentForm({ onRegister }) {
         formData.append('image', selectedImage);
       }
 
-      const response = await axios.post('/community/save', formData, {
+      const response = await axios.post('/api/community/save', formData, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -61,7 +61,6 @@ function ContentForm({ onRegister }) {
       navigate('/community');
     } catch (error) {
       console.error('Error saving content:', error);
-      alert("로그인 후 이용하세요");
       navigate('/community');
     }
   };

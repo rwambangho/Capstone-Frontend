@@ -28,7 +28,7 @@ const Header = () => {
   }
 
   const handleLogout = () => {
-    fetch('/user/logout', {
+    fetch('/api/user/logout', {
       method: 'GET',
       credentials: 'same-origin',
     })

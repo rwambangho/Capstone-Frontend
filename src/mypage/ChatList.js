@@ -10,7 +10,7 @@ function ChatList() {
   useEffect(() => {
     const fetchChatList = async () => {
       try {
-        const response = await axios.get(`/chatlist/${userId1}/${userId2}`);
+        const response = await axios.get(`/api/chatlist/${userId1}/${userId2}`);
 
         setChats(response.data);
       } catch (error) {

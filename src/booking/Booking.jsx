@@ -59,7 +59,7 @@ function Booking() {
                 arrivalX: post.departureX,
                 arrivalY: post.departureY
             };
-            axios.put('/recruits/distance2', postData)
+            axios.put('/api/recruits/distance2', postData)
                 .then(response => {
                     setDistances(prev => ({ ...prev, [post.idxNum]: response.data }));
                     console.log(post.idxNum);
@@ -70,7 +70,7 @@ function Booking() {
 
     const fetchDriverPosts = async () => {
         try {
-            const response = await axios.get('/recruits/driver');
+            const response = await axios.get('/api/recruits/driver');
             setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(true);
             setActiveButton('driver');
@@ -81,7 +81,7 @@ function Booking() {
 
     const fetchPassengerPosts = async () => {
         try {
-            const response = await axios.get('/recruits/passenger');
+            const response = await axios.get('/api/recruits/passenger');
             setPosts(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             setDriver(false);
             setActiveButton('passenger');

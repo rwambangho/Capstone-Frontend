@@ -63,7 +63,7 @@ function CarpoolRecords() {
   const [completedData, setCompletedData] = useState([]); // 완료된 카풀 리스트
 
   useEffect(() => {
-    axios.get('/recruits/records', {
+    axios.get('/api/recruits/records', {
       params: {
         nickname: user,
       }
@@ -83,7 +83,7 @@ function CarpoolRecords() {
   }, [user]);
 
   const handleRating = (userId, star) => {
-    axios.put(`/recruits/star`, { id: userId, star: star })
+    axios.put(`/api/recruits/star`, { id: userId, star: star })
       .then(() => {
         const updatedData = data.map(item => {
           if (item.id === userId) {

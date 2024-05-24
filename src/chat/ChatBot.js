@@ -21,7 +21,7 @@ function ChatBot() {
       // 보낸 메시지를 메시지 목록에 추가
       setMessages(prevMessages => [...prevMessages, { content: input, sender: 'user' }]);
 
-      const res = await axios.post('/chatBot', { message: input });
+      const res = await axios.post('/api/chatBot', { message: input });
      
       // 받은 메시지를 메시지 목록에 추가
       const content = res.data.choices[0].message.content;
