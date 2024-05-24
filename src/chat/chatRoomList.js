@@ -27,7 +27,7 @@ function ChatRoomList({ handleQueryParams }) {
       const userId = getCookieValue('id');
       console.log(userId);
       try {
-        const response = await axios.get('/getAllChatRoomNumber', {
+        const response = await axios.get('/api/getAllChatRoomNumber', {
           params: {
             userId: userId
           }
