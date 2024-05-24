@@ -11,11 +11,9 @@ function CommunitySidebar() {
   const navigate = useNavigate();
  
   const navigateToPostDetail = (postId) => { // postId 매개변수 추가
-<<<<<<< HEAD
-    axios.put('/community/addClickCount', {
-=======
+
     axios.put('/api/community/addClickCount', {
->>>>>>> front
+
         id: postId
     })
         .then(response => {

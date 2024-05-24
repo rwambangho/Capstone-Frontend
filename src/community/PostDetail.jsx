@@ -339,11 +339,9 @@ const PostDetail = () => {
 
   const deletePost= async()=>{
     try{
-<<<<<<< HEAD
-      await axios.delete(`/community/${post.id}`)
-=======
+
       await axios.delete(`/api/community/${post.id}`)
->>>>>>> front
+
       navigate("/community");
     }
     catch(error){

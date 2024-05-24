@@ -24,7 +24,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-<<<<<<< HEAD
+
     margin-top: 50px;
 }
 
@@ -34,9 +34,9 @@
     margin: 0;
     width: 100%;
     max-width: 600px;
-=======
+
     margin-top: 40px;
->>>>>>> front
+
 }
 
 .chat-room-list-li {
@@ -60,11 +60,9 @@
 }
 
 .chat-room-list-li.active {
-<<<<<<< HEAD
-    background-color: #d3d3d3;
-=======
+
     background-color: #B9CDFF;
->>>>>>> front
+
 }
 
 .chat-room-list-li:hover {
@@ -85,9 +83,7 @@
     border: 1px solid #ccc;
     margin-left: 10px;
     margin-top: -50px;
-<<<<<<< HEAD
-=======
     margin-bottom: 20px;
->>>>>>> front
+
 }
 
