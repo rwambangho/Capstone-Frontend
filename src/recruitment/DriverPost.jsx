@@ -33,6 +33,15 @@ function DriverPost() {
     const ps = new kakao.maps.services.Places();
     const [passengerButtonActive, setPassengerButtonActive] = useState(true);
     const [driverButtonActive, setDriverButtonActive] = useState(false);
+    const [activeButton, setActiveButton] = useState('driver');
+
+    useEffect(() => {
+        if (activeButton === 'driver') {
+            navigate('/carpool-recruitment-driver');
+        } else if (activeButton === 'passenger') {
+            navigate('/carpool-recruitment-passenger');
+        }
+    }, [activeButton, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -561,29 +570,21 @@ function DriverPost() {
                         <h1>Please select the post that suits you</h1>
                         <div className="post-buttons">
                             <button
-                                className={`passenger-post-btn ${passengerButtonActive ? 'active' : ''}`}
-                                onClick={() => {
-                                    navigate('/carpool-recruitment-passenger')
-                                    setPassengerButtonActive(true);
-                                    setDriverButtonActive(false);
-                                }}
+                                className={`passenger-post-btn ${activeButton === 'passenger' ? 'active' : ''}`}
+                                onClick={() => setActiveButton('passenger')}
                             >
                                 <div className="button-content">
-                                    <img src={passengerButtonActive ? PassengerIcon : GrayPassengerIcon}
+                                    <img src={activeButton === 'passenger' ? PassengerIcon : GrayPassengerIcon}
                                          alt="Passenger Icon" className="post-icon"/>
                                     Passenger's post
                                 </div>
                             </button>
                             <button
-                                className={`driver-post-btn ${driverButtonActive ? 'active' : ''}`}
-                                onClick={() => {
-                                    navigate('/carpool-recruitment-driver')
-                                    setPassengerButtonActive(false);
-                                    setDriverButtonActive(true);
-                                }}
+                                className={`driver-post-btn ${activeButton === 'driver' ? 'active' : ''}`}
+                                onClick={() => setActiveButton('driver')}
                             >
                                 <div className="button-content">
-                                    <img src={driverButtonActive ? DriverIcon : GrayDriverIcon} alt="Driver Icon"
+                                    <img src={activeButton === 'driver' ? DriverIcon : GrayDriverIcon} alt="Driver Icon"
                                          className="post-icon"/>
                                     Driver's post
                                 </div>
