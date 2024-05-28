@@ -20,7 +20,7 @@ const StarRating = ({ rating }) => {
         );
     }
     return (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '5px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: '-5px', marginTop: '5px' }}>
             {stars}
         </div>
     );
@@ -116,11 +116,7 @@ function Booking() {
         setShowRegions(!showRegions);
     };
 
-    const [activeFilter, setActiveFilter] = useState('');
-
     const filterPosts = (filter) => {
-        setActiveFilter(filter);
-
         if (filter === 'latest') {
             const sorted = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPosts(sorted);
@@ -143,7 +139,7 @@ function Booking() {
         <div className="page-container">
             <Navbar />
             <div className="main-content">
-                <ChatBot/>
+            <ChatBot/>
                 <div className="right-content">
                     <div className="post-form-header">
                         <h1>Please choose the post that suits you</h1>
@@ -154,9 +150,9 @@ function Booking() {
                             >
                                 <div className="button-content">
                                     {activeButton === 'passenger' ? (
-                                        <img src={PassengerIcon} alt="Passenger Icon" className="post-icon"/>
+                                        <img src={PassengerIcon} alt="Passenger Icon" className="post-icon" />
                                     ) : (
-                                        <img src={GrayPassengerIcon} alt="Gray Passenger Icon" className="post-icon"/>
+                                        <img src={GrayPassengerIcon} alt="Gray Passenger Icon" className="post-icon" />
                                     )}
                                     Passenger's post
                                 </div>
@@ -167,22 +163,19 @@ function Booking() {
                             >
                                 <div className="button-content">
                                     {activeButton === 'driver' ? (
-                                        <img src={DriverIcon} alt="Driver Icon" className="post-icon"/>
+                                        <img src={DriverIcon} alt="Driver Icon" className="post-icon" />
                                     ) : (
-                                        <img src={GrayDriverIcon} alt="Gray Driver Icon" className="post-icon"/>
+                                        <img src={GrayDriverIcon} alt="Gray Driver Icon" className="post-icon" />
                                     )}Driver's post
                                 </div>
                             </button>
                         </div>
-
+                
                         <div className="filter-section">
                             <div className="filter-options">
-                                <span className={`filter-option ${activeFilter === 'latest' ? 'active' : ''}`}
-                                      onClick={() => filterPosts('latest')}>Latest</span>
-                                <span className={`filter-option ${activeFilter === 'close' ? 'active' : ''}`}
-                                      onClick={() => filterPosts('close')}>Close</span>
-                                <span className={`filter-option ${activeFilter === 'departure time' ? 'active' : ''}`}
-                                      onClick={() => filterPosts('departure time')}>Departure Time</span>
+                                <span className="filter-option" onClick={() => filterPosts('latest')}>Latest</span>
+                                <span className="filter-option" onClick={() => filterPosts('close')}>Close</span>
+                                <span className="filter-option" onClick={() => filterPosts('departure time')}>Departure Time</span>
                             </div>
                         </div>
                     </div>
@@ -482,9 +475,6 @@ function Booking() {
             cursor: pointer; /* Add cursor pointer */
             border: 1px solid #c9c9c9;
           }
-          .filter-option.active {
-  font-weight: bold;
-}
 
           .filter-option:hover {
             color: #007bff; /* 호버 효과 색상 */
@@ -510,8 +500,6 @@ function Booking() {
           }
 
           .post-user-info {
-            margin-top: 10px;
-            margin-left:10px;
             display: flex;
             align-items: center;
           }
@@ -521,7 +509,6 @@ function Booking() {
             height: 60px;
             border-radius: 50%;
             margin-right: 10px;
-         
           }
 
           .user-details {
