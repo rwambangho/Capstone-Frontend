@@ -772,6 +772,7 @@ function Booking() {
           display: flex;
           justify-content: center;
           margin-top: 20px;
+          margin-left:-260px;
         }
 
         .page-number {
