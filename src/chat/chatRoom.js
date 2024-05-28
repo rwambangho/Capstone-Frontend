@@ -6,7 +6,8 @@ import SockJS from 'sockjs-client';
 import '../css/chatRoom.css';
 import Navbar from '../component/Navbar';
 
-function ChatRoom({ param1, param2 }) {
+function ChatRoom({ param1, param2, showTitle = true }) {
+
     const location = useLocation();
 
     const [selectedRoom, setSelectedRoom] = useState({ userId1: '', userId2: '' });
@@ -133,6 +134,7 @@ function ChatRoom({ param1, param2 }) {
 
     return (
         <div>
+            {showTitle && <h1 className="chat-title">Chat Room</h1>}
             <div className="chat-container">
                 <div className="messages-container" ref={messagesContainerRef}> {/* 메시지 컨테이너에 대한 참조 추가 */}
                     {messages.map((msg, index) => (
