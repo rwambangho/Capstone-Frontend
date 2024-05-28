@@ -6,7 +6,7 @@ function MainDetail() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const text = "시간은 없는데\n택시비는 더 없으신가요?";
+        const text = "주유비 부담 NO!\n대중교통 스트레스 NO!\n";
         let index = 0;
 
         const typingInterval = setInterval(() => {
@@ -35,7 +35,7 @@ function MainDetail() {
     return (
         <div className="home-background">
             <div className="title-container">
-                <h1 className="typing-animation" dangerouslySetInnerHTML={{ __html: typedText }} />
+                <h1 className="typing-animation" dangerouslySetInnerHTML={{__html: typedText}}/>
             </div>
             <div className="icon-up">
                 <svg
@@ -78,7 +78,17 @@ function MainDetail() {
                     />
                 </svg>
             </div>
+            <style>
+                {`
+                .typing-animation {
+                    width: 550px;
+                }
+        
+        `}
+            </style>
         </div>
+
+
     );
 }
 
