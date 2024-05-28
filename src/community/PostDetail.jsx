@@ -14,10 +14,12 @@ import heartIcon from '../icons/heart.svg';
 
 // Styled components 정의
 const DeleteButton = styled.button`
+  height: 36px;
   padding: 8px 20px;
   background-color: #dc3545; /* 삭제 버튼 배경색 */
   color: white;
   border: 1px solid #dc3545; /* 삭제 버튼 테두리 색상 */
+  margin-left: 400px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s; /* transition 추가 */
@@ -29,7 +31,6 @@ const DeleteButton = styled.button`
     transform: translateY(1px); /* 클릭할 때 약간 아래로 이동 */
   }
 `;
-
 
 const PageContainer = styled.div`
   border-top: 1px solid #ccc !important; // CSS 우선순위 강제 적용
@@ -44,14 +45,14 @@ const PageContainer = styled.div`
   }
 
   .post-detail-header p {
-    margin-bottom: 5px;
+    margin-bottom: -15px;
     font-size: 0.9rem;
     color: #1c5cff;
   }
 
   .post-detail-header h2 {
     font-size: 1.6rem;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
   }
 
   .post-detail-header .info-container {
@@ -108,6 +109,7 @@ const PageContainer = styled.div`
 
   .like-button {
     background-color: #007bff;
+    
   }
 
   .comment-button {
@@ -177,7 +179,6 @@ const PageContainer = styled.div`
     justify-content: flex-start;
     padding: 20px;
   }
-  
   
   .pagination-container {
     display: flex;
@@ -252,10 +253,28 @@ const NicknameWrapper = styled.div`
   display: inline-block; /* 요소를 인라인 블록으로 표시하여 너비와 높이를 컨텐츠 크기에 맞게 조절 */
 `;
 
+const LikeButton = styled.button`
+  background-color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  transition: background-color 0.3s;
 
+  &:hover {
+    background-color: #0056b3;
+  }
 
-
-
+  img {
+    width: 24px; /* 아이콘 크기를 키움 */
+    height: 24px; /* 아이콘 크기를 키움 */
+    margin-right: 5px;
+  }
+`;
 
 const PostDetail = () => {
   const [post, setPost] = useState(null);
@@ -263,7 +282,7 @@ const PostDetail = () => {
   const [commentInput, setCommentInput] = useState('');
   const [liked, setLiked] = useState('');
   const usernickname = getCookieValue('nickname');
-  const userId=getCookieValue('id');
+  const userId = getCookieValue('id');
   const currentTime = new Date();
   const [showComments, setShowComments] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -337,17 +356,13 @@ const PostDetail = () => {
     }
   };
 
-  const deletePost= async()=>{
-    try{
-
-      await axios.delete(`/api/community/${post.id}`)
-
+  const deletePost = async () => {
+    try {
+      await axios.delete(`/api/community/${post.id}`);
       navigate("/community");
-    }
-    catch(error){
+    } catch (error) {
       console.error("삭제 실패");
     }
-
   };
 
   function getCookieValue(cookieName) {
@@ -376,54 +391,50 @@ const PostDetail = () => {
   }
 
   return (
-    
       <PageContainer>
         <Navbar />
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
           <CommunitySidebar />
-
-          <div style={{ flex: '1', backgroundColor: '#ffffff',  padding: '60px', marginLeft: '30px', borderRadius: '10px' }}>
-
+          <div style={{ flex: '1', backgroundColor: '#ffffff', padding: '60px', marginLeft: '30px', borderRadius: '10px' }}>
             <div className="post-detail">
               <div className="post-detail-header">
                 <p>{formatDateTime(post.time)}</p>
                 <h2>{post.title}</h2>
-                {post.nickName === usernickname && <DeleteButton  onClick={deletePost}>Delete</DeleteButton>}
                 <div className="info-container">
                   <div className="stats">
                     <span>hits {post.clickCount}</span>
                     <span>likes {post.likeCount}</span>
                     <span>comments {post.commentsDto.length}</span>
                   </div>
-                  {/*<p className='author-info'> By {post.nickName}</p>*/}
                   <NicknameWrapper className="NicknameWrapper">
                     <p style={{ margin: '0', color: "grey", fontSize: "12px" }}> By {post.nickName}</p>
                   </NicknameWrapper>
                 </div>
               </div>
-              {post.image && <img src={post.image.replace('/home/ubuntu/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px' }} />}
+              {post.image && <img src={post.image.replace('/home/ubuntu/images', '/images')} alt="post" style={{ maxWidth: '100%', height: 'auto', borderRadius: '5px', marginBottom: '20px', marginTop: '30px' }} />}
               <p className="post-content">{post.content}</p>
               <div className="button-container">
-                <button className={`like-button ${liked ? 'liked' : ''}`} onClick={toggleLike}>
+                <LikeButton onClick={toggleLike}>
                   {liked ? (
-                      <div style={{display: 'flex', alignItems: 'center'}}>
-                        <img src={blueHeartIcon} alt="Blue Heart Icon"/>
-                        <span style={{marginLeft: '5px'}}>Like</span>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={blueHeartIcon} alt="Blue Heart Icon" />
+                        <span style={{ marginLeft: '5px' }}>Like</span>
                       </div>
                   ) : (
-                      <div style={{display: 'flex', alignItems: 'center'}}>
-                        <img src={heartIcon} alt="Heart Icon"/>
-                        <span style={{marginLeft: '5px'}}>Like</span>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={heartIcon} alt="Heart Icon" />
+                        <span style={{ marginLeft: '5px' }}>Like</span>
                       </div>
                   )}
-                </button>
+                </LikeButton>
                 <CommentButton className='comment-button' onClick={() => {
                   setShowComments(!showComments);
                   setShowPagination(!showComments); // 댓글 보기 버튼을 누를 때 페이지네이션 상태를 댓글 보기 상태의 반대로 설정
                 }}>
-                  <Icon src={commentIcon} alt="Comment Icon"/>
+                  <Icon src={commentIcon} alt="Comment Icon" />
                   <span>{showComments ? 'Comments ▲' : 'Comments ▼'}</span>
                 </CommentButton>
+                {post.nickName === usernickname && <DeleteButton onClick={deletePost}>Delete</DeleteButton>}
               </div>
               {showComments && (
                   <div className='comment-section'>
@@ -455,7 +466,7 @@ const PostDetail = () => {
                           value={commentInput}
                           onChange={handleInputChange}
                       />
-                      <button type="submit" style={{color: '#ffffff'}}>Register</button>
+                      <button type="submit" style={{ color: '#ffffff' }}>Register</button>
                     </form>
                   </div>
               )}
@@ -482,8 +493,7 @@ const PostDetail = () => {
           </SidebarContainer>
         </div>
       </PageContainer>
-
   );
-}
+};
 
 export default PostDetail;

@@ -124,7 +124,7 @@ useEffect(() => {
    return (
       <div>
        
-        <h1 className="chat-title">Chat Room</h1>
+
         <div className="chat-container">
           <div className="messages-container">
             {messages.map((msg, index) => (

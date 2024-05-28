@@ -1,3 +1,5 @@
+import ParticipantIcon from "../icons/participant.svg";
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/MyPage.css';
@@ -119,7 +121,6 @@ function CarpoolRecords() {
     <div>
       <Navbar />
       <h2 className="subscription-title">Carpool list</h2>
-     
       <div className="carpool-container">
       <div className="sidebar">
           <div className="trip-list">
@@ -151,59 +152,63 @@ function CarpoolRecords() {
                {selectedTrip.full && (
         <>
           <h2>Star Rating</h2>
-          <div className="post-actions">
-            <StarRating
-              starsSelected={selectedTrip.star}
-              onRate={(star) => handleRating(selectedTrip.id, star)}
-              reset={resetStar}
-              disabled={ratedTrips[selectedTrip.id]}
-            />
-          </div>
+
         </>
       )}
               <div className="outer-post-card">
-                <div className="post-header">
-                  <div className="post-user-info">
-                    <span className="user-name">{selectedTrip.nickname}</span>
-                    <StarRating2 rating={selectedTrip.userDto.avgStar} />
-                    <span className="post-date">{selectedTrip.departureDate} {selectedTrip.time}</span>
-                  </div>
-                
-                  <div className="post-fare">{selectedTrip.fare}원</div>
-                </div>
-                <div className="inner-post-card">
-                  <span className="post-date">Departure time : {selectedTrip.departureDate} {selectedTrip.time}</span>
-                  <div className="participant-info">
-                    <span>{selectedTrip.participant}/{selectedTrip.maxParticipant}</span>
-                  </div>
-                  <div className="location-container">
-                    <div className="location-marker departure-marker">
-                      <div className="location-dot-white"></div>
-                      <div className="location-line"></div>
-                    </div>
-                    <div className="location-details">
-                      <div className="location-point departure">
-                        <span className="location-title1">{selectedTrip.departure}</span>
-                        <span className="location-detail">{selectedTrip.departureDetail}</span>
+                  <div className="post-header">
+                      <div className="post-user-info">
+                          <span className="user-name">{selectedTrip.nickname}</span>
+                          <StarRating2 rating={selectedTrip.userDto.avgStar}/>
                       </div>
-                    </div>
-                  </div>
-                  <div className="location-container">
-                    <div className="location-marker destination-marker">
-                      <div className="location-dot-blue"></div>
-                    </div>
-                    <div className="location-details">
-                      <div className="location-point destination">
-                        <span className="location-title2">{selectedTrip.destination}</span>
-                        <span className="location-detail">{selectedTrip.destinationDetail}</span>
+                      <div className="post-actions">
+                          <StarRating
+                              starsSelected={selectedTrip.star}
+                              onRate={(star) => handleRating(selectedTrip.id, star)}
+                              reset={resetStar}
+                              disabled={ratedTrips[selectedTrip.id]}
+                          />
                       </div>
-                    </div>
+
                   </div>
-                  <div className="post-distance">{selectedTrip.distance}km</div>
-                </div>
-                <div className='post-form-bottom'>
-                  <div className="post-keywords">
-                    {selectedTrip.keywords && selectedTrip.keywords.map((keyword, kIndex) => (
+                  <div className="inner-post-card">
+                      <span
+                          className="post-date">Departure time : {selectedTrip.departureDate} {selectedTrip.time}</span>
+                      <div className="participant-info">
+                          <img src={ParticipantIcon} alt="participant icon" className="participant-icon"/>
+                          <span>{selectedTrip.participant}/{selectedTrip.maxParticipant}</span>
+                      </div>
+                      <div className="location-container">
+                      <div className="location-marker departure-marker">
+                              <div className="location-dot-white"></div>
+                              <div className="location-line"></div>
+                          </div>
+                          <div className="location-details">
+                              <div className="location-point departure">
+                                  <span className="location-title1">{selectedTrip.departure}</span>
+                                  <span className="location-detail1">{selectedTrip.departureDetail}</span>
+                              </div>
+                          </div>
+                      </div>
+                      <div className="location-container">
+                          <div className="location-marker destination-marker">
+                              <div className="location-dot-blue"></div>
+                          </div>
+                          <div className="location-details">
+                              <div className="location-point destination">
+                                  <span className="location-title2">{selectedTrip.destination}</span>
+                                  <span className="location-detail2">{selectedTrip.destinationDetail}</span>
+                              </div>
+                          </div>
+                      </div>
+                      <div className="distance-fare-container">
+                          <div className="post-distance">{selectedTrip.distance}km</div>
+                          <div className="post-fare">{selectedTrip.fare}원</div>
+                      </div>
+                  </div>
+                  <div className='post-form-bottom'>
+                      <div className="post-keywords">
+                          {selectedTrip.keywords && selectedTrip.keywords.map((keyword, kIndex) => (
                       <span key={kIndex} className="post-keyword">{keyword}</span>
                     ))}
                   </div>
@@ -228,6 +233,10 @@ function CarpoolRecords() {
         margin: 0;
         padding: 0;
         background-color: #f9f9f9;
+      }
+      
+      .subscription-title {
+        margin-left: 40px;
       }
       
       header {
@@ -296,7 +305,7 @@ function CarpoolRecords() {
       }
       
       .main-content {
-        width: 70%;
+        width: 55%;
         padding: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         background-color: #fff;
@@ -328,9 +337,12 @@ function CarpoolRecords() {
       }
       
       .post-date {
+        margin-top: 10px;
         font-size: 14px;
         color: #666;
       }
+      
+    
       
       .post-distance2, .post-distance1, .post-fare {
         font-size: 14px;
@@ -343,9 +355,16 @@ function CarpoolRecords() {
       }
       
       .participant-info {
+        margin-top: 15px;
         font-size: 14px;
+        font-weight: bold;
         color: #333;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      
+      .participant-icon {
+        margin-right: 10px;
+        vertical-align: middle;
       }
       
       .location-container {
@@ -375,11 +394,14 @@ function CarpoolRecords() {
       
       .location-dot-blue {
         background-color: #007bff;
+        border: 1px solid #000;
+        position: relative;
+        top: -15px;
       }
       
       .location-line {
         width: 1px;
-        height: 20px;
+        height: 50px;
         background-color: #ccc;
       }
       
@@ -387,12 +409,29 @@ function CarpoolRecords() {
         flex-grow: 1;
       }
       
-      .location-title1, .location-title2 {
+      .location-title1 {
         font-size: 14px;
         font-weight: bold;
+        position: relative;
+        top: -22px;
       }
       
-      .location-detail {
+     .location-title2 {
+        font-size: 14px;
+        font-weight: bold;
+        position: relative;
+        top: -15px;
+      }
+      
+      
+      
+      .location-detail1 {
+        font-size: 12px;
+        color: #666;
+       
+      }
+      
+      .location-detail2 {
         font-size: 12px;
         color: #666;
       }
@@ -464,15 +503,38 @@ function CarpoolRecords() {
         background-color: #007bff;
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 6px 15px;
         cursor: pointer;
         border-radius: 5px;
-        margin-top: 10px; // 별점과 버튼 사이의 간격 조정을 위해 추가
+        margin-left: 15px;
+        margin-top: 2px; /* 별점과 버튼 사이의 간격 조정을 위해 추가 */
+        position: relative; /* 위치 조정을 위해 추가 */
+        top: -6px; /* 버튼을 위로 10px 이동 */
+        
       }
   
       .submit-rating:hover {
         background-color: #0056b3; // 버튼에 호버 효과 추가
       }
+      
+      .distance-fare-container {
+          display: flex;
+          justify-content: flex-start; /* 좌측 정렬 */
+          align-items: center;
+          gap: 20px; /* 거리와 요금 사이의 간격 */
+      }
+
+        .post-distance {
+          font-size: 14px;
+          color: #333;
+        }
+        
+        .post-fare {
+          font-size: 13.5px;
+          color: #333;
+          margin-top: 10px;
+        }
+      
       .sidebar {
         width: 30%;
         background-color: #fff;
