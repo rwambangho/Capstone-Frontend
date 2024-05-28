@@ -43,6 +43,9 @@ function ChatRoom({ param1, param2 }) {
             };
             stompClient.send(`/app/chat/${chatRoomNumber}`, {}, JSON.stringify(messageToSend));
             setMessage('');
+        } else {
+            console.error('WebSocket is not connected yet.');
+            alert('WebSocket is not connected yet.');
         }
     };
 
