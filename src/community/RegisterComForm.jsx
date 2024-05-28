@@ -19,7 +19,7 @@ function RegisterComForm() {
             <div className="main-content">
                 <div className="content-form-container">
 
-                    <ContentForm onSaveContent={handleSaveContent} />
+                    <ContentForm onRegister={handleSaveContent} />
                 </div>
             </div>
         </div>
