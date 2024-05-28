@@ -9,7 +9,7 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   width: 80%; /* 더 작은 크기로 조정 */
   max-width: 800px; /* 최대 너비 설정 */
-  margin-top: 100px;
+  margin-top: -10px;
   box-sizing: border-box;
 }
 
