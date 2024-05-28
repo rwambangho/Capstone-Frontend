@@ -198,11 +198,9 @@ function BookingDetail() {
                             </div>
                             {post.driverPost && (
                                 <div>
-                                    <span
-                                        className="participant-count"></span>
-                                    <img src={ParticipantIcon} alt="Participant Icon"
-                                         className="participant-icon"/>
-                                    <span>{post.participant}/{post.maxParticipant}</span>
+                                    <span className="participant-count"></span>
+                                    <img src={ParticipantIcon} alt="Participant Icon" className="participant-icon" />
+                                    <span className="participant-info">{post.participant}/{post.maxParticipant}</span>
                                 </div>
                             )}
                             <div className="user-list">
@@ -247,7 +245,7 @@ function BookingDetail() {
                  border-radius: 8px;
                  width: 100%;
                  max-width: 800px;
-                 margin-top: 50px;
+                 margin-top: 10px;
                  margin-bottom: 20px;
                  padding: 20px;
                  margin-left: auto; /* Center the card horizontally */
@@ -278,6 +276,8 @@ function BookingDetail() {
              }
         
              .post-user-info {
+             margin-top: 10px;
+            margin-left:10px;
             display: flex;
             align-items: center;
           }
@@ -542,21 +542,28 @@ function BookingDetail() {
                     }
                     
                     .participant-count {
-                    margin-top: 10px;
-                    margin-left: 10px;
-                      font-weight: bold;
-                    }
-                    
-                    .participant-icon {
-                        margin-left:5px;
-                    }
+    margin-top: 10px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.participant-icon {
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.participant-info {
+    font-weight: bold;
+    vertical-align: middle;
+}
                     
                     .user-list {
                         font-weight: bold;
                         display: flex;
                         flex-wrap: wrap; /* 키워드가 많을 경우 다음 줄로 넘어가게 설정 */
                         gap: 10px; /* 키워드 사이의 간격 */
-                        margin-top: 15px; /* 키워드와 다른 컨텐츠 사이의 간격 */
+                        margin-left: 10px;
+                        margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
                     }
                     
                     .user-button {
@@ -571,6 +578,7 @@ function BookingDetail() {
                     }
                     
                     .complete-member {
+                    margin-left:10px;
                         font-weight: bold;
                         margin-top: 20px; /* 키워드와 다른 컨텐츠 사이의 간격 */
                     }
