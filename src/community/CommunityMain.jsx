@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Navbar from '../component/Navbar';
 import CommunitySidebar from '../component/CommunitySidebar';
 import Post from './Post';
-import ChatBot from '../chat/ChatBot';
+
 import EditIcon from '../icons/edit.svg';
 
 const Container = styled.div`
@@ -119,7 +119,7 @@ function CommunityMain() {
                     <WritePostButton onClick={() => navigate('/registercomform')}>
                         <Icon src={EditIcon} alt="Edit Icon"/> Write a Post
                     </WritePostButton>
-                    <ChatBot/>
+
                 </SideBarContainer>
 
             </ContentContainer>

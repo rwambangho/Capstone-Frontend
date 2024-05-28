@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-
 const PostContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -11,6 +10,7 @@ const PostContainer = styled.div`
     border: none;
     padding: 20px;
     background-color: #ffffff;
+    min-height: 150px; // 필요한 경우 최소 높이를 조정하세요
 `;
 
 const PostContent = styled.div`
@@ -47,6 +47,20 @@ const MetaItem = styled.div`
     font-weight: ${({ fontWeight }) => fontWeight};
 `;
 
+const ImageContainer = styled.div`
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; // 이미지 컨테이너의 높이를 부모의 높이에 맞춤
+`;
+
+const PlaceholderImage = styled.div`
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+`;
+
 const Post = ({ post }) => {
     const navigate = useNavigate();
 
@@ -64,19 +78,6 @@ const Post = ({ post }) => {
 
         return `${year}. ${month}. ${day}. ${ampm} ${formattedHour}: ${minute}: ${second}`;
     }
-
-    function getCookieValue(cookieName) {
-        const cookies = document.cookie.split('; ');
-        for (let cookie of cookies) {
-            const [key, value] = cookie.split('=');
-            if (key === cookieName) {
-                return value;
-            }
-        }
-        return null;
-    }
-
-   
 
     const navigateToPostDetail = () => {
         axios.put('/api/community/addClickCount', {
@@ -97,7 +98,7 @@ const Post = ({ post }) => {
                 <PostDateTime>{formatDateTime(post.time)}</PostDateTime>
                 <PostTitle onClick={navigateToPostDetail}>{post.title}</PostTitle>
                 <PostText>{post.content}</PostText>
-               
+
                 <PostMeta>
                     <MetaItem color="#1c5cff" fontWeight="600">
                         <span style={{ marginRight: '10px' }}>hits {post.clickCount}</span>
@@ -107,9 +108,13 @@ const Post = ({ post }) => {
                     <MetaItem color="#797979" style={{ fontWeight: 'normal' }}>By {post.nickName}</MetaItem>
                 </PostMeta>
             </PostContent>
-            <div style={{ width: '30%', display: 'flex', alignItems: 'center' }}>
-                {post.image && <img src={post.image.replace('/home/ubuntu/images', '/images')} alt="Post" style={{ width: '100%', height: 'auto', borderRadius: '5px' }} />}
-            </div>
+            <ImageContainer>
+                {post.image ? (
+                    <img src={post.image.replace('/home/ubuntu/images', '/images')} alt="Post" style={{ width: '100%', height: 'auto', borderRadius: '5px' }} />
+                ) : (
+                    <PlaceholderImage />
+                )}
+            </ImageContainer>
         </PostContainer>
     );
 };
